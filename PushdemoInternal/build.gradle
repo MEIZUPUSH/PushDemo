@@ -1,0 +1,37 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        applicationId "com.meizu.pushdemo"
+        minSdkVersion 16
+        targetSdkVersion 23
+        versionCode 122
+        versionName "1.2.160913"
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile(name:'common-1.0.11', ext:'aar')
+    compile(name:'gslb-3.0.9', ext:'aar')
+    compile(name:'push-internal-3.1.160913', ext:'aar')
+    compile(name:'usage-stats-2.5.2', ext:'aar')
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.squareup.okhttp:okhttp:2.1.0'
+    compile 'com.android.volley:volley:1.0.0'
+    compile "com.android.support:support-v4:22.2.0"
+    compile 'org.greenrobot:eventbus:3.0.0'
+
+
+
+}
