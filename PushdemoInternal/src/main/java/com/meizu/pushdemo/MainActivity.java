@@ -39,8 +39,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
     private Button btnUnSubScribeAlias;
     private Button btnCheckSubScribeAlias;
 
-    public static  String APP_ID = "100999";
-    public static  String APP_KEY = "80355073480594a99470dcacccd8cf2c";
+    public static  String APP_ID = "your PushDemo appId";
+    public static  String APP_KEY = "your PushDemo appKey";
 
 
     private static final String TAG = "MainActivity";
