@@ -7,7 +7,8 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
 
-import com.meizu.platform.util.Logger;
+import com.meizu.cloud.pushsdk.pushtracer.utils.Logger;
+
 
 /**
  * Created by liaojinlong on 16-4-21.
