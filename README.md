@@ -73,7 +73,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 
 **NOTE:** 以下内容只是说明push-internal的传递依赖关系,不需要重复配置,实际接入只需要配置上面的就行了
 *  工程依赖关系
-  PushSDK内部版本aar包托管在meizu的artifactory上,其默认依赖以下库:
+  PushSDK内部版本aar包托管在[Jcenter](https://bintray.com/meizu/maven/PushSDK-Internal)上,其默认依赖以下库:
   * 第三方开源库
     * okHttp ```com.squareup.okhttp3:okhttp:3.2.0```
     * support_v4 ```com.android.support:support-v4:22.2.0``` 支持兼容低版本扩展通知栏功能
@@ -142,61 +142,64 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
     
     	    @Override
     	    public void onMessage(Context context, String s) {
-    		//接收服务器推送的消息
+    		   //接收服务器推送的消息
     	    }
     
     	    @Override
     	    @Deprecated
     	    public void onUnRegister(Context context, boolean b) {
-    		//调用PushManager.unRegister(context）方法后，会在此回调反注册状态
+    		   //调用PushManager.unRegister(context）方法后，会在此回调反注册状态
     	    }
     
     	    //设置通知栏小图标
     	    @Override
     	    public PushNotificationBuilder onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder) {
-    		pushNotificationBuilder.setmStatusbarIcon(R.drawable.mz_stat_share_weibo);
+    		   pushNotificationBuilder.setmStatusbarIcon(R.drawable.mz_push_notification_small_icon);
     	    }
     
     	    @Override
     	    public void onPushStatus(Context context,PushSwitchStatus pushSwitchStatus) {
-    		//检查通知栏和透传消息开关状态回调
+    		   //检查通知栏和透传消息开关状态回调
     	    }
     
     	    @Override
     	    public void onRegisterStatus(Context context,RegisterStatus registerStatus) {
     		   Log.i(TAG, "onRegisterStatus " + registerStatus);
-                    //新版订阅回调
+               //新版订阅回调
     	    }
     
     	    @Override
     	    public void onUnRegisterStatus(Context context,UnRegisterStatus unRegisterStatus) {
     		  Log.i(TAG,"onUnRegisterStatus "+unRegisterStatus);
-                    //新版反订阅回调
+              //新版反订阅回调
     	    }
     
     	    @Override
     	    public void onSubTagsStatus(Context context,SubTagsStatus subTagsStatus) {
     		   Log.i(TAG, "onSubTagsStatus " + subTagsStatus);
-    		//标签回调
+    		   //标签回调
     	    }
     
     	    @Override
     	    public void onSubAliasStatus(Context context,SubAliasStatus subAliasStatus) {
     		   Log.i(TAG, "onSubAliasStatus " + subAliasStatus);
-                    //别名回调
+               //别名回调
     	    }
     	    @Override
             public void onNotificationArrived(Context context, String title, String content, String selfDefineContentString) {
+                //通知栏消息到达回调
                 DebugLogger.i(TAG,"onNotificationArrived title "+title + "content "+content + " selfDefineContentString "+selfDefineContentString);
             }
         
             @Override
             public void onNotificationClicked(Context context, String title, String content, String selfDefineContentString) {
+                //通知栏消息点击回调
                 DebugLogger.i(TAG,"onNotificationClicked title "+title + "content "+content + " selfDefineContentString "+selfDefineContentString);
             }
         
             @Override
             public void onNotificationDeleted(Context context, String title, String content, String selfDefineContentString) {
+                //通知栏消息删除回调；flyme6以上不再回调
                 DebugLogger.i(TAG,"onNotificationDeleted title "+title + "content "+content + " selfDefineContentString "+selfDefineContentString);
             }    
    
@@ -584,11 +587,12 @@ PushSDK加入了通知栏状态栏小图标自定义的功能，需要在配置�
      * */
     public void onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder){
           //设置通知栏弹出的小图标
-          pushNotificationBuilder.setmStatusbarIcon(R.drawalbe.icon);
+          pushNotificationBuilder.setmStatusbarIcon(R.drawable.mz_push_notification_small_icon);
     };
 ```
 
-> **Note:** 通知栏相关操作API都封装在PushNotificationBuilder 中，更多功能参见此类中的方法
+**Note:** 新的通知栏中心需要按照名称来获取状态栏Icon,你需要在相应的drawable不同分辨率文件夹下放置一个名称为```mz_push_notification_small_icon```的状态栏图标文件,请确保名称正确，否则将无法正确显示你应用的状态栏图标 
+
 
 ## 五 兼容Flyme低版本推送
 ### 5.1兼容说明
