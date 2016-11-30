@@ -61,14 +61,12 @@ app为了及时获取到服务器端的消息更新，一般会采用轮寻或�
 PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大家可以直接引用aar包；无需关心libs so库的配置，对于一些通用的权限配置，工程混淆，应用可以不再配置了，现有你只需要在你的应用中配置相应的消息接收的receiver
 
 ### 3.1 pushSDK内部版引用配置说明<a name="pushsdk_internal"/>
-**NOTE:** 请按照项目需求选取用的引用方式引用aar包,第三方开放者需要自行下载pushSDK包,开发这除了要将依赖PushSDK里面的aar,还需配置如下公共开源库
+**NOTE:** 我们已经将pushsdk发布到jcenter,你只需如下配置即可
 * 对内版本配置如下：
 
 ```
     dependencies {
-        compile "com.android.support:support-v4:22.2.0"
-        compile 'com.android.volley:volley:1.0.0'
-        compile 'com.squareup.okhttp:okhttp:2.1.0'
+        compile 'com.meizu.flyme.internet:push-internal-publish:3.2.161129'
     }
 ```
 
@@ -76,13 +74,8 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 **NOTE:** 以下内容只是说明push-internal的传递依赖关系,不需要重复配置,实际接入只需要配置上面的就行了
 *  工程依赖关系
   PushSDK内部版本aar包托管在meizu的artifactory上,其默认依赖以下库:
-  * meizu内部库
-    现在Gslb,uxip已经由平台研发部接管，如果你用的旧版本，请以以下版本为准,不要在使用老版本了
-    * MzGslb   ```com.meizu.flyme.internet:gslb:3.0.8``` 魅族GSLB组件
-    * MzUxip   ```com.meizu.flyme.internet:usage-stats:2.5.1``` 数据统计组件
   * 第三方开源库
-    * Volley ```com.android.volley:volley:1.0.0```
-    * okHttp ```com.squareup.okhttp:okhttp:2.1.0```
+    * okHttp ```com.squareup.okhttp3:okhttp:3.2.0```
     * support_v4 ```com.android.support:support-v4:22.2.0``` 支持兼容低版本扩展通知栏功能
 
 **NOTE:** 以下内容说明混淆规则
@@ -118,7 +111,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 
 ```xml
     <!-- push应用定义消息receiver声明 -->
-    <receiver android:name="your.package.MyPushMsgReceiver">
+    <receiver android:name="包名.MyPushMsgReceiver">
         <intent-filter>
             <!-- 接收push消息 -->
             <action android:name="com.meizu.flyme.push.intent.MESSAGE" />
@@ -133,6 +126,9 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
         </intent-filter>
     </receiver>
 ```
+
+**NOTE:** 包名填写你配置的的pushReceiver所在包名即可！
+
 #### 3.3.3 实现自有的PushReceiver,实现消息接收，注册与反注册回调<a name="pushmessage_receiver_code_setting"/>
 
 ```
@@ -253,6 +249,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
      *         push 平台申请的应用id
      * @param appKey
      *         push 平台申请的应用key
+     * 使用说明：可在应用启动时调用此方法，例如在Application.onCreate()调用即可
      * */
      public static void register(Context context,String appId,String appKey);
 ```
@@ -276,6 +273,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
      *         push 平台申请的应用id
      * @param appKey
      *         push 平台申请的应用key
+     * 使用说明：如果你不想接收任何推送，可以取消订阅关系，此时你将无法收到透传消息和通知栏消息
      * */
      public static void unRegister(Context context,String appId,String appKey);
 ```
@@ -304,6 +302,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
      *        接收的消息类型，0:通知栏消息 1: 透传消息
      * @param switcher
      *        修改push类型开关状态
+     * 使用说明：此方法最好只有在用户需要打开或关闭消息时调用，不要频繁调用；当你第一次register成功后，通知栏消息和透传消息已经默认打开
      * */
     public static void switchPush(Context context,String appId,String appKey,String pushId,int pushType,boolean switcher);
 ```
