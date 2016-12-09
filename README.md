@@ -83,6 +83,11 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 *  混淆
   Meizu插件以前是将proguard文件独立发布,因此proguard文件需要独立配置,现在我们已经将proguard打包进了aar中,具体详见[consumerProguardFiles](http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.BuildType.html#com.android.build.gradle.internal.dsl.BuildType:consumerProguardFiles),因此就不再需要单独配置proguard远程依赖了
 
+**NOTE:** 如果由于各种原因不能使用jcenter依赖，还可以从以下链接下载sdk相关支持包
+
+* 下载地址
+  [push-sdk-android.zip](http://open.res.flyme.cn/fileserver/upload/file/201609/58703dbb05f741438debdc27a2e6f97c.zip)
+  
 ### 3.2 pushSDK外部版引用配置说明<a name="pushsdk_open"/>
 
 **NOTE:** 如果是魅族内部应用请跳过此配置,如果应用需要支持第三方推送的可以进行以下配置,对外版本的SDK主要是在第三方Android Rom中实现推送功能,其默依赖pushSDK内部版,目前暂未开放
