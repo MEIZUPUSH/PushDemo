@@ -25,17 +25,11 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 
 ```
     dependencies {
-        compile 'com.meizu.flyme.internet:push-internal-publish:3.2.161129'
+        compile 'com.meizu.flyme.internet:push-internal-publish:3.2.*'
     }
 ```
 
 
-**NOTE:** 以下内容只是说明push-internal的传递依赖关系,不需要重复配置,实际接入只需要配置上面的就行了
-*  工程依赖关系
-  PushSDK内部版本aar包托管在meizu的artifactory上,其默认依赖以下库:
-  * 第三方开源库
-    * okHttp ```com.squareup.okhttp3:okhttp:3.2.0```
-    * support_v4 ```com.android.support:support-v4:22.2.0``` 支持兼容低版本扩展通知栏功能
 
 **NOTE:** 以下内容说明混淆规则
 
