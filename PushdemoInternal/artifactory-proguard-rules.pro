@@ -37,10 +37,3 @@
 
         -keep class com.meizu.push.** { *; }
         -dontwarn com.meizu.push.**
-
-     # for gslb
-     #-keep class com.meizu.gslb.** { *; }
-
-     # for meizu lib all
-      #-keep class com.meizu.** { *; }
-      #-dontwarn com.meizu.**
