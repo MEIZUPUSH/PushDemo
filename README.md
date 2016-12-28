@@ -5,6 +5,8 @@
 * 第三方应用下载[PushSDK](https://github.com/MEIZUPUSH/PushDemo/releases)
 
 
+# 更新日志
+
 ##[2016-12-26]V3.3.161226
   * 1 Https 加入安全校验
   * 2 通知栏功能仅支持 API 16以上的android版本
@@ -14,7 +16,7 @@
   * 1 pushsdk 去除第三方依赖，不再依赖其他任何第三方库
   * 2 jecter暂停使用，请下载[PushSDK aar](https://github.com/MEIZUPUSH/PushDemo/releases)本地引用,具体可以参考pushdemo的libs目录
 
-# 目录<a name="index"/>
+# PushSDK接入说明目录<a name="index"/>
 * [一.应用背景](#app_backgroud)
 * [二.设计思想](#design_thought)
 * [三.魅族云推送集成说明](#integrete_setting_description)
