@@ -8,8 +8,8 @@ android {
         applicationId "com.meizu.pushdemo"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 125
-        versionName "1.2.161222"
+        versionCode 126
+        versionName "1.3.161226"
     }
     buildTypes {
         release {
@@ -22,7 +22,7 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile(name:'push-internal-3.3.161222', ext:'aar')
+    compile(name:'push-internal-3.3.161226', ext:'aar')
     //compile 'com.meizu.flyme.internet:push-internal-publish:3.2.161219'
     //compile project(':push-internal-publish')
     compile 'com.android.support:appcompat-v7:22.2.0'

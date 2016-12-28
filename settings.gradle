@@ -1,5 +1,5 @@
 include ':PushdemoInternal'
 
-/*
-include(':push-internal-publish')
+
+/*include(':push-internal-publish')
 project(':push-internal-publish').projectDir = new File(settingsDir, '../../../MeizuPushSDK/gitlab.meizu.com/PushSDK-Internel/push-internal-publish')*/

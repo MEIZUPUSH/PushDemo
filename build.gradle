@@ -25,6 +25,9 @@ allprojects {
 /*buildscript {
     repositories {
         maven {
+            url uri('../../gitlab.meizu.com/Platform_Gradle/.repo')
+        }
+        maven {
             url 'http://artifactory.rnd.meizu.com/artifactory/all'
         }
         jcenter()
