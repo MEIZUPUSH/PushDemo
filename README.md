@@ -1,4 +1,9 @@
-# PushSDK3.1 说明文档
+# PushSDK3 说明文档
+
+## Android Studio AAR 发布说明
+* 魅族内部应用请使用内部的[Artifactory PushSDK](http://artifactory.rnd.meizu.com/artifactory/)
+* 第三方应用下载[PushSDK](https://github.com/MEIZUPUSH/PushDemo/releases)
+
 
 ##[2016-12-26]V3.3.161226
   * 1 Https 加入安全校验
