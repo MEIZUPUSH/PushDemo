@@ -10,6 +10,7 @@
         * [1.2.2 注册消息接收Receiver](#pushmessage_receiver_manifest_setting)
         * [1.2.3 实现自有的PushReceiver,实现消息接收，注册与反注册回调](#pushmessage_receiver_code_setting)    
 * [二.调用新版注册](#start_register)
+* [三. 通知栏图标设置](#notification_small_icon_setting)
 * [反馈与建议](README.md)
 * [问题汇总说明](README.md)
 
@@ -30,26 +31,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 ```
 
 
-
-**NOTE:** 以下内容说明混淆规则
-
-*  混淆
-  Meizu插件以前是将proguard文件独立发布,因此proguard文件需要独立配置,现在我们已经将proguard打包进了aar中,具体详见[consumerProguardFiles](http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.BuildType.html#com.android.build.gradle.internal.dsl.BuildType:consumerProguardFiles),因此就不再需要单独配置proguard远程依赖了
-
-**NOTE:** 快速接入可能遇到的问题
-  pushSDK由于会引用或者被其他公共项目引用,这样会导致很多包冲突的问题,可以通过以下办法快速解决包传递依赖关系;例如现在应用升级引用的是旧版本的pushSDK,需要解除其依赖关系,可以参照下面配置实现
-```
-    compile(group: 'com.meizu.flyme.sdk', name: 'updatecomponent', version: '1.0.160602', ext: 'aar'){
-         transitive = false
-    }
-```
-
-* [分析项目依赖关系](https://dongchuan.gitbooks.io/gradle-user-guide-/content/using_the_gradle_command-line/getting_the_insight_into_a_particular_dependency.html)
-```
-  ./gradlew -q dependencies ${module}:dependencies --configuration ${dependece configuration}
-```
-  通过该命令分析你的项目依赖关系,找出冲突的aar
-  
+ 
 
 ## 1.2 必要的配置<a name="nessary_setting"/>
 
@@ -146,7 +128,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 ```
 
 
-# 二. 调用新版注册
+# 二. 调用新版注册<a name="start_register"/>
 **Note:** 至此pushSDK 已经集成完毕，现在你需要在你的Application中调用新版的[register](#register)方法,
 ```
    /**
@@ -162,6 +144,21 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 并在你的Receiver中成功回调onRegisterStatus(RegisterStatus registerStatus)方法就可以了，
 你现在可以到[新版Push平台](http://push.meizu.com) 找到你的应用推送消息就可以了;以下内容是pushSDK提供的api汇总,具体功能详见api具体说明,请根据需求选用合适的功能
 [详细功能说明参见](README.md)
+
+# 三. 通知栏图标设置<a name="notification_small_icon_setting"/>
+
+
+```
+    /**
+     * 获取smallicon
+     * */
+    public void onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder){
+          //设置通知栏弹出的小图标
+          pushNotificationBuilder.setmStatusbarIcon(R.drawable.mz_push_notification_small_icon);
+    };
+```
+
+**Note:** Flyme6新的通知栏中心需要按照名称来获取状态栏Icon,你需要在相应的drawable不同分辨率文件夹下放置一个名称为```mz_push_notification_small_icon```的状态栏图标文件,请确保名称正确，否则将无法正确显示你应用的状态栏图标 
 
 
 

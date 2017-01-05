@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
 
-import com.meizu.cloud.pushsdk.pushtracer.utils.Logger;
+import com.meizu.cloud.pushinternal.DebugLogger;
 
 
 /**
@@ -29,7 +29,7 @@ public class ForegroundService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Logger.i("LocalService", "Received start id " + startId + ": " + intent);
+        DebugLogger.i("LocalService", "Received start id " + startId + ": " + intent);
         // In this sample, we'll use the same text for the ticker and the expanded notification
         if(START_FOREGROUD_SERVICE.equals(intent.getAction())){
             CharSequence text = getText(R.string.local_service_started);
