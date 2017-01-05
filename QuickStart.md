@@ -19,7 +19,7 @@
 
 PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大家可以直接引用aar包；无需关心libs so库的配置，对于一些通用的权限配置，工程混淆，应用可以不再配置了，现有你只需要在你的应用中配置相应的消息接收的receiver
 
-**NOTE:** 请按照项目需求选取用的引用方式引用aar包
+
 ## 1.1 pushSDK内部版引用配置说明<a name="pushsdk_internal"/>
 
 * 对内版本配置如下：
@@ -30,7 +30,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
     }
 ```
 
-
+**NOTE:** jcenter 暂时停止下载，请使用本地依赖aar的方式接入,具体可参见pushDemo
  
 
 ## 1.2 必要的配置<a name="nessary_setting"/>
@@ -93,7 +93,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 	    //设置通知栏小图标
 	    @Override
 	    public PushNotificationBuilder onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder) {
-		pushNotificationBuilder.setmStatusbarIcon(R.drawable.mz_stat_share_weibo);
+		pushNotificationBuilder.setmStatusbarIcon(R.drawable.mz_push_notification_small_icon);
 	    }
 
 	    @Override
