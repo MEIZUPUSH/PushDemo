@@ -54,8 +54,8 @@
     * [4.3 参数配置说明](#parameter_setting)
         * [4.3.1 页面名称](#activity_name)
         * [4.3.2 参数与值](#parameter_value)
-    * [4.3 打开URI](#open_web)
-    * [4.4 自定义通知栏](#set_notification_builder)
+    * [4.4 打开URI](#open_web)
+    * [4.5 自定义通知栏小图标](#set_notification_builder)
 
 * [反馈与建议](#feedback)
 * [问题汇总说明](#question_and_answer)
@@ -232,7 +232,8 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 你现在可以到[新版Push平台](http://push.meizu.com) 找到你的应用推送消息就可以了;以下内容是pushSDK提供的api汇总,具体功能详见api具体说明,请根据需求选用合适的功能
 
 ### 3.4 PushManager接口说明<a name="pushmanager_interface_describe"/>
-#### 3.4.1 ~~旧版订阅接口~~ <a name="register_description"/>
+
+#### 3.4.1 ~~旧版订阅接口~~<a name="register_description"/>
 
 ```
   /**
@@ -608,16 +609,17 @@ Push平台中页面名称实际为：应用要打开的Activity名称,即是相�
 
 #### 4.3.2 参数与值<a name="parameter_value"/>
 在push平台上配置的参数，是以key-value的方式传递给pushSDK,当pushSDK收到通知后会组建参数通过Intent传递给应用的相关界面, 应用可通过下面的方法逐一获取相应的value值
+
 ```
 String value = getIntent().getStringExtra("push平台配置的键值")
 通过在push平台上配置的参数，获取其value值,这里的key值就是你在push平台上配置的键值
 ```
 
-### 4.3 打开网页<a name="open_web"/>
+### 4.4 打开URI<a name="open_web"/>
 
-当你push平台选取了打开网页这个选项，并配置的网页地址，当pushSDK收到消息后就会弹出通知栏，当你点击后会跳转到你设置的默认的浏览器显示当前的网页
+当你push平台选取了打开网页这个选项，并配置的URL地址，当pushSDK收到消息后就会弹出通知栏，当你点击后会跳转到默认设置的组件处理当前的URI
 
-### 4.4 自定义通知栏<a name="set_notification_builder"/>
+### 4.5 自定义通知栏小图标<a name="set_notification_builder"/>
 
 PushSDK加入了通知栏状态栏小图标自定义的功能，需要在配置的的pushReceiver中覆盖如下的方法：
 
@@ -631,7 +633,7 @@ PushSDK加入了通知栏状态栏小图标自定义的功能，需要在配置�
     };
 ```
 
-**Note:** 新的通知栏中心需要按照名称来获取状态栏Icon,你需要在相应的drawable不同分辨率文件夹下放置一个名称为```mz_push_notification_small_icon```的状态栏图标文件,请确保名称正确，否则将无法正确显示你应用的状态栏图标 
+**Note:** Flyme6新的通知栏中心需要按照名称来获取状态栏Icon,你需要在相应的drawable不同分辨率文件夹下放置一个名称为```mz_push_notification_small_icon```的状态栏图标文件,请确保名称正确，否则将无法正确显示你应用的状态栏图标 
 
 
 ## 五 兼容Flyme低版本推送
