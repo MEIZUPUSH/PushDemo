@@ -115,37 +115,37 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 ### 3.3.1 兼容flyme5以下版本推送兼容配置<a name="permission_adpter_flyme5_down"/>
 
 ```
-    <!-- 兼容flyme5.0以下版本，魅族内部集成pushSDK必填，不然无法收到消息-->
-    <uses-permission android:name="com.meizu.flyme.push.permission.RECEIVE"></uses-permission>
-    <permission android:name="包名.push.permission.MESSAGE" android:protectionLevel="signature"/>
-    <uses-permission android:name="包名.push.permission.MESSAGE"></uses-permission>
+  <!-- 兼容flyme5.0以下版本，魅族内部集成pushSDK必填，不然无法收到消息-->
+  <uses-permission android:name="com.meizu.flyme.push.permission.RECEIVE"></uses-permission>
+  <permission android:name="包名.push.permission.MESSAGE" android:protectionLevel="signature"/>
+  <uses-permission android:name="包名.push.permission.MESSAGE"></uses-permission>
     
-    <!--  兼容flyme3.0配置权限-->
-    <uses-permission android:name="com.meizu.c2dm.permission.RECEIVE" />
-    <permission android:name="你的包名.permission.C2D_MESSAGE"
+  <!--  兼容flyme3.0配置权限-->
+  <uses-permission android:name="com.meizu.c2dm.permission.RECEIVE" />
+  <permission android:name="你的包名.permission.C2D_MESSAGE"
                     android:protectionLevel="signature"></permission>
-    <uses-permission android:name="你的包名.permission.C2D_MESSAGE"/>
+  <uses-permission android:name="你的包名.permission.C2D_MESSAGE"/>
 
 ```
 
 #### 3.3.2 注册消息接收Receiver<a name="pushmessage_receiver_manifest_setting"/>
 
 ```xml
-    <!-- push应用定义消息receiver声明 -->
-    <receiver android:name="包名.MyPushMsgReceiver">
-        <intent-filter>
-            <!-- 接收push消息 -->
-            <action android:name="com.meizu.flyme.push.intent.MESSAGE" />
-            <!-- 接收register消息 -->
-            <action android:name="com.meizu.flyme.push.intent.REGISTER.FEEDBACK" />
-            <!-- 接收unregister消息-->
-            <action android:name="com.meizu.flyme.push.intent.UNREGISTER.FEEDBACK"/>
-            <!-- 兼容低版本Flyme3推送服务配置 -->
-            <action android:name="com.meizu.c2dm.intent.REGISTRATION" />
-            <action android:name="com.meizu.c2dm.intent.RECEIVE" />
-            <category android:name="包名"></category>
-        </intent-filter>
-    </receiver>
+  <!-- push应用定义消息receiver声明 -->
+  <receiver android:name="包名.MyPushMsgReceiver">
+      <intent-filter>
+          <!-- 接收push消息 -->
+          <action android:name="com.meizu.flyme.push.intent.MESSAGE" />
+          <!-- 接收register消息 -->
+          <action android:name="com.meizu.flyme.push.intent.REGISTER.FEEDBACK" />
+          <!-- 接收unregister消息-->
+          <action android:name="com.meizu.flyme.push.intent.UNREGISTER.FEEDBACK"/>
+          <!-- 兼容低版本Flyme3推送服务配置 -->
+          <action android:name="com.meizu.c2dm.intent.REGISTRATION" />
+          <action android:name="com.meizu.c2dm.intent.RECEIVE" />
+          <category android:name="包名"></category>
+      </intent-filter>
+  </receiver>
 ```
 
 **NOTE:** 包名填写你配置的的pushReceiver所在包名即可！
@@ -235,10 +235,10 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 #### 3.4.1 ~~旧版订阅接口~~ <a name="register_description"/>
 
 ```
-    /**
-      * 订阅接口
-      */
-    public static void register(Context context);
+  /**
+    * 订阅接口
+    */
+  public static void register(Context context);
 ```
 
 **NOTE:** 此接口已经废弃建议使用新版的订阅接口
@@ -246,9 +246,9 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 * 说明：原则上应用调用register方法表示与服务器建立推送关系，这是可以通过push平台向该应用推送消息了，所以应用至少要调用过一次register方法,应用为了防止多次重复注册，可以先判断一下是否获取成功过pushid，具体实现代码如下：
 
 ```java
-	if(PushManager.getPushId(context) == null){
-	   PushManager.register(Context context)
-	}
+    if(PushManager.getPushId(context) == null){
+      PushManager.register(Context context)
+    }
 
 ```
 
@@ -261,10 +261,10 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 **NOTE:** 此接口已经废弃
 
 ```
-    /**
-      * 反订阅
-      * */
-    public static void unRegister(Context context);
+  /**
+    * 反订阅
+    * */
+  public static void unRegister(Context context);
 ```
 
 **NOTE:** 以下为新版的接口,所有的接口对应的回调都你的配置的PushReceiver中
