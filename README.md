@@ -720,6 +720,7 @@ PushMessageReceiver覆盖onMessage(Context context,Intent intent)方法接收Fly
 * (2) 处理推送消息
 
    例如应用需要获取content字段的内容,可以通过intent获取相应的内容，完成代码如下
+
 ```
     @Override
     public void onMessage(Context context, Intent intent) {
