@@ -70,66 +70,91 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
         </intent-filter>
     </receiver>
 ```
+
 #### 1.2.3 实现自有的PushReceiver,实现消息接收，注册与反注册回调<a name="pushmessage_receiver_code_setting"/>
 
 ```
-	public class MyPushMsgReceiver extends MzPushMessageReceiver {
-
-	    @Override
-	    public void onRegister(Context context, String pushid) {
-		//应用在接受返回的pushid
-	    }
-
-	    @Override
-	    public void onMessage(Context context, String s) {
-		//接收服务器推送的消息
-	    }
-
-	    @Override
-	    public void onUnRegister(Context context, boolean b) {
-		//调用PushManager.unRegister(context）方法后，会在此回调反注册状态
-	    }
-
-	    //设置通知栏小图标
-	    @Override
-	    public PushNotificationBuilder onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder) {
-		pushNotificationBuilder.setmStatusbarIcon(R.drawable.mz_push_notification_small_icon);
-	    }
-
-	    @Override
-	    public void onPushStatus(Context context,PushSwitchStatus pushSwitchStatus) {
-		//检查通知栏和透传消息开关状态回调
-	    }
-
-	    @Override
-	    public void onRegisterStatus(Context context,RegisterStatus registerStatus) {
-		Log.i(TAG, "onRegisterStatus " + registerStatus);
-                //新版订阅回调
-	    }
-
-	    @Override
-	    public void onUnRegisterStatus(Context context,UnRegisterStatus unRegisterStatus) {
-		Log.i(TAG,"onUnRegisterStatus "+unRegisterStatus);
-                //新版反订阅回调
-	    }
-
-	    @Override
-	    public void onSubTagsStatus(Context context,SubTagsStatus subTagsStatus) {
-		Log.i(TAG, "onSubTagsStatus " + subTagsStatus);
-		//标签回调
-	    }
-
-	    @Override
-	    public void onSubAliasStatus(Context context,SubAliasStatus subAliasStatus) {
-		Log.i(TAG, "onSubAliasStatus " + subAliasStatus);
-                //别名回调
-	    }
-	}
+  public class MyPushMsgReceiver extends MzPushMessageReceiver {
+    
+    @Override
+    @Deprecated
+    public void onRegister(Context context, String pushid) {
+    	//应用在接受返回的pushid
+    }
+    
+    @Override
+    public void onMessage(Context context, String s) {
+    	//接收服务器推送的消息
+    }
+    
+    @Override
+    @Deprecated
+    public void onUnRegister(Context context, boolean b) {
+    	//调用PushManager.unRegister(context）方法后，会在此回调反注册状态
+    }
+    
+    //设置通知栏小图标
+    @Override
+    public PushNotificationBuilder onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder) {
+    	pushNotificationBuilder.setmStatusbarIcon(R.drawable.mz_push_notification_small_icon);
+    }
+    
+    @Override
+    public void onPushStatus(Context context,PushSwitchStatus pushSwitchStatus) {
+    	//检查通知栏和透传消息开关状态回调
+    }
+    
+    @Override
+    public void onRegisterStatus(Context context,RegisterStatus registerStatus) {
+    	Log.i(TAG, "onRegisterStatus " + registerStatus);
+        //新版订阅回调
+    }
+    
+    @Override
+    public void onUnRegisterStatus(Context context,UnRegisterStatus unRegisterStatus) {
+    	Log.i(TAG,"onUnRegisterStatus "+unRegisterStatus);
+        //新版反订阅回调
+    }
+    
+    @Override
+    public void onSubTagsStatus(Context context,SubTagsStatus subTagsStatus) {
+    	Log.i(TAG, "onSubTagsStatus " + subTagsStatus);
+    	//标签回调
+    }
+    
+    @Override
+    public void onSubAliasStatus(Context context,SubAliasStatus subAliasStatus) {
+    	Log.i(TAG, "onSubAliasStatus " + subAliasStatus);
+        //别名回调
+    }
+    @Override
+    public void onNotificationArrived(Context context, String title, String content, String selfDefineContentString) {
+       //通知栏消息到达回调
+       DebugLogger.i(TAG,"onNotificationArrived title "+title + "content "+content + " selfDefineContentString "+selfDefineContentString);
+    }
+        
+    @Override
+    public void onNotificationClicked(Context context, String title, String content, String selfDefineContentString) {
+       //通知栏消息点击回调
+       DebugLogger.i(TAG,"onNotificationClicked title "+title + "content "+content + " selfDefineContentString "+selfDefineContentString);
+    }
+        
+    @Override
+    public void onNotificationDeleted(Context context, String title, String content, String selfDefineContentString) {
+       //通知栏消息删除回调；flyme6以上不再回调
+       DebugLogger.i(TAG,"onNotificationDeleted title "+title + "content "+content + " selfDefineContentString "+selfDefineContentString);
+    }    
+   
+ }
+	
 ```
 
 
+
 # 二. 调用新版注册<a name="start_register"/>
+
 **Note:** 至此pushSDK 已经集成完毕，现在你需要在你的Application中调用新版的[register](#register)方法,
+
 ```
    /**
      * @param context
