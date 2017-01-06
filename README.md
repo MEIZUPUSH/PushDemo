@@ -20,7 +20,7 @@
 * 1 pushsdk 去除第三方依赖，不再依赖其他任何第三方库
 * 2 jecter暂停使用，请下载[PushSDK aar](https://github.com/MEIZUPUSH/PushDemo/releases)本地引用,具体可以参考pushdemo的libs目录
   
-# [```快速接入魅族Push点击这里```](QuickStart.md)  
+# [快速接入魅族Push点击这里](QuickStart.md)  
 
 # PushSDK接入详细说明目录<a name="index"/>
 * [一.应用背景](#app_backgroud)
