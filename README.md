@@ -153,78 +153,78 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 #### 3.3.3 实现自有的PushReceiver,实现消息接收，注册与反注册回调<a name="pushmessage_receiver_code_setting"/>
 
 ```
-     public class MyPushMsgReceiver extends MzPushMessageReceiver {
+  public class MyPushMsgReceiver extends MzPushMessageReceiver {
     
-    	    @Override
-    	    @Deprecated
-    	    public void onRegister(Context context, String pushid) {
-    		   //应用在接受返回的pushid
-    	    }
+    @Override
+    @Deprecated
+    public void onRegister(Context context, String pushid) {
+    	//应用在接受返回的pushid
+    }
     
-    	    @Override
-    	    public void onMessage(Context context, String s) {
-    		   //接收服务器推送的消息
-    	    }
+    @Override
+    public void onMessage(Context context, String s) {
+    	//接收服务器推送的消息
+    }
     
-    	    @Override
-    	    @Deprecated
-    	    public void onUnRegister(Context context, boolean b) {
-    		   //调用PushManager.unRegister(context）方法后，会在此回调反注册状态
-    	    }
+    @Override
+    @Deprecated
+    public void onUnRegister(Context context, boolean b) {
+    	//调用PushManager.unRegister(context）方法后，会在此回调反注册状态
+    }
     
-    	    //设置通知栏小图标
-    	    @Override
-    	    public PushNotificationBuilder onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder) {
-    		   pushNotificationBuilder.setmStatusbarIcon(R.drawable.mz_push_notification_small_icon);
-    	    }
+    //设置通知栏小图标
+    @Override
+    public PushNotificationBuilder onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder) {
+    	pushNotificationBuilder.setmStatusbarIcon(R.drawable.mz_push_notification_small_icon);
+    }
     
-    	    @Override
-    	    public void onPushStatus(Context context,PushSwitchStatus pushSwitchStatus) {
-    		   //检查通知栏和透传消息开关状态回调
-    	    }
+    @Override
+    public void onPushStatus(Context context,PushSwitchStatus pushSwitchStatus) {
+    	//检查通知栏和透传消息开关状态回调
+    }
     
-    	    @Override
-    	    public void onRegisterStatus(Context context,RegisterStatus registerStatus) {
-    		   Log.i(TAG, "onRegisterStatus " + registerStatus);
-               //新版订阅回调
-    	    }
+    @Override
+    public void onRegisterStatus(Context context,RegisterStatus registerStatus) {
+    	Log.i(TAG, "onRegisterStatus " + registerStatus);
+        //新版订阅回调
+    }
     
-    	    @Override
-    	    public void onUnRegisterStatus(Context context,UnRegisterStatus unRegisterStatus) {
-    		  Log.i(TAG,"onUnRegisterStatus "+unRegisterStatus);
-              //新版反订阅回调
-    	    }
+    @Override
+    public void onUnRegisterStatus(Context context,UnRegisterStatus unRegisterStatus) {
+    	Log.i(TAG,"onUnRegisterStatus "+unRegisterStatus);
+        //新版反订阅回调
+    }
     
-    	    @Override
-    	    public void onSubTagsStatus(Context context,SubTagsStatus subTagsStatus) {
-    		   Log.i(TAG, "onSubTagsStatus " + subTagsStatus);
-    		   //标签回调
-    	    }
+    @Override
+    public void onSubTagsStatus(Context context,SubTagsStatus subTagsStatus) {
+    	Log.i(TAG, "onSubTagsStatus " + subTagsStatus);
+    	//标签回调
+    }
     
-    	    @Override
-    	    public void onSubAliasStatus(Context context,SubAliasStatus subAliasStatus) {
-    		   Log.i(TAG, "onSubAliasStatus " + subAliasStatus);
-               //别名回调
-    	    }
-    	    @Override
-            public void onNotificationArrived(Context context, String title, String content, String selfDefineContentString) {
-                //通知栏消息到达回调
-                DebugLogger.i(TAG,"onNotificationArrived title "+title + "content "+content + " selfDefineContentString "+selfDefineContentString);
-            }
+    @Override
+    public void onSubAliasStatus(Context context,SubAliasStatus subAliasStatus) {
+    	Log.i(TAG, "onSubAliasStatus " + subAliasStatus);
+        //别名回调
+    }
+    @Override
+    public void onNotificationArrived(Context context, String title, String content, String selfDefineContentString) {
+       //通知栏消息到达回调
+       DebugLogger.i(TAG,"onNotificationArrived title "+title + "content "+content + " selfDefineContentString "+selfDefineContentString);
+    }
         
-            @Override
-            public void onNotificationClicked(Context context, String title, String content, String selfDefineContentString) {
-                //通知栏消息点击回调
-                DebugLogger.i(TAG,"onNotificationClicked title "+title + "content "+content + " selfDefineContentString "+selfDefineContentString);
-            }
+    @Override
+    public void onNotificationClicked(Context context, String title, String content, String selfDefineContentString) {
+       //通知栏消息点击回调
+       DebugLogger.i(TAG,"onNotificationClicked title "+title + "content "+content + " selfDefineContentString "+selfDefineContentString);
+    }
         
-            @Override
-            public void onNotificationDeleted(Context context, String title, String content, String selfDefineContentString) {
-                //通知栏消息删除回调；flyme6以上不再回调
-                DebugLogger.i(TAG,"onNotificationDeleted title "+title + "content "+content + " selfDefineContentString "+selfDefineContentString);
-            }    
+    @Override
+    public void onNotificationDeleted(Context context, String title, String content, String selfDefineContentString) {
+       //通知栏消息删除回调；flyme6以上不再回调
+       DebugLogger.i(TAG,"onNotificationDeleted title "+title + "content "+content + " selfDefineContentString "+selfDefineContentString);
+    }    
    
-    	}
+ }
 	
 ```
 
@@ -640,6 +640,7 @@ PushSDK加入了通知栏状态栏小图标自定义的功能，需要在配置�
 云服务经历几次大的变更，从之前的C2DM，到现在可以完全脱离Flyme平台作为一种完全开放给第三方应用的SDK，在这个阶段出现多种集成方式，给以后的应用集成带来极大的困扰，魅族PushSDK极力在减少Flyme版本迭代给应用集成带来的麻烦，但应用还是需要做细小的更改才能做到与低版本Flyme的兼容。
 
 ### 5.2 兼容Flyme3.0等低版本推送服务
+
 #### 5.2.1 增加权限声明配置
 
 ```
