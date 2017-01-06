@@ -84,11 +84,13 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 ### 3.1 pushSDK内部版引用配置说明<a name="pushsdk_internal"/>
 
 **NOTE:** 我们已经将pushsdk发布到jcenter,你只需如下配置即可
+
 * 对内版本配置如下：
 
 ```
     dependencies {
         compile 'com.meizu.flyme.internet:push-internal-publish:3.2.*'
+	// 如果无法下载，请使用自行下载aar
     }
 ```
 
@@ -100,7 +102,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 **NOTE:** 如果由于各种原因不能使用jcenter依赖，还可以从以下链接下载sdk相关支持包
 
 * 下载地址
-  [push-sdk-android.zip](http://open.res.flyme.cn/fileserver/upload/file/201609/58703dbb05f741438debdc27a2e6f97c.zip)
+  [push-sdk-android.zip](https://github.com/MEIZUPUSH/PushDemo/releases)
   
 ### 3.2 pushSDK外部版引用配置说明<a name="pushsdk_open"/>
 
@@ -151,7 +153,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 #### 3.3.3 实现自有的PushReceiver,实现消息接收，注册与反注册回调<a name="pushmessage_receiver_code_setting"/>
 
 ```
-	public class MyPushMsgReceiver extends MzPushMessageReceiver {
+     public class MyPushMsgReceiver extends MzPushMessageReceiver {
     
     	    @Override
     	    @Deprecated
@@ -223,13 +225,15 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
             }    
    
     	}
+	
 ```
 
 **Note:** 至此pushSDK 已经集成完毕，现在你需要在你的Application中调用新版的[register](#register)方法,并在你的Receiver中成功回调onRegisterStatus(RegisterStatus registerStatus)方法就可以了，
 你现在可以到[新版Push平台](http://push.meizu.com) 找到你的应用推送消息就可以了;以下内容是pushSDK提供的api汇总,具体功能详见api具体说明,请根据需求选用合适的功能
 
 ### 3.4 PushManager接口说明<a name="pushmanager_interface_describe"/>
-#### 3.4.1 ~~旧版订阅接口~~<a name="register_description"/>
+#### 3.4.1 ~~旧版订阅接口~~ <a name="register_description"/>
+
 ```
     /**
       * 订阅接口
@@ -238,6 +242,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 ```
 
 **NOTE:** 此接口已经废弃建议使用新版的订阅接口
+
 * 说明：原则上应用调用register方法表示与服务器建立推送关系，这是可以通过push平台向该应用推送消息了，所以应用至少要调用过一次register方法,应用为了防止多次重复注册，可以先判断一下是否获取成功过pushid，具体实现代码如下：
 
 ```java
@@ -252,7 +257,9 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
    * (2)应用如果成功获取到pushId,可以调用一下方法获取本应用的pushId PushManager.getPushId(Context context)
 
 #### 3.4.2 ~~旧版反订阅接口~~<a name="unregister_description"/>
+
 **NOTE:** 此接口已经废弃
+
 ```
     /**
       * 反订阅
@@ -261,7 +268,9 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 ```
 
 **NOTE:** 以下为新版的接口,所有的接口对应的回调都你的配置的PushReceiver中
+
 #### 3.4.3 订阅接口<a name="register"/>
+
 * 接口说明
 
 ```
@@ -286,6 +295,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 ```
 
 #### 3.4.4 反订阅接口<a name="unregister"/>
+
 * 接口说明
 
 ```
@@ -310,6 +320,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 ```
 
 #### 3.4.5 通知栏和透传消息开关状态转换<a name="pushmessage_switcher"/>
+
 * 接口说明
 
 ```
@@ -339,6 +350,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 ```
 
 #### 3.4.6 检查通知栏和透传消息开关状态<a name="check_switcher"/>
+
 * 接口说明
 
 ```
@@ -366,6 +378,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 ```
 
 #### 3.4.7 标签订阅<a name="subscribe_tags"/>
+
 * 接口说明
 
 ```
@@ -393,6 +406,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 ```
 
 #### 3.4.8 取消标签订阅<a name="un_subscribe_tags"/>
+
 * 接口说明
 
 ```
@@ -420,6 +434,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 ```
 
 #### 3.4.9 获取标签订阅列表<a name="chekc_subscribe_tags"/>
+
 * 接口说明
 
 ```
@@ -445,6 +460,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 ```
 
 #### 3.4.10 别名订阅<a name="subscribe_alias"/>
+
 * 接口说明
 
 ```
@@ -473,6 +489,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 ```
 
 #### 3.4.11 取消别名订阅<a name="un_subscribe_alias"/>
+
 * 接口说明
 
 ```
@@ -501,6 +518,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 ```
 
 #### 3.4.12 获取别名<a name="check_subscribe_alias"/>
+
 * 接口说明
 
 ```
@@ -527,6 +545,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 ```
 
 #### 3.4.13 获取pushId<a name="get_push_id"/>
+
 * 接口说明
 
 ```
@@ -565,8 +584,10 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 ```
 
 ### 4.3参数配置说明<a name="parameter_setting"/>
+
 #### 4.3.1 页面名称<a name="activity_name"/>
 Push平台中页面名称实际为：应用要打开的Activity名称,即是相对应用的包名的Activity名称，如下一段配置
+
 ```
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="你的包名">
@@ -614,23 +635,29 @@ PushSDK加入了通知栏状态栏小图标自定义的功能，需要在配置�
 
 
 ## 五 兼容Flyme低版本推送
+
 ### 5.1兼容说明
 云服务经历几次大的变更，从之前的C2DM，到现在可以完全脱离Flyme平台作为一种完全开放给第三方应用的SDK，在这个阶段出现多种集成方式，给以后的应用集成带来极大的困扰，魅族PushSDK极力在减少Flyme版本迭代给应用集成带来的麻烦，但应用还是需要做细小的更改才能做到与低版本Flyme的兼容。
+
 ### 5.2 兼容Flyme3.0等低版本推送服务
 #### 5.2.1 增加权限声明配置
+
 ```
  <uses-permission android:name="com.meizu.c2dm.permission.RECEIVE" />
  <permission android:name="你的应用包名.permission.C2D_MESSAGE"
              android:protectionLevel="signature"></permission>
  <uses-permission android:name="你的应用包名.permission.C2D_MESSAGE"/>
 ```
+
 #### 5.2.2 增加PushReceiver Action声明
+
 ```
   <action android:name="com.meizu.c2dm.intent.REGISTRATION" />
   <action android:name="com.meizu.c2dm.intent.RECEIVE" />
 ```
 
 一个完整的兼容Flyme3.0 推送的Receiver配置如下:
+
 ```
 <!-- push应用定义消息receiver声明 -->
 <receiver android:name="your.package.PushMsgReceiver">
@@ -648,10 +675,12 @@ PushSDK加入了通知栏状态栏小图标自定义的功能，需要在配置�
      </intent-filter>
  </receiver>
 ```
+
 #### 5.2.3 实现onMessage接收推送消息
 PushMessageReceiver覆盖onMessage(Context context,Intent intent)方法接收Flyme3.0平台push消息
 
 详情参见下面的方法的说明:
+
 ```
  /**
    * 收到推送消息的回调,Flyme4.0以上版本,或者云服务5.0以上版本 通过此方法接收Push消息
@@ -675,6 +704,7 @@ PushMessageReceiver覆盖onMessage(Context context,Intent intent)方法接收Fly
 注意这里的onMessage方法参数不一样,应用接收到消息后，需要自己从Intent中自行获取推送的消息,完整的流程如下
 
 * (1) 调用Push接口接口发送消息时,消息体为一个正确Json字符串，例如：
+
 ```
 {
        "content": "今日头像下载app狂送100元",
@@ -683,7 +713,9 @@ PushMessageReceiver覆盖onMessage(Context context,Intent intent)方法接收Fly
        "clickType": "1"
  }
 ```
+
 * (2) 处理推送消息
+
    例如应用需要获取content字段的内容,可以通过intent获取相应的内容，完成代码如下
 ```
     @Override
