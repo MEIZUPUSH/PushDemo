@@ -7,18 +7,18 @@
 
 # 更新日志
 
-##[2017-01-04]V3.3.170103
-  * 1 精简sdk代码,权限,不再依赖第三方库
-  * 2 加入通知栏动态视频功能，如需要使用，需要向平台申请开通权限
+## [2017-01-04]V3.3.170103
+* 1 精简sdk代码,权限,不再依赖第三方库
+* 2 加入通知栏动态视频功能，如需要使用，需要向平台申请开通权限
 
-##[2016-12-26]V3.3.161226
-  * 1 Https 加入安全校验
-  * 2 通知栏功能仅支持 API 16以上的android版本
-  * 3 通知栏兼容至API 11
+## [2016-12-26]V3.3.161226
+* 1 Https 加入安全校验
+* 2 通知栏功能仅支持 API 16以上的android版本
+* 3 通知栏兼容至API 11
 
-##[2016-12-23] V3.3.161222 
-  * 1 pushsdk 去除第三方依赖，不再依赖其他任何第三方库
-  * 2 jecter暂停使用，请下载[PushSDK aar](https://github.com/MEIZUPUSH/PushDemo/releases)本地引用,具体可以参考pushdemo的libs目录
+## [2016-12-23] V3.3.161222 
+* 1 pushsdk 去除第三方依赖，不再依赖其他任何第三方库
+* 2 jecter暂停使用，请下载[PushSDK aar](https://github.com/MEIZUPUSH/PushDemo/releases)本地引用,具体可以参考pushdemo的libs目录
   
 # [```快速接入魅族Push点击这里```](QuickStart.md)  
 
