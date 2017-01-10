@@ -26,11 +26,11 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 
 ```
     dependencies {
-        compile 'com.meizu.flyme.internet:push-internal-publish:3.2.*'
+        compile 'com.meizu.flyme.internet:push-internal-publish:3.3.*'
     }
 ```
 
-**NOTE:** jcenter 暂时停止下载，请使用本地依赖aar的方式接入,具体可参见pushDemo
+**NOTE:** jcenter 无法下载时,请到这里[下载](https://github.com/MEIZUPUSH/PushDemo/releases)
  
 
 ## 1.2 必要的配置<a name="nessary_setting"/>

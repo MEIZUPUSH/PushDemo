@@ -2,7 +2,7 @@
 
 ## Android Studio AAR 发布说明
 * 魅族内部应用请使用内部的[Artifactory PushSDK](http://artifactory.rnd.meizu.com/artifactory/)
-* 第三方应用下载[PushSDK](https://github.com/MEIZUPUSH/PushDemo/releases)
+* 第三方应用下载[PushSDK](https://github.com/MEIZUPUSH/PushDemo/releases),[Jcenter下载](https://bintray.com/meizupush/PushSDK/PushSDK-Internal#)
 
 
 # 更新日志
@@ -89,8 +89,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 
 ```
     dependencies {
-        compile 'com.meizu.flyme.internet:push-internal-publish:3.2.*'
-	// 如果无法下载，请使用自行下载aar
+        compile 'com.meizu.flyme.internet:push-internal-publish:3.3.*'
     }
 ```
 
@@ -102,7 +101,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 **NOTE:** 如果由于各种原因不能使用jcenter依赖，还可以从以下链接下载sdk相关支持包
 
 * 下载地址
-  [push-sdk-android.zip](https://github.com/MEIZUPUSH/PushDemo/releases)
+  [push-sdk-github](https://github.com/MEIZUPUSH/PushDemo/releases)
   
 ### 3.2 pushSDK外部版引用配置说明<a name="pushsdk_open"/>
 
