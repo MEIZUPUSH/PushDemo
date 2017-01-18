@@ -103,6 +103,11 @@ public class PushMsgReceiver extends MzPushMessageReceiver {
         DebugLogger.i(TAG, "onNotificationDeleted title " + title + "content " + content + " selfDefineContentString " + selfDefineContentString);
     }
 
+    @Override
+    public void onNotifyMessageArrived(Context context, String message) {
+        DebugLogger.i(TAG, "onNotifyMessageArrived messsage " + message);
+    }
+
     private void print(final Context context, final String info){
         new Handler(context.getMainLooper()).post(new Runnable() {
             @Override

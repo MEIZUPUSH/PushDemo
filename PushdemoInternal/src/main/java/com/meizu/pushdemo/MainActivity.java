@@ -151,6 +151,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
             case R.id.platform_register:
                 PushManager.register(this, APP_ID, APP_KEY);
+                //PushManager.checkNotificationMessage(this);
                 break;
 
             case R.id.platform_unregister:
