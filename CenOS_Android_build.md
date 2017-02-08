@@ -50,11 +50,17 @@
     sdk.dir=系统androidsdk的路径/sdk
 ```
 
-* 3 编译命令
+* 3 编译命令参数说明
+
++ `-PAPP_ID` 应用id
++ `-PAPP_KEY` 应用的appkey
++ `PPACKAGE_NAME` 要编译生成的应用包名
+
 
 ```
-    编译debug版本pushdemoapk
-    ./gradlew clean assembleDebug
+    //编译pushdemo的命令例子
+    ./gradlew clean -PAPP_ID=100999 -PAPP_KEY=80355073480594a99470dcacccd8cf2c -PPACKAGE_NAME=com.meizu.pushdemo assembleDebug
+
 ```
 
 # 参考资料<a name="reference"/>
