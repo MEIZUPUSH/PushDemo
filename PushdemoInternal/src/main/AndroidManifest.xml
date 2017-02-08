@@ -51,6 +51,14 @@
 
         </receiver>
 
+        <meta-data
+            android:name="APP_ID"
+            android:value="${APP_ID}"/>
+
+        <meta-data
+            android:name="APP_KEY"
+            android:value="${APP_KEY}"/>
+
     </application>
 
 </manifest>

@@ -1,11 +1,15 @@
 package com.meizu.pushdemo;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.meizu.cloud.pushinternal.DebugLogger;
 import com.meizu.cloud.pushsdk.PushManager;
 import com.meizu.cloud.pushsdk.platform.message.PushSwitchStatus;
 import com.meizu.cloud.pushsdk.platform.message.RegisterStatus;
@@ -43,8 +47,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
     /*public static  String APP_ID = "your PushDemo appId";
     public static  String APP_KEY = "your PushDemo appKey";*/
 
-    public static  String APP_ID = "100999";
-    public static  String APP_KEY = "80355073480594a99470dcacccd8cf2c";
+    public String APP_ID /*= "100999"*/;
+    public String APP_KEY /*= "80355073480594a99470dcacccd8cf2c"*/;
 
 
     private static final String TAG = "MainActivity";
@@ -53,6 +57,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         String extra = getIntent().getStringExtra("start_fragment");
         Log.i("MainActivity", "MzPushMessageReceiver " + extra);
+        APP_ID = getAppId("APP_ID");
+        APP_KEY = getAppKey("APP_KEY");
         setContentView(R.layout.activity_main);
         tvBasicInfo = (TextView) findViewById(R.id.tv_basic_info);
         tvBasicInfo.setText("APP_ID = " + APP_ID + "\n" + "APP_KEY= " + APP_KEY + " \n");
@@ -196,6 +202,30 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
 
 
+    private String getAppKey(String tag) {
+        String appKey = null;
+        try {
+            ApplicationInfo appInfo = this.getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+            appKey = appInfo.metaData.getString(tag);
+            DebugLogger.e(TAG, tag + "=" + appKey);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return appKey;
+    }
+
+
+    private String getAppId(String tag){
+        int appId = 0;
+        try {
+            ApplicationInfo appInfo = this.getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+            appId = appInfo.metaData.getInt(tag);
+            DebugLogger.e(TAG, tag + "=" + appId);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return String.valueOf(appId);
+    }
 
 
 
