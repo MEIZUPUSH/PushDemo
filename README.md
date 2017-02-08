@@ -794,3 +794,4 @@ activity配置出错
   系统问题，熄屏状态下发起服务调用，应用无响应,最新的flyme固件不会出现该问题
 
 
+### [CentOS AndroidSDK 编译环境配置](CenOS_Android_build.md)

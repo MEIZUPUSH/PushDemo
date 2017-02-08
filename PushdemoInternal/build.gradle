@@ -23,7 +23,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     //compile(name:'push-internal-3.3.170103', ext:'aar')
-    compile 'com.meizu.flyme.internet:push-internal-publish:3.3.170112'
+    compile 'com.meizu.flyme.internet:push-internal-publish:3.3.170123'
     //compile project(':push-internal-publish')
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'org.greenrobot:eventbus:3.0.0'
