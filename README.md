@@ -5,6 +5,8 @@
 * 第三方应用下载[PushSDK](https://github.com/MEIZUPUSH/PushDemo/releases),[Jcenter下载](https://bintray.com/meizupush/PushSDK/PushSDK-Internal#)
 
 
+### [CentOS AndroidSDK 编译环境配置以及PushDemo编译说明](CenOS_Android_build.md)
+
 # 更新日志
 
 ## [2017-01-18]V3.3.170112
@@ -794,4 +796,3 @@ activity配置出错
   系统问题，熄屏状态下发起服务调用，应用无响应,最新的flyme固件不会出现该问题
 
 
-### [CentOS AndroidSDK 编译环境配置](CenOS_Android_build.md)
