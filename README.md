@@ -89,9 +89,9 @@ app为了及时获取到服务器端的消息更新，一般会采用轮寻或�
 
 ### 准备工作<a name="prepare_setting"/>
 
-PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大家可以直接引用aar包；无需关心libs so库的配置，对于一些通用的权限配置，工程混淆，应用可以不再配置了，现有你只需要在你的应用中配置相应的消息接收的receiver
+PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大家可以直接引用aar包；对于一些通用的权限配置，工程混淆，应用可以不再配置了，现有你只需要在你的应用中配置相应的消息接收的receiver
 
-### 3.1 pushSDK内部版引用配置说明<a name="pushsdk_internal"/>
+### 3.1 pushSDK引用配置说明<a name="pushsdk_internal"/>
 
 **NOTE:** 我们已经将pushsdk发布到jcenter,你只需如下配置即可
 
