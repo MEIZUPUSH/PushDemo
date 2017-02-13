@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
-def appId = project.getProperties().get("APP_ID")
-def appKey = project.getProperties().get("APP_KEY")
-def appPackageName = project.getProperties().get("PACKAGE_NAME")
+def appId = project.getProperties().get("APP_ID") ?:"100999"
+def appKey = project.getProperties().get("APP_KEY") ?: "80355073480594a99470dcacccd8cf2c"
+def appPackageName = project.getProperties().get("PACKAGE_NAME")?:"com.meizu.pushdemo"
 
 println("appID = ${appId} appKey = ${appKey} appPackageName = ${appPackageName}")
 
@@ -14,8 +14,8 @@ android {
         applicationId /*"com.meizu.pushdemo"*/appPackageName
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 132
-        versionName "1.3.170208"
+        versionCode 133
+        versionName "1.3.170209"
 
         manifestPlaceholders = [APP_ID: appId,APP_KEY: appKey]
     }

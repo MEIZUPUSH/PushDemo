@@ -38,26 +38,25 @@
 * [二.设计思想](#design_thought)
 * [三.魅族云推送集成说明](#integrete_setting_description)
     * [准备工作](#prepare_setting)
-    * [3.1 pushSDK内部版引用配置说明](#pushsdk_internal)
-    * [3.2 pushSDK外部版引用配置说明](#pushsdk_open)
-    * [3.3 必要的配置](#nessary_setting)
-        * [3.3.1 兼容flyme5以下版本推送兼容配置](#permission_adpter_flyme5_down)
-        * [3.3.2 注册消息接收Receiver](#pushmessage_receiver_manifest_setting)
-        * [3.3.3 实现自有的PushReceiver,实现消息接收，注册与反注册回调](#pushmessage_receiver_code_setting)
-    * [3.4 PushManager接口说明](#pushmanager_interface_describe)
-        * [~~3.4.1 旧版Push注册接口~~](#register_description)
-        * [~~3.4.2 旧版Push反注册接口~~](#unregister_description)
-        * [3.4.3 订阅接口](#register)
-        * [3.4.4 反订阅接口](#unregister)
-        * [3.4.5 通知栏和透传消息开关状态转换](#pushmessage_switcher)
-        * [3.4.6 检查通知栏和透传消息开关状态](#check_switcher)
-        * [3.4.7 标签订阅](#subscribe_tags)
-        * [3.4.8 取消标签订阅](#un_subscribe_tags)
-        * [3.4.9 获取标签订阅列表](#chekc_subscribe_tags)
-        * [3.4.10 别名订阅](#subscribe_alias)
-        * [3.4.11 取消别名订阅](#un_subscribe_alias)
-        * [3.4.12 获取别名](#check_subscribe_alias)
-        * [3.4.13 获取pushId](#get_push_id)
+    * [3.1 pushSDK引用配置说明](#pushsdk_internal)
+    * [3.2 必要的配置](#nessary_setting)
+        * [3.2.1 兼容flyme5以下版本推送兼容配置](#permission_adpter_flyme5_down)
+        * [3.2.2 注册消息接收Receiver](#pushmessage_receiver_manifest_setting)
+        * [3.2.3 实现自有的PushReceiver,实现消息接收，注册与反注册回调](#pushmessage_receiver_code_setting)
+    * [3.3 PushManager接口说明](#pushmanager_interface_describe)
+        * [~~3.3.1 旧版Push注册接口~~](#register_description)
+        * [~~3.3.2 旧版Push反注册接口~~](#unregister_description)
+        * [3.3.3 订阅接口](#register)
+        * [3.3.4 反订阅接口](#unregister)
+        * [3.3.5 通知栏和透传消息开关状态转换](#pushmessage_switcher)
+        * [3.3.6 检查通知栏和透传消息开关状态](#check_switcher)
+        * [3.3.7 标签订阅](#subscribe_tags)
+        * [3.3.8 取消标签订阅](#un_subscribe_tags)
+        * [3.3.9 获取标签订阅列表](#chekc_subscribe_tags)
+        * [3.3.10 别名订阅](#subscribe_alias)
+        * [3.3.11 取消别名订阅](#un_subscribe_alias)
+        * [3.3.12 获取别名](#check_subscribe_alias)
+        * [3.3.13 获取pushId](#get_push_id)
   
 * [四 通知栏消息扩展功能使用说明](#notification_description)
     * [4.1 打开应用的主界面并获取推送消息参数](#open_mainactivity)
@@ -100,29 +99,22 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 
 ```
     dependencies {
-        compile 'com.meizu.flyme.internet:push-internal-publish:3.3.*'
+        compile 'com.meizu.flyme.internet:push-internal-publish:3.3.*@aar'
     }
+    
 ```
 
-**NOTE:** 以下内容说明混淆规则
-
-*  混淆
-  Meizu插件以前是将proguard文件独立发布,因此proguard文件需要独立配置,现在我们已经将proguard打包进了aar中,具体详见[consumerProguardFiles](http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.BuildType.html#com.android.build.gradle.internal.dsl.BuildType:consumerProguardFiles),因此就不再需要单独配置proguard远程依赖了
+**NOTE:** 加入@aar指定编译下载aar,不默认使用jar;如果你需要使用jar,请参考[Eclipse_PushDemo接入方式](https://meizupush.github.io/PushDemo-Eclipse/)
 
 **NOTE:** 如果由于各种原因不能使用jcenter依赖，还可以从以下链接下载sdk相关支持包
 
 * 下载地址
   [push-sdk-github](https://github.com/MEIZUPUSH/PushDemo/releases)
   
-### 3.2 pushSDK外部版引用配置说明<a name="pushsdk_open"/>
 
-**NOTE:** 如果是魅族内部应用请跳过此配置,如果应用需要支持第三方推送的可以进行以下配置,对外版本的SDK主要是在第三方Android Rom中实现推送功能,其默依赖pushSDK内部版,目前暂未开放
+### 3.2 必要的配置<a name="nessary_setting"/>
 
-
-
-### 3.3 必要的配置<a name="nessary_setting"/>
-
-### 3.3.1 兼容flyme5以下版本推送兼容配置<a name="permission_adpter_flyme5_down"/>
+### 3.2.1 兼容flyme5以下版本推送兼容配置<a name="permission_adpter_flyme5_down"/>
 
 ```
   <!-- 兼容flyme5.0以下版本，魅族内部集成pushSDK必填，不然无法收到消息-->
@@ -138,7 +130,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 
 ```
 
-#### 3.3.2 注册消息接收Receiver<a name="pushmessage_receiver_manifest_setting"/>
+#### 3.2.2 注册消息接收Receiver<a name="pushmessage_receiver_manifest_setting"/>
 
 ```xml
   <!-- push应用定义消息receiver声明 -->
@@ -160,7 +152,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 
 **NOTE:** 包名填写你配置的的pushReceiver所在包名即可！
 
-#### 3.3.3 实现自有的PushReceiver,实现消息接收，注册与反注册回调<a name="pushmessage_receiver_code_setting"/>
+#### 3.2.3 实现自有的PushReceiver,实现消息接收，注册与反注册回调<a name="pushmessage_receiver_code_setting"/>
 
 ```
   public class MyPushMsgReceiver extends MzPushMessageReceiver {
@@ -241,9 +233,9 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 **Note:** 至此pushSDK 已经集成完毕，现在你需要在你的Application中调用新版的[register](#register)方法,并在你的Receiver中成功回调onRegisterStatus(RegisterStatus registerStatus)方法就可以了，
 你现在可以到[新版Push平台](http://push.meizu.com) 找到你的应用推送消息就可以了;以下内容是pushSDK提供的api汇总,具体功能详见api具体说明,请根据需求选用合适的功能
 
-### 3.4 PushManager接口说明<a name="pushmanager_interface_describe"/>
+### 3.3 PushManager接口说明<a name="pushmanager_interface_describe"/>
 
-#### 3.4.1 ~~旧版订阅接口~~<a name="register_description"/>
+#### 3.3.1 ~~旧版订阅接口~~<a name="register_description"/>
 
 ```
   /**
@@ -267,7 +259,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
    * (1)如果应用需要取消订阅,调用如下方法 PushManager.unRegister(Context context)
    * (2)应用如果成功获取到pushId,可以调用一下方法获取本应用的pushId PushManager.getPushId(Context context)
 
-#### 3.4.2 ~~旧版反订阅接口~~<a name="unregister_description"/>
+#### 3.3.2 ~~旧版反订阅接口~~<a name="unregister_description"/>
 
 **NOTE:** 此接口已经废弃
 
@@ -280,7 +272,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 
 **NOTE:** 以下为新版的接口,所有的接口对应的回调都你的配置的PushReceiver中
 
-#### 3.4.3 订阅接口<a name="register"/>
+#### 3.3.3 订阅接口<a name="register"/>
 
 * 接口说明
 
@@ -305,7 +297,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
     }
 ```
 
-#### 3.4.4 反订阅接口<a name="unregister"/>
+#### 3.3.4 反订阅接口<a name="unregister"/>
 
 * 接口说明
 
@@ -330,7 +322,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
     }
 ```
 
-#### 3.4.5 通知栏和透传消息开关状态转换<a name="pushmessage_switcher"/>
+#### 3.3.5 通知栏和透传消息开关状态转换<a name="pushmessage_switcher"/>
 
 * 接口说明
 
@@ -360,7 +352,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
     }
 ```
 
-#### 3.4.6 检查通知栏和透传消息开关状态<a name="check_switcher"/>
+#### 3.3.6 检查通知栏和透传消息开关状态<a name="check_switcher"/>
 
 * 接口说明
 
@@ -388,7 +380,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
     }
 ```
 
-#### 3.4.7 标签订阅<a name="subscribe_tags"/>
+#### 3.3.7 标签订阅<a name="subscribe_tags"/>
 
 * 接口说明
 
@@ -416,7 +408,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
       }
 ```
 
-#### 3.4.8 取消标签订阅<a name="un_subscribe_tags"/>
+#### 3.3.8 取消标签订阅<a name="un_subscribe_tags"/>
 
 * 接口说明
 
@@ -444,7 +436,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
       }
 ```
 
-#### 3.4.9 获取标签订阅列表<a name="chekc_subscribe_tags"/>
+#### 3.3.9 获取标签订阅列表<a name="chekc_subscribe_tags"/>
 
 * 接口说明
 
@@ -470,7 +462,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
       }
 ```
 
-#### 3.4.10 别名订阅<a name="subscribe_alias"/>
+#### 3.3.10 别名订阅<a name="subscribe_alias"/>
 
 * 接口说明
 
@@ -499,7 +491,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
     }
 ```
 
-#### 3.4.11 取消别名订阅<a name="un_subscribe_alias"/>
+#### 3.3.11 取消别名订阅<a name="un_subscribe_alias"/>
 
 * 接口说明
 
@@ -528,7 +520,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
     }
 ```
 
-#### 3.4.12 获取别名<a name="check_subscribe_alias"/>
+#### 3.3.12 获取别名<a name="check_subscribe_alias"/>
 
 * 接口说明
 
@@ -555,7 +547,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
     }
 ```
 
-#### 3.4.13 获取pushId<a name="get_push_id"/>
+#### 3.3.13 获取pushId<a name="get_push_id"/>
 
 * 接口说明
 

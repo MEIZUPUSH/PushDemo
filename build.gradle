@@ -6,7 +6,6 @@ buildscript {
         flatDir {
             dirs 'libs' //this way we can find the .aar file in libs folder
         }
-
         jcenter()
     }
     dependencies {
@@ -20,11 +19,13 @@ allprojects {
             dirs 'libs' //this way we can find the .aar file in libs folder
         }
         jcenter()
+
     }
 }
 
 
-/*buildscript {
+/*
+buildscript {
     repositories {
         maven {
             url uri('../../gitlab.meizu.com/Platform_Gradle/.repo')
@@ -37,13 +38,13 @@ allprojects {
 
     dependencies {
         //classpath 'com.android.tools.build:gradle:2.2.2'
-        classpath 'com.meizu.flyme.internet:gradle:2.9'
-        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:3.1.1"
+        classpath 'com.meizu.flyme.internet:publish-plugin:1.6'
+        //classpath "org.jfrog.buildinfo:build-info-extractor-gradle:3.1.1"
 
 
         classpath 'com.android.tools.build:gradle:2.1.3'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.4'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
+        //classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.4'
+        //classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
     }
 }
 
@@ -56,4 +57,5 @@ allprojects {
     }
 
 
-}*/
+}
+*/
