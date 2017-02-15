@@ -24,8 +24,8 @@ allprojects {
 }
 
 
-/*
-buildscript {
+
+/*buildscript {
     repositories {
         maven {
             url uri('../../gitlab.meizu.com/Platform_Gradle/.repo')
@@ -57,5 +57,4 @@ allprojects {
     }
 
 
-}
-*/
+}*/

@@ -14,7 +14,6 @@ import com.meizu.cloud.pushsdk.platform.message.RegisterStatus;
 import com.meizu.cloud.pushsdk.platform.message.SubAliasStatus;
 import com.meizu.cloud.pushsdk.platform.message.SubTagsStatus;
 import com.meizu.cloud.pushsdk.platform.message.UnRegisterStatus;
-import com.meizu.cloud.pushsdk.util.MzSystemUtils;
 import com.meizu.pushdemo.events.ThroughMessageEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -86,6 +85,7 @@ public class PushMsgReceiver extends MzPushMessageReceiver {
     @Override
     public void onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder) {
         pushNotificationBuilder.setmLargIcon(R.drawable.flyme_status_ic_notification);
+        pushNotificationBuilder.setmStatusbarIcon(R.drawable.mz_push_notification_small_icon);
     }
 
     @Override

@@ -4,13 +4,13 @@
 
 
     <uses-permission android:name="com.meizu.flyme.push.permission.RECEIVE"></uses-permission>
-    <permission android:name="com.meizu.pushdemo.push.permission.MESSAGE" android:protectionLevel="signature"/>
-    <uses-permission android:name="com.meizu.pushdemo.push.permission.MESSAGE"></uses-permission>
+    <permission android:name="${PACKAGE_NAME}.push.permission.MESSAGE" android:protectionLevel="signature"/>
+    <uses-permission android:name="${PACKAGE_NAME}.push.permission.MESSAGE"></uses-permission>
 
     <uses-permission android:name="com.meizu.c2dm.permission.RECEIVE" />
-    <permission android:name="com.meizu.pushdemo.permission.C2D_MESSAGE"
+    <permission android:name="${PACKAGE_NAME}.permission.C2D_MESSAGE"
                 android:protectionLevel="signature"></permission>
-    <uses-permission android:name="com.meizu.pushdemo.permission.C2D_MESSAGE"/>
+    <uses-permission android:name="${PACKAGE_NAME}.permission.C2D_MESSAGE"/>
 
     <application
         android:allowBackup="true"
@@ -27,9 +27,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".TestActivity"
+        <activity android:name="com.meizu.pushdemo.TestActivity"
                   android:exported="true"/>
-        <service android:name=".ForegroundService"/>
+        <service android:name="com.meizu.pushdemo.ForegroundService"/>
 
 
         <!-- push应用定义消息receiver声明 -->
@@ -45,7 +45,7 @@
                 <action android:name="com.meizu.c2dm.intent.REGISTRATION" />
                 <action android:name="com.meizu.c2dm.intent.RECEIVE" />
 
-                <category android:name="com.meizu.pushdemo"></category>
+                <category android:name="${PACKAGE_NAME}"></category>
             </intent-filter>
 
 

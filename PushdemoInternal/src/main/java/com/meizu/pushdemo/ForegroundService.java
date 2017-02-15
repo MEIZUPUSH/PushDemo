@@ -41,7 +41,7 @@ public class ForegroundService extends Service {
             // Set the info for the views that show in the notification panel.
             Notification notification = new Notification.Builder(this)
                     .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),R.drawable.flyme_status_ic_notification ))
-                    .setSmallIcon(R.drawable.flyme_stat_sys_notification)  // the status icon
+                    .setSmallIcon(R.drawable.mz_push_notification_small_icon)  // the status icon
                     .setTicker(text)  // the status text
                     .setWhen(System.currentTimeMillis())  // the time stamp
                     .setContentTitle("PushSevice foreground")  // the label of the entry
