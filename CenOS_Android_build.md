@@ -54,7 +54,7 @@
 
 + `-PAPP_ID` 应用id
 + `-PAPP_KEY` 应用的appkey
-+ `PPACKAGE_NAME` 要编译生成的应用包名
++ `-PPACKAGE_NAME` 要编译生成的应用包名
 
 
 ```
