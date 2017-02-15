@@ -99,7 +99,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 
 ```
     dependencies {
-        compile 'com.meizu.flyme.internet:push-internal-publish:3.3.*@aar'
+        compile 'com.meizu.flyme.internet:push-internal-publish:3.3.+@aar'
     }
     
 ```
