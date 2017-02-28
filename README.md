@@ -104,7 +104,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
     
 ```
 
-**NOTE:** 加入@aar指定编译下载aar,不默认使用jar;如果你需要使用jar,请参考[Eclipse_PushDemo接入方式](https://meizupush.github.io/PushDemo-Eclipse/)
+**NOTE:** 加入@aar指定编译下载aar,不默认使用jar;如果你需要使用jar,请参考[Eclipse_PushDemo接入方式](https://comsince.github.io/2017/02/21/mzpushsdk-eclipse/)
 
 **NOTE:** 如果由于各种原因不能使用jcenter依赖，还可以从以下链接下载sdk相关支持包
 
