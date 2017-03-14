@@ -6,6 +6,9 @@ buildscript {
         flatDir {
             dirs 'libs' //this way we can find the .aar file in libs folder
         }
+        maven{
+            url 'https://oss.jfrog.org/artifactory/oss-snapshot-local'
+        }
         jcenter()
     }
     dependencies {
@@ -18,14 +21,17 @@ allprojects {
         flatDir {
             dirs 'libs' //this way we can find the .aar file in libs folder
         }
+        maven{
+            url 'https://oss.jfrog.org/artifactory/oss-snapshot-local'
+        }
         jcenter()
 
     }
 }
 
 
-
-/*buildscript {
+/*
+buildscript {
     repositories {
         maven {
             url uri('../../gitlab.meizu.com/Platform_Gradle/.repo')
@@ -38,7 +44,7 @@ allprojects {
 
     dependencies {
         //classpath 'com.android.tools.build:gradle:2.2.2'
-        classpath 'com.meizu.flyme.internet:publish-plugin:1.6'
+        classpath 'com.meizu.flyme.internet:publish-plugin:1.8'
         //classpath "org.jfrog.buildinfo:build-info-extractor-gradle:3.1.1"
 
 

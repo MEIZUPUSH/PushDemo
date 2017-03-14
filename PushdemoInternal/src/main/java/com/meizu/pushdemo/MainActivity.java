@@ -16,13 +16,17 @@ import com.meizu.cloud.pushsdk.platform.message.RegisterStatus;
 import com.meizu.cloud.pushsdk.platform.message.SubAliasStatus;
 import com.meizu.cloud.pushsdk.platform.message.SubTagsStatus;
 import com.meizu.cloud.pushsdk.platform.message.UnRegisterStatus;
-import com.meizu.cloud.pushsdk.util.MzSystemUtils;
 import com.meizu.pushdemo.events.SendNotificationMessage;
 import com.meizu.pushdemo.events.ThroughMessageEvent;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends Activity implements View.OnClickListener{
     private TextView tvBasicInfo;
@@ -35,10 +39,12 @@ public class MainActivity extends Activity implements View.OnClickListener{
     private Button btnSwitchThroughOn;
     private Button btnSwitchThroughOff;
     private Button btnCheckSwitchStatus;
+    private Button btnSwitchAll;
 
     private Button btnSubScribeTags;
     private Button btnUnSubScribeTags;
     private Button btnCheckSubScribeTags;
+    private Button btnUnSubScribeAllTags;
 
     private Button btnSubScribeAlias;
     private Button btnUnSubScribeAlias;
@@ -74,12 +80,17 @@ public class MainActivity extends Activity implements View.OnClickListener{
         btnCheckSwitchStatus = (Button) findViewById(R.id.btn_check_push_switch);
         btnCheckSwitchStatus.setOnClickListener(this);
 
+        btnSwitchAll = (Button) findViewById(R.id.btn_switch_all);
+        btnSwitchAll.setOnClickListener(this);
+
         btnSubScribeTags = (Button) findViewById(R.id.btn_subscribe_tags);
         btnUnSubScribeTags = (Button) findViewById(R.id.btn_unsubscribe_tags);
         btnCheckSubScribeTags = (Button) findViewById(R.id.btn_check_subscribe_tags);
+        btnUnSubScribeAllTags = (Button) findViewById(R.id.btn_unsubscribe_all_tags);
         btnSubScribeTags.setOnClickListener(this);
         btnUnSubScribeTags.setOnClickListener(this);
         btnCheckSubScribeTags.setOnClickListener(this);
+        btnUnSubScribeAllTags.setOnClickListener(this);
 
         btnSubScribeAlias = (Button) findViewById(R.id.btn_subscribe_alias);
         btnUnSubScribeAlias = (Button) findViewById(R.id.btn_unsubscribe_alias);
@@ -156,8 +167,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
         switch (view.getId()){
 
             case R.id.platform_register:
+                //PushManager.register(this/*, APP_ID, APP_KEY*/);
                 PushManager.register(this, APP_ID, APP_KEY);
-                //PushManager.checkNotificationMessage(this);
                 break;
 
             case R.id.platform_unregister:
@@ -197,6 +208,12 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 PushManager.checkPush(this, APP_ID, APP_KEY, PushManager.getPushId(this));
                 //UxIPUtils.onLogEvent(this, "com.meizu.pushdemo", "867247020006101","123","154515","notification_service_message",String.valueOf(System.currentTimeMillis()/1000));
                 break;
+            case R.id.btn_switch_all:
+                PushManager.switchPush(this,APP_ID,APP_KEY,PushManager.getPushId(this),false);
+                break;
+            case R.id.btn_unsubscribe_all_tags:
+                PushManager.unSubScribeAllTags(this,APP_ID,APP_KEY,PushManager.getPushId(this));
+                break;
         }
     }
 
@@ -227,6 +244,62 @@ public class MainActivity extends Activity implements View.OnClickListener{
         return String.valueOf(appId);
     }
 
+
+    public String fileMD5(String inputFile) {
+        // 缓冲区大小（这个可以抽出一个参数）
+        int bufferSize = 256 * 1024;
+        FileInputStream fileInputStream = null;
+        DigestInputStream digestInputStream = null;
+        try {
+            // 拿到一个MD5转换器（同样，这里可以换成SHA1）
+            MessageDigest messageDigest =MessageDigest.getInstance("MD5");
+            // 使用DigestInputStream
+            fileInputStream = new FileInputStream(inputFile);
+            digestInputStream = new DigestInputStream(fileInputStream,messageDigest);
+            // read的过程中进行MD5处理，直到读完文件
+            byte[] buffer =new byte[bufferSize];
+            while (digestInputStream.read(buffer) > 0);
+            // 获取最终的MessageDigest
+            messageDigest= digestInputStream.getMessageDigest();
+            // 拿到结果，也是字节数组，包含16个元素
+            byte[] resultByteArray = messageDigest.digest();
+            // 同样，把字节数组转换成字符串
+            return byteArrayToHex(resultByteArray);
+        } catch (NoSuchAlgorithmException e) {
+            return null;
+        } catch (FileNotFoundException e){
+            return null;
+        } catch (IOException e){
+            return null;
+        }finally {
+            try {
+                digestInputStream.close();
+            } catch (Exception e) {
+            }
+            try {
+                fileInputStream.close();
+            } catch (Exception e) {
+            }
+        }
+    }
+
+    public static String byteArrayToHex(byte[] byteArray) {
+        String hs = "";
+        String stmp = "";
+        for (int n = 0; n < byteArray.length; n++) {
+            stmp = (Integer.toHexString(byteArray[n] & 0XFF));
+            if (stmp.length() == 1) {
+                hs = hs + "0" + stmp;
+            } else {
+                hs = hs + stmp;
+            }
+            if (n < byteArray.length - 1) {
+                hs = hs + "";
+            }
+        }
+        return hs;
+
+    }
 
 
 

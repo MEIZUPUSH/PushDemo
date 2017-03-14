@@ -104,6 +104,13 @@
                     android:layout_weight="1"
                     android:text="检查push开关"/>
 
+                <Button
+                    android:id="@+id/btn_switch_all"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="同时关闭通知透传开关"/>
+
             </LinearLayout>
 
 
@@ -126,6 +133,12 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="取消标签订阅"/>
+                <Button
+                    android:id="@+id/btn_unsubscribe_all_tags"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="取消所有标签"/>
                 <Button
                     android:id="@+id/btn_check_subscribe_tags"
                     android:layout_width="match_parent"
