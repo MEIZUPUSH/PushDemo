@@ -6,9 +6,9 @@ buildscript {
         flatDir {
             dirs 'libs' //this way we can find the .aar file in libs folder
         }
-        maven{
+        /*maven{
             url 'https://oss.jfrog.org/artifactory/oss-snapshot-local'
-        }
+        }*/
         jcenter()
     }
     dependencies {
@@ -21,9 +21,9 @@ allprojects {
         flatDir {
             dirs 'libs' //this way we can find the .aar file in libs folder
         }
-        maven{
+        /*maven{
             url 'https://oss.jfrog.org/artifactory/oss-snapshot-local'
-        }
+        }*/
         jcenter()
 
     }
