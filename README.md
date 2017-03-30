@@ -9,6 +9,14 @@
 
 # 更新日志
 
+## [2017-03-29]V3.3.170329
+*  1 外部应用设置状态栏图标也能正确显示
+*  2 优化log输出逻辑,日志按天输出
+*  3 修复intent.parseuri的安全漏洞,但是打开应用某个界面必须填写Activity的全路径
+*  4 增加统一修改通知栏和透传消息开关的接口
+*  5 增加取消所有标签接口
+*  6 优化一些性能问题
+
 ## [2017-01-18]V3.3.170112
 *  1 删除https无用代码
 *  2 解决deviceId无法获取导致无法订阅的问题
@@ -57,6 +65,8 @@
         * [3.3.11 取消别名订阅](#un_subscribe_alias)
         * [3.3.12 获取别名](#check_subscribe_alias)
         * [3.3.13 获取pushId](#get_push_id)
+        * [3.3.14 取消所有标签订阅](#un_subscribe_all_tags)
+        * [3.3.15 同时打开或关闭通知栏和透传开关](#pushmessage_switcher_all)
   
 * [四 通知栏消息扩展功能使用说明](#notification_description)
     * [4.1 打开应用的主界面并获取推送消息参数](#open_mainactivity)
@@ -99,7 +109,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 
 ```
     dependencies {
-        compile 'com.meizu.flyme.internet:push-internal-publish:3.3.+@aar'
+        compile 'com.meizu.flyme.internet:push-internal-publish:3.3.170329@aar'
     }
     
 ```
@@ -210,7 +220,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
     }
     @Override
     public void onNotificationArrived(Context context, String title, String content, String selfDefineContentString) {
-       //通知栏消息到达回调
+       //通知栏消息到达回调，flyme6基于android6.0以上不再回调
        DebugLogger.i(TAG,"onNotificationArrived title "+title + "content "+content + " selfDefineContentString "+selfDefineContentString);
     }
         
@@ -222,7 +232,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
         
     @Override
     public void onNotificationDeleted(Context context, String title, String content, String selfDefineContentString) {
-       //通知栏消息删除回调；flyme6以上不再回调
+       //通知栏消息删除回调；flyme6基于android6.0以上不再回调
        DebugLogger.i(TAG,"onNotificationDeleted title "+title + "content "+content + " selfDefineContentString "+selfDefineContentString);
     }    
    
@@ -560,6 +570,63 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
     public static String getPushId(Context context);
 ```
 
+
+#### 3.3.14 取消所有标签订阅<a name="un_subscribe_all_tags"/>
+
+* 接口说明
+
+```
+    /**
+          * 取消所有标签订阅
+          * @param context
+          * @param appId
+          *         push 平台申请的应用id
+          * @param appKey
+          *         push 平台申请的应用key
+          * */
+        public static void unSubScribeAllTags(Context context, String appId, String appKey, String pushId)
+```
+
+* 对应Receiver中的回调方法
+
+```
+      @Override
+      public void onSubTagsStatus(Context context,SubTagsStatus subTagsStatus) {
+        Log.i(TAG, "onSubTagsStatus " + subTagsStatus);
+        //标签回调
+      }
+```
+
+
+#### 3.3.15 同时打开或关闭通知栏和透传开关<a name="pushmessage_switcher_all"/>
+
+```
+    /**
+         * 此接口提供通知栏和透传统一开或者统一关
+         * @param appId
+         *        push 平台申请的应用id
+         * @param appKey
+         *        push 平台申请的应用key
+         * @param pushId
+         *        注册成功后返回的pushid
+         * @param switcher
+         *        修改push开关状态,包括通知栏和透传两个开关,状态只能统一修改
+         * */
+        public static void switchPush(Context context,String appId,String appKey,String pushId,boolean switcher)
+```
+
+* 对应Receiver中的回调方法
+
+```
+    @Override
+    public void onPushStatus(Context context,PushSwitchStatus pushSwitchStatus) {
+        
+    }
+```
+        
+        
+        
+        
 
 ## 四 通知栏消息扩展功能使用说明<a name="notification_description"/>
 
