@@ -6,10 +6,10 @@ buildscript {
         flatDir {
             dirs 'libs' //this way we can find the .aar file in libs folder
         }
-        /*maven{
-            url 'https://oss.jfrog.org/artifactory/oss-snapshot-local'
-        }*/
         jcenter()
+        maven{
+            url 'https://oss.jfrog.org/artifactory/oss-snapshot-local'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.0'
@@ -21,11 +21,10 @@ allprojects {
         flatDir {
             dirs 'libs' //this way we can find the .aar file in libs folder
         }
-        /*maven{
-            url 'https://oss.jfrog.org/artifactory/oss-snapshot-local'
-        }*/
         jcenter()
-
+        maven{
+            url 'https://oss.jfrog.org/artifactory/oss-snapshot-local'
+        }
     }
 }
 
