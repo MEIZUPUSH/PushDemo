@@ -1,8 +1,13 @@
 # PushSDK3 说明文档
 
 ## Android Studio AAR 发布说明
-* 魅族内部应用请使用内部的[Artifactory PushSDK](http://artifactory.rnd.meizu.com/artifactory/)
-* 第三方应用下载[PushSDK](https://github.com/MEIZUPUSH/PushDemo/releases),[Jcenter下载](https://bintray.com/meizupush/PushSDK/PushSDK-Internal#)
+**NOTE:** ``` 重要通知如下```
+
+* PushSDK不再区分魅族内部版与外部版本,所有的应用统一接入,目前PushSDK统一发布在[Jcenter](https://bintray.com/meizupush/PushSDK/PushSDK-Internal-Meizu),
+  统一的配置修改为```compile 'com.meizu.flyme.internet:push-internal:3.3.170420@aar'```, 先前的外部应用接入的artifactId```push-internal-publish```,还可以继续使用到版本```3.3.170329```,后期版本请尽快修改
+
+* 魅族内部应用如果从[Artifactory PushSDK](http://artifactory.rnd.meizu.com/artifactory/)下载,如果此版本不存在,会自动从jcenter拉取,以后可能不再单独发布aar到魅族内部Artifactory,以Jcenter版本为主
+
 
 
 ### [CentOS AndroidSDK 编译环境配置以及PushDemo编译说明](CenOS_Android_build.md)
@@ -12,6 +17,7 @@
 ## [2017-04-20]V3.3.170420-SNAPSHOT
 *  1 优化PushManager逻辑
 *  2 增加打开第三方应用的功能
+*  3 统一PushSDK内外版本,artifactId为:```push-internal```,完整配置如下:```compile 'com.meizu.flyme.internet:push-internal:3.3.170420@aar'```
 
 ## [2017-03-29]V3.3.170329
 *  1 外部应用设置状态栏图标也能正确显示
