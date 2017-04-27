@@ -31,8 +31,8 @@ allprojects {
 }
 
 
-/*
 
+/*
 buildscript {
     repositories {
         maven {
@@ -63,7 +63,5 @@ allprojects {
         }
         jcenter()
     }
-
-
 
 }*/

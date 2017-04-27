@@ -46,6 +46,13 @@ public class PushMsgReceiver extends MzPushMessageReceiver {
     }
 
     @Override
+    public void onMessage(Context context, String message, String platformExtra) {
+        Log.i(TAG, "onMessage " + message +" platformExtra "+platformExtra);
+        //print(context,context.getPackageName() + " receive message " + s);
+        EventBus.getDefault().post(new ThroughMessageEvent(message+platformExtra));
+    }
+
+    @Override
     @Deprecated
     public void onUnRegister(Context context, boolean b) {
         Log.i(TAG, "onUnRegister " + b);

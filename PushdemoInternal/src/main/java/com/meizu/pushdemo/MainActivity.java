@@ -50,6 +50,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
     private Button btnUnSubScribeAlias;
     private Button btnCheckSubScribeAlias;
 
+    private Button btnEnableRemoteInvoke;
+    private Button btnDisableRemoteInvoke;
+
     /*public static  String APP_ID = "your PushDemo appId";
     public static  String APP_KEY = "your PushDemo appKey";*/
 
@@ -105,6 +108,11 @@ public class MainActivity extends Activity implements View.OnClickListener{
         btnSwitchNotificationOff.setOnClickListener(this);
         btnSwitchThroughOn.setOnClickListener(this);
         btnSwitchThroughOff.setOnClickListener(this);
+
+        btnEnableRemoteInvoke = (Button) findViewById(R.id.btn_enable_remote_invoke);
+        btnEnableRemoteInvoke.setOnClickListener(this);
+        btnDisableRemoteInvoke = (Button) findViewById(R.id.btn_disenable_remote_invoke);
+        btnDisableRemoteInvoke.setOnClickListener(this);
 
         Intent intent = new Intent(this,ForegroundService.class);
         intent.setAction(ForegroundService.START_FOREGROUD_SERVICE);
@@ -213,6 +221,12 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 break;
             case R.id.btn_unsubscribe_all_tags:
                 PushManager.unSubScribeAllTags(this,APP_ID,APP_KEY,PushManager.getPushId(this));
+                break;
+            case R.id.btn_enable_remote_invoke:
+                PushManager.enableCacheRequest(this,true);
+                break;
+            case R.id.btn_disenable_remote_invoke:
+                PushManager.enableCacheRequest(this,false);
                 break;
         }
     }

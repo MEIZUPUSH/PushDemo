@@ -175,6 +175,28 @@
                     android:text="别名列表"/>
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/layout_other"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/abc_action_bar_content_inset_material"
+                android:orientation="horizontal"
+                android:layout_below="@+id/layout_alias_subscribe">
+                <Button
+                    android:id="@+id/btn_enable_remote_invoke"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="启动远程缓存调用"/>
+                <Button
+                    android:id="@+id/btn_disenable_remote_invoke"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="禁用远程缓存调用"/>
+
+            </LinearLayout>
+
         </RelativeLayout>
     </ScrollView>
 

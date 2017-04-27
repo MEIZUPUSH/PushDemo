@@ -8,16 +8,24 @@
 
 * 魅族内部应用如果从[Artifactory PushSDK](http://artifactory.rnd.meizu.com/artifactory/)下载,如果此版本不存在,会自动从jcenter拉取,以后可能不再单独发布aar到魅族内部Artifactory,以Jcenter版本为主
 
+* 魅族PushSDK SNAPSHOT版本发不在oss.jfrog.org中,流程请参考[Android开源库测试发布流程](https://comsince.github.io/2017/03/04/library-snapshot-publish/),验证通过后才会发布到jcenter
+  如果想使用SNAPSHOT版本,可以在build.gradle repository增加如下配置:
+```
+      maven{
+            url 'https://oss.jfrog.org/artifactory/oss-snapshot-local'
+        }
+```  
 
 
 ### [CentOS AndroidSDK 编译环境配置以及PushDemo编译说明](CenOS_Android_build.md)
 
 # 更新日志
 
-## [2017-04-20]V3.3.170420-SNAPSHOT
+## [2017-04-26]V3.3.170426-SNAPSHOT
 *  1 优化PushManager逻辑
 *  2 增加打开第三方应用的功能
 *  3 统一PushSDK内外版本,artifactId为:```push-internal```,完整配置如下:```compile 'com.meizu.flyme.internet:push-internal:3.3.170420@aar'```
+*  4 增加点击通知栏和透传消息传递平台参数的功能
 
 ## [2017-03-29]V3.3.170329
 *  1 外部应用设置状态栏图标也能正确显示
@@ -77,6 +85,7 @@
         * [3.3.13 获取pushId](#get_push_id)
         * [3.3.14 取消所有标签订阅](#un_subscribe_all_tags)
         * [3.3.15 同时打开或关闭通知栏和透传开关](#pushmessage_switcher_all)
+        * [3.3.16 基于缓存重试机制的回调策略开关](#pushmessage_remote_invoker_switcher)
   
 * [四 通知栏消息扩展功能使用说明](#notification_description)
     * [4.1 打开应用的主界面并获取推送消息参数](#open_mainactivity)
@@ -185,7 +194,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
     
     @Override
     public void onMessage(Context context, String s) {
-    	//接收服务器推送的消息
+    	//接收服务器推送的透传消息
     }
     
     @Override
@@ -252,6 +261,47 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 
 **Note:** 至此pushSDK 已经集成完毕，现在你需要在你的Application中调用新版的[register](#register)方法,并在你的Receiver中成功回调onRegisterStatus(RegisterStatus registerStatus)方法就可以了，
 你现在可以到[新版Push平台](http://push.meizu.com) 找到你的应用推送消息就可以了;以下内容是pushSDK提供的api汇总,具体功能详见api具体说明,请根据需求选用合适的功能
+
+**附表一:** PushManager接口说明汇总表:
+
+| 接口名称      | 接口说明| 使用建议|是否已经废弃|对应MzPushReceiver回调方法|
+| :--------: | :--------:| :--: |:--: |:--: |
+|register(Context context)|旧版订阅接口|请使用新版订阅接口|是|onRegister(Context context,String pushId)|
+|unRegister(Context context)|旧版反订阅接口|请使用新版的反订阅接口|是|onUnRegister(Context context,boolean success)|
+|register(Context context,String appId,String appKey)|新版订阅接口|建议Application onCreate调用|否|onRegisterStatus(Context context,RegisterStatus registerStatus)|
+|unRegister(Context context,String appId,String appKey)|新版反订阅接口|取消所有推送时使用,慎用,如果取消,将有可能停止所有推送|否|onUnRegisterStatus(Context context,UnRegisterStatus unRegisterStatus)|
+|subScribeTags(Context context,String appId,String appKey,String pushId,String tags)|订阅标签|无|否|onSubTagsStatus(Context context,SubTagsStatus subTagsStatus)|
+|unSubScribeTags(Context context, String appId, String appKey, String pushId,String tags)|取消标签订阅|无|否|onSubTagsStatus(Context context,SubTagsStatus subTagsStatus)|
+|unSubScribeAllTags(Context context, String appId, String appKey, String pushId)|取消所有标签订阅|无|否|onSubTagsStatus(Context context,SubTagsStatus subTagsStatus)|
+|checkSubScribeTags(Context context,String appId,String appKey,String pushId)|获取标签列表|无|否|onSubTagsStatus(Context context,SubTagsStatus subTagsStatus)|
+|subScribeAlias(Context context,String appId,String appKey,String pushId,String alias)|订阅别名|无|否|onSubAliasStatus(Context context,SubAliasStatus subAliasStatus)|
+|unSubScribeAlias(Context context,String appId,String appKey,String pushId,String alias)|取消别名|无|否|onSubAliasStatus(Context context,SubAliasStatus subAliasStatus)|
+|checkSubScribeAlias(Context context,String appId,String appKey,String pushId)|获取别名|无|否|onSubAliasStatus(Context context,SubAliasStatus subAliasStatus)|
+|switchPush(Context context,String appId,String appKey,String pushId,boolean switcher)|通知栏和透传开关同时转换|如果需要同时关闭或打开通知栏和透传消息开关,可以调用此方法|否|onPushStatus(Context context,PushSwitchStatus pushSwitchStatus)|
+|switchPush(Context context,String appId,String appKey,String pushId,int pushType,boolean switcher)|通知栏和透传消息开关单独转换|无|否|onPushStatus(Context context,PushSwitchStatus pushSwitchStatus)|
+|checkPush(Context context,String appId,String appKey,String pushId)|检查当前开关状态|此方法在有无网络下都能成功返回|否|onPushStatus(Context context,PushSwitchStatus pushSwitchStatus)|
+|enableCacheRequest(Context context,boolean flag)|基于缓存重试机制的回调策略|此策略默认关闭|否|无|
+
+**附表二:** MzPushReceiver抽象方法说明
+
+| 接口名称      | 接口说明| 使用建议|是否已经废弃|
+| :--------: | :--------:| :--: |:--: |
+|onRegister(Context context,String pushId)|旧版pushid回调接口|建议不再使用|是|
+|onUnRegister(Context context,boolean success)|旧版反订阅回调接口|建议不再使用|是|
+|onMessage(Context context,String message)|透传消息回调|请选择一个实现即可|否|
+|onMessage(Context context,String message,String platformExtra)| 透传消息回调|跟上面方法两者选其一实现,不要两个方法同时覆盖,否则一次透传消息会回调两次,此方法多一个平台参数,格式如下格式如下:```{"task_id":"1232"}```|否|                                                                                  
+|onMessage(Context context,Intent intent)|处理flyme3.0平台的推送消息|flyme3.0平台支持透传消息,只有本方法才能处理flyme3的透传消息,具体相见flyme3获取消息的方法|否|
+|onNotificationClicked(Context context, String title, String content, String selfDefineContentString)|通知栏点击回调|无|否|
+|onNotificationArrived(Context context, String title, String content, String selfDefineContentString)|通知栏展示回调|Flyme6基于android6.0不再回调|否|
+|onNotificationDeleted(Context context, String title, String content, String selfDefineContentString)|通知栏删除回调|Flyme6基于android6.0不再回调|否|
+|onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder)|通知栏图标设置|无|否|
+|onPushStatus(Context context,PushSwitchStatus pushSwitchStatus)|Push开关状态回调|无|否|
+|onRegisterStatus(Context context,RegisterStatus registerStatus)|订阅状态回调|无|否|
+|onUnRegisterStatus(Context context,UnRegisterStatus unRegisterStatus)|反订阅回调|无|否|
+|onSubTagsStatus(Context context,SubTagsStatus subTagsStatus)|标签状态回调|无|否|
+|onSubAliasStatus(Context context,SubAliasStatus subAliasStatus)|别名状态回调|无|否|
+
+
 
 ### 3.3 PushManager接口说明<a name="pushmanager_interface_describe"/>
 
@@ -634,6 +684,23 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
     }
 ```
         
+#### 3.3.16 基于缓存重试机制的回调策略开关<a name= "pushmessage_remote_invoker_switcher"/>
+
+```
+   /**
+     * 基于缓存重试机制的回调策略,此策略默认关闭
+     *
+     * 是否启用远程调用的方式,此方式需要flyme内置应用推送服务支持
+     * 此方法原理在于,用户发出的请求不在本应用中调用,而是将请求包装发给推送服务的PushManagerService,此服务能够在断网情况下缓存
+     * 应用的请求,等到用户手机联网,再重新将请求同步到服务端
+     *
+     * 如果启动此策略,非联网情况下不会立即回调给应用,需要在有网情况下,与服务端交互成功后,才将结果返回给应用
+     * 此返回不保证一定能返回给应用,此种方式采用广播的方式发送给应用,如果应用此时不是常驻进程,应用可能会无法收到消息
+     *
+     * @param flag  是否启动远程缓存调用
+     * */
+     public static void enableCacheRequest(Context context,boolean flag);
+```
         
         
         
@@ -692,6 +759,16 @@ Push平台中页面名称实际为：应用要打开的Activity名称,即是相�
 ```
 String value = getIntent().getStringExtra("push平台配置的键值")
 通过在push平台上配置的参数，获取其value值,这里的key值就是你在push平台上配置的键值
+```
+
+**NOTE:** 点击通知栏的时候,除了传递用户自定义的参数,还可以获取平台taskid等参数,获取方法如下:
+
+ ```
+ String platfromExtra = getIntent().getStringExtra("platform_extra");
+ ```
+这个参数的格式如下:
+```
+  {"task_id":"1234564545"}
 ```
 
 ### 4.4 打开URI<a name="open_web"/>
