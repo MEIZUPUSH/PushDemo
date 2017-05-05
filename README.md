@@ -8,7 +8,7 @@
 
 * 魅族内部应用如果从[Artifactory PushSDK](http://artifactory.rnd.meizu.com/artifactory/)下载,如果此版本不存在,会自动从jcenter拉取,以后可能不再单独发布aar到魅族内部Artifactory,以Jcenter版本为主
 
-* 魅族PushSDK SNAPSHOT版本发不在oss.jfrog.org中,流程请参考[Android开源库测试发布流程](https://comsince.github.io/2017/03/04/library-snapshot-publish/),验证通过后才会发布到jcenter
+* 魅族PushSDK SNAPSHOT版本发布在oss.jfrog.org中,流程请参考[Android开源库测试发布流程](https://comsince.github.io/2017/03/04/library-snapshot-publish/),验证通过后才会发布到jcenter
   如果想使用SNAPSHOT版本,可以在build.gradle repository增加如下配置:
 ```
       maven{
@@ -21,7 +21,7 @@
 
 # 更新日志
 
-## [2017-04-26]V3.3.170426-SNAPSHOT
+## [2017-04-26]V3.3.170505-SNAPSHOT
 *  1 优化PushManager逻辑
 *  2 增加打开第三方应用的功能
 *  3 统一PushSDK内外版本,artifactId为:```push-internal```,完整配置如下:```compile 'com.meizu.flyme.internet:push-internal:3.3.170420@aar'```
@@ -143,7 +143,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 
 ### 3.2 必要的配置<a name="nessary_setting"/>
 
-### 3.2.1 兼容flyme5以下版本推送兼容配置<a name="permission_adpter_flyme5_down"/>
+#### 3.2.1 兼容flyme5以下版本推送兼容配置<a name="permission_adpter_flyme5_down"/>
 
 ```
   <!-- 兼容flyme5.0以下版本，魅族内部集成pushSDK必填，不然无法收到消息-->
@@ -266,8 +266,8 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 
 | 接口名称      | 接口说明| 使用建议|是否已经废弃|对应MzPushReceiver回调方法|
 | :--------: | :--------:| :--: |:--: |:--: |
-|register(Context context)|旧版订阅接口|请使用新版订阅接口|是|onRegister(Context context,String pushId)|
-|unRegister(Context context)|旧版反订阅接口|请使用新版的反订阅接口|是|onUnRegister(Context context,boolean success)|
+|~~register(Context context)~~|旧版订阅接口|请使用新版订阅接口|是|onRegister(Context context,String pushId)|
+|~~unRegister(Context context)~~|旧版反订阅接口|请使用新版的反订阅接口|是|onUnRegister(Context context,boolean success)|
 |register(Context context,String appId,String appKey)|新版订阅接口|建议Application onCreate调用|否|onRegisterStatus(Context context,RegisterStatus registerStatus)|
 |unRegister(Context context,String appId,String appKey)|新版反订阅接口|取消所有推送时使用,慎用,如果取消,将有可能停止所有推送|否|onUnRegisterStatus(Context context,UnRegisterStatus unRegisterStatus)|
 |subScribeTags(Context context,String appId,String appKey,String pushId,String tags)|订阅标签|无|否|onSubTagsStatus(Context context,SubTagsStatus subTagsStatus)|
@@ -286,8 +286,8 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 
 | 接口名称      | 接口说明| 使用建议|是否已经废弃|
 | :--------: | :--------:| :--: |:--: |
-|onRegister(Context context,String pushId)|旧版pushid回调接口|建议不再使用|是|
-|onUnRegister(Context context,boolean success)|旧版反订阅回调接口|建议不再使用|是|
+|~~onRegister(Context context,String pushId)~~|旧版pushid回调接口|建议不再使用|是|
+|~~onUnRegister(Context context,boolean success)~~|旧版反订阅回调接口|建议不再使用|是|
 |onMessage(Context context,String message)|透传消息回调|请选择一个实现即可|否|
 |onMessage(Context context,String message,String platformExtra)| 透传消息回调|跟上面方法两者选其一实现,不要两个方法同时覆盖,否则一次透传消息会回调两次,此方法多一个平台参数,格式如下格式如下:```{"task_id":"1232"}```|否|                                                                                  
 |onMessage(Context context,Intent intent)|处理flyme3.0平台的推送消息|flyme3.0平台支持透传消息,只有本方法才能处理flyme3的透传消息,具体相见flyme3获取消息的方法|否|
