@@ -4,7 +4,7 @@
 **NOTE:** ``` 重要通知如下```
 
 * PushSDK不再区分魅族内部版与外部版本,所有的应用统一接入,目前PushSDK统一发布在[Jcenter](https://bintray.com/meizupush/PushSDK/PushSDK-Internal-Meizu),
-  统一的配置修改为```compile 'com.meizu.flyme.internet:push-internal:3.3.170420@aar'```, 先前的外部应用接入的artifactId```push-internal-publish```,还可以继续使用到版本```3.3.170329```,后期版本请尽快修改
+  统一的配置修改为```compile 'com.meizu.flyme.internet:push-internal:3.3.170505@aar'```, 先前的外部应用接入的artifactId```push-internal-publish```,还可以继续使用到版本```3.3.170329```,后期版本请尽快修改
 
 * 魅族内部应用如果从[Artifactory PushSDK](http://artifactory.rnd.meizu.com/artifactory/)下载,如果此版本不存在,会自动从jcenter拉取,以后可能不再单独发布aar到魅族内部Artifactory,以Jcenter版本为主
 
@@ -21,10 +21,10 @@
 
 # 更新日志
 
-## [2017-04-26]V3.3.170505-SNAPSHOT
+## [2017-04-26]V3.3.170505
 *  1 优化PushManager逻辑
 *  2 增加打开第三方应用的功能
-*  3 统一PushSDK内外版本,artifactId为:```push-internal```,完整配置如下:```compile 'com.meizu.flyme.internet:push-internal:3.3.170420@aar'```
+*  3 统一PushSDK内外版本,artifactId为:```push-internal```,完整配置如下:```compile 'com.meizu.flyme.internet:push-internal:3.3.170505@aar'```
 *  4 增加点击通知栏和透传消息传递平台参数的功能
 
 ## [2017-03-29]V3.3.170329
