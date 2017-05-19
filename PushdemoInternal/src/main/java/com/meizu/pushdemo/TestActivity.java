@@ -1,6 +1,7 @@
 package com.meizu.pushdemo;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -14,7 +15,8 @@ public class TestActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String extra = getIntent().getStringExtra("start_fragment");
-        String platformExtra = getIntent().getStringExtra(PushConstants.MZ_PUSH_PLATFROM_EXTRA);
+        Intent intent = getIntent();
+        String platformExtra = intent.getStringExtra(PushConstants.MZ_PUSH_PLATFROM_EXTRA);
         Log.i("TestActivity", "MzPushMessageReceiver " + extra+" "+platformExtra);
     }
 }

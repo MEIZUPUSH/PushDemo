@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.meizu.cloud.pushinternal.DebugLogger;
 import com.meizu.cloud.pushsdk.PushManager;
+import com.meizu.cloud.pushsdk.constants.PushConstants;
 import com.meizu.cloud.pushsdk.platform.message.PushSwitchStatus;
 import com.meizu.cloud.pushsdk.platform.message.RegisterStatus;
 import com.meizu.cloud.pushsdk.platform.message.SubAliasStatus;
@@ -64,6 +65,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent platformIntent = getIntent();
+        DebugLogger.e(TAG,"platform_extra "+platformIntent.getStringExtra(PushConstants.MZ_PUSH_PLATFROM_EXTRA));
         String extra = getIntent().getStringExtra("start_fragment");
         Log.i("MainActivity", "MzPushMessageReceiver " + extra);
         APP_ID = getAppId("APP_ID");
@@ -130,6 +133,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         EventBus.getDefault().unregister(this);
         super.onStop();
     }
+
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(RegisterStatus event){
