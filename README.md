@@ -21,6 +21,20 @@
 
 # 更新日志
 
+## [2017-08-04]V3.4.1-SNAPSHOT
+* 透传消息platformExtra字段增加seq_id,push_timestamp,device_id,完整如下
+
+```
+{
+    "seq_id": "145",
+    "task_id": "NSTEST20170804143917842_1_10099918",
+    "push_timestamp": "1501828757",
+    "device_id":""
+}
+```
+
+* 解决使用换机助手时,应用无法更新pushId
+
 ## [2017-07-10]V3.4.0
 * 增加通知栏绿色通道功能
 * 应用没有设置状态栏图标,默认设置flyme第三方风格的状态栏图标
