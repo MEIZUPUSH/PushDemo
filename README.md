@@ -21,7 +21,7 @@
 
 # 更新日志
 
-## [2017-08-04]V3.4.1-SNAPSHOT
+## [2017-08-04]V3.4.1
 * 透传消息platformExtra字段增加seq_id,push_timestamp,device_id,完整如下
 
 ```
