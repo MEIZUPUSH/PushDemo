@@ -4,7 +4,7 @@
 **NOTE:** ``` 重要通知如下```
 
 * PushSDK不再区分魅族内部版与外部版本,所有的应用统一接入,目前PushSDK统一发布在[Jcenter](https://bintray.com/meizupush/PushSDK/PushSDK-Internal-Meizu),
-  统一的配置修改为```compile 'com.meizu.flyme.internet:push-internal:3.3.170505@aar'```, 先前的外部应用接入的artifactId```push-internal-publish```,还可以继续使用到版本```3.3.170329```,后期版本请尽快修改
+  统一的配置修改为```compile 'com.meizu.flyme.internet:push-internal:3.4.2@aar'```, 先前的外部应用接入的artifactId```push-internal-publish```,还可以继续使用到版本```3.3.170329```,后期版本请尽快修改
 
 * 魅族内部应用如果从[Artifactory PushSDK](http://artifactory.rnd.meizu.com/artifactory/)下载,如果此版本不存在,会自动从jcenter拉取,以后可能不再单独发布aar到魅族内部Artifactory,以Jcenter版本为主
 
@@ -21,23 +21,11 @@
 
 # 更新日志
 
-## ~~[2017-08-04]V3.4.1~~
-* 透传消息platformExtra字段增加seq_id,push_timestamp,device_id,完整如下
-
-```
-{
-    "seq_id": "145",
-    "task_id": "NSTEST20170804143917842_1_10099918",
-    "push_timestamp": "1501828757",
-    "device_id":""
-}
-```
-
+## [2017-08-18]V3.4.2
 * 解决使用换机助手时,应用无法更新pushId
-
-## ~~[2017-07-10]V3.4.0~~
-* 增加通知栏绿色通道功能
 * 应用没有设置状态栏图标,默认设置flyme第三方风格的状态栏图标
+
+**NOET:** 使用jar集成的建议接入此版本,建议最新版接入此版本
 
 ## [2017-06-01]V3.3.170601
 *  1 增加应用拉活功能
