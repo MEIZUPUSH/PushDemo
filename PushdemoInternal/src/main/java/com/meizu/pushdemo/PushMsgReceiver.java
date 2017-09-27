@@ -22,18 +22,18 @@ import org.greenrobot.eventbus.EventBus;
  * Created by liaojinlong on 15-6-28.
  */
 public class PushMsgReceiver extends MzPushMessageReceiver {
-    private static final String TAG = "comsince";
+    private static final String TAG = "MzPushMessageReceiver";
 
     @Override
     @Deprecated
     public void onRegister(Context context, String s) {
-        Log.i(TAG, "onRegister pushID " + s);
+        DebugLogger.i(TAG, "onRegister pushID " + s);
         print(context, "receive pushID " + s);
     }
 
     @Override
     public void onMessage(Context context, String s) {
-        Log.i(TAG, "onMessage " + s);
+        DebugLogger.i(TAG, "onMessage " + s);
         //print(context,context.getPackageName() + " receive message " + s);
         EventBus.getDefault().post(new ThroughMessageEvent(s));
     }
@@ -55,7 +55,7 @@ public class PushMsgReceiver extends MzPushMessageReceiver {
     @Override
     @Deprecated
     public void onUnRegister(Context context, boolean b) {
-        Log.i(TAG, "onUnRegister " + b);
+        DebugLogger.i(TAG, "onUnRegister " + b);
         print(context,context.getPackageName() + " onUnRegister " + b);
     }
 
@@ -66,26 +66,26 @@ public class PushMsgReceiver extends MzPushMessageReceiver {
 
     @Override
     public void onRegisterStatus(Context context,RegisterStatus registerStatus) {
-        Log.i(TAG, "onRegisterStatus " + registerStatus+ " "+context.getPackageName());
+        DebugLogger.i(TAG, "onRegisterStatus " + registerStatus+ " "+context.getPackageName());
         //print(this," onRegisterStatus " + registerStatus);
         EventBus.getDefault().post(registerStatus);
     }
 
     @Override
     public void onUnRegisterStatus(Context context,UnRegisterStatus unRegisterStatus) {
-        Log.i(TAG,"onUnRegisterStatus "+unRegisterStatus+" "+context.getPackageName());
+        DebugLogger.i(TAG,"onUnRegisterStatus "+unRegisterStatus+" "+context.getPackageName());
         EventBus.getDefault().post(unRegisterStatus);
     }
 
     @Override
     public void onSubTagsStatus(Context context,SubTagsStatus subTagsStatus) {
-        Log.i(TAG, "onSubTagsStatus " + subTagsStatus+" "+context.getPackageName());
+        DebugLogger.i(TAG, "onSubTagsStatus " + subTagsStatus+" "+context.getPackageName());
         EventBus.getDefault().post(subTagsStatus);
     }
 
     @Override
     public void onSubAliasStatus(Context context,SubAliasStatus subAliasStatus) {
-        Log.i(TAG, "onSubAliasStatus " + subAliasStatus+" "+context.getPackageName());
+        DebugLogger.i(TAG, "onSubAliasStatus " + subAliasStatus+" "+context.getPackageName());
         EventBus.getDefault().post(subAliasStatus);
     }
 

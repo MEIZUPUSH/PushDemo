@@ -3,9 +3,9 @@ include ':PushdemoInternal'
 
 
 
-/*
-include(':push-internal-publish')
-project(':push-internal-publish').projectDir = new File(settingsDir, '../../../MeizuPushSDK/review.rnd.meizu.com/MzPushSdk/library')*/
+
+//include(':push-internal-publish')
+//project(':push-internal-publish').projectDir = new File(settingsDir, '../../review.rnd.meizu.com/MzPushSdk/library')
 
 
 

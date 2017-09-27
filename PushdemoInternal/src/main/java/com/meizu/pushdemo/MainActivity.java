@@ -22,6 +22,9 @@ import com.meizu.pushdemo.events.ThroughMessageEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -181,6 +184,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
             case R.id.platform_register:
                 //PushManager.register(this/*, APP_ID, APP_KEY*/);
                 PushManager.register(this, APP_ID, APP_KEY);
+                //parseJson();
                 break;
 
             case R.id.platform_unregister:
@@ -316,6 +320,26 @@ public class MainActivity extends Activity implements View.OnClickListener{
             }
         }
         return hs;
+
+    }
+
+    private void parseJson(){
+        String jsonStr = "{\"type\":\"ONLINE_SHIPS\",\"message\":\"{\\\"currentTime\\\":1400077615368,\\\"direction\\\":0,\\\"id\\\":1,\\\"latitude\\\":29.5506,\\\"longitude\\\":106.6466}\"}";
+        DebugLogger.i(TAG,"json is "+ jsonStr);
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(jsonStr);
+            //先通过字符串的方式得到,转义字符自然会被转化掉
+            String jsonstrtemp = jsonObject.getString("message");
+            DebugLogger.i(TAG,"message:"+jsonstrtemp);
+            jsonObject = new JSONObject(jsonstrtemp);
+            DebugLogger.i(TAG,"currentTime:"+jsonObject.get("currentTime"));
+            DebugLogger.i(TAG,"direction:"+jsonObject.get("direction"));
+            DebugLogger.i(TAG,"latitude:"+jsonObject.get("latitude"));
+            DebugLogger.i(TAG,"longitude:"+jsonObject.get("longitude"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 

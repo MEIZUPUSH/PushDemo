@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.meizu.cloud.pushinternal.DebugLogger;
 import com.meizu.cloud.pushsdk.constants.PushConstants;
 
 /**
@@ -17,6 +18,6 @@ public class TestActivity extends Activity {
         String extra = getIntent().getStringExtra("start_fragment");
         Intent intent = getIntent();
         String platformExtra = intent.getStringExtra(PushConstants.MZ_PUSH_PLATFROM_EXTRA);
-        Log.i("TestActivity", "MzPushMessageReceiver " + extra+" "+platformExtra);
+        DebugLogger.i("TestActivity", "MzPushMessageReceiver " + extra+" "+platformExtra);
     }
 }
