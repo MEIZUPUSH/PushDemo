@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.meizu.cloud.pushinternal.DebugLogger;
 import com.meizu.cloud.pushsdk.MzPushMessageReceiver;
+import com.meizu.cloud.pushsdk.handler.MzPushMessage;
 import com.meizu.cloud.pushsdk.notification.PushNotificationBuilder;
 import com.meizu.cloud.pushsdk.platform.message.PushSwitchStatus;
 import com.meizu.cloud.pushsdk.platform.message.RegisterStatus;
@@ -96,18 +97,21 @@ public class PushMsgReceiver extends MzPushMessageReceiver {
     }
 
     @Override
-    public void onNotificationArrived(Context context, String title, String content, String selfDefineContentString) {
-        DebugLogger.i(TAG, "onNotificationArrived title " + title + "content " + content + " selfDefineContentString " + selfDefineContentString);
+    public void onNotificationArrived(Context context, MzPushMessage mzPushMessage) {
+        DebugLogger.i(TAG, "onNotificationArrived title " + mzPushMessage.getTitle() + "content "
+                + mzPushMessage.getContent() + " selfDefineContentString " + mzPushMessage.getSelfDefineContentString()+" notifyId "+mzPushMessage.getNotifyId());
     }
 
     @Override
-    public void onNotificationClicked(Context context, String title, String content, String selfDefineContentString) {
-        DebugLogger.i(TAG, "onNotificationClicked title " + title + "content " + content + " selfDefineContentString " + selfDefineContentString);
+    public void onNotificationClicked(Context context, MzPushMessage mzPushMessage) {
+        DebugLogger.i(TAG, "onNotificationClicked title "+ mzPushMessage.getTitle() + "content "
+                + mzPushMessage.getContent() + " selfDefineContentString " + mzPushMessage.getSelfDefineContentString()+" notifyId "+mzPushMessage.getNotifyId());
     }
 
     @Override
-    public void onNotificationDeleted(Context context, String title, String content, String selfDefineContentString) {
-        DebugLogger.i(TAG, "onNotificationDeleted title " + title + "content " + content + " selfDefineContentString " + selfDefineContentString);
+    public void onNotificationDeleted(Context context, MzPushMessage mzPushMessage) {
+        DebugLogger.i(TAG, "onNotificationDeleted title " + mzPushMessage.getTitle() + "content "
+                + mzPushMessage.getContent() + " selfDefineContentString " + mzPushMessage.getSelfDefineContentString()+" notifyId "+mzPushMessage.getNotifyId());
     }
 
     @Override

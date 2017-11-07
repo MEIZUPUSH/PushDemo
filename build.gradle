@@ -10,6 +10,10 @@ buildscript {
         maven{
             url 'https://oss.jfrog.org/artifactory/oss-snapshot-local'
         }
+
+        maven {
+            url 'http://artifactory.rnd.meizu.com/artifactory/all'
+        }
         jcenter()
     }
     dependencies {
@@ -25,6 +29,10 @@ allprojects {
 
         maven{
             url 'https://oss.jfrog.org/artifactory/oss-snapshot-local'
+        }
+
+        maven {
+            url 'http://artifactory.rnd.meizu.com/artifactory/all'
         }
         jcenter()
     }

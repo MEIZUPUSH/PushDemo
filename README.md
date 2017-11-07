@@ -269,7 +269,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 ```
 
 
-### 3.2.4 自定义通知栏小图标<a name="set_notification_builder"/>
+#### 3.2.4 自定义通知栏小图标<a name="set_notification_builder"/>
 
 PushSDK加入了通知栏状态栏小图标自定义的功能，需要在配置的的pushReceiver中覆盖如下的方法：
 

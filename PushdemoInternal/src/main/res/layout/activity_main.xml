@@ -197,6 +197,46 @@
 
             </LinearLayout>
 
+
+            <LinearLayout
+                android:id="@+id/layout_notification_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/abc_action_bar_content_inset_material"
+                android:orientation="vertical"
+                android:layout_below="@+id/layout_other">
+                <EditText
+                    android:id="@+id/edit_notify_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:inputType="number"
+                    android:hint="请输入通知栏ID" />
+
+                <Button
+                    android:id="@+id/btn_cancel_by_notify_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="取消指定ID通知栏"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_cancel_notification"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/abc_action_bar_content_inset_material"
+                android:orientation="horizontal"
+                android:layout_below="@+id/layout_notification_id">
+                <Button
+                    android:id="@+id/btn_cancel_all"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="取消所有通知"/>
+
+            </LinearLayout>
+
         </RelativeLayout>
     </ScrollView>
 

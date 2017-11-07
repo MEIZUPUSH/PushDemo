@@ -1,22 +1,34 @@
 package com.meizu.pushdemo;
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AppOpsManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.meizu.cloud.pushinternal.DebugLogger;
 import com.meizu.cloud.pushsdk.PushManager;
+import com.meizu.cloud.pushsdk.base.reflect.ReflectClass;
+import com.meizu.cloud.pushsdk.base.reflect.ReflectResult;
 import com.meizu.cloud.pushsdk.constants.PushConstants;
 import com.meizu.cloud.pushsdk.platform.message.PushSwitchStatus;
 import com.meizu.cloud.pushsdk.platform.message.RegisterStatus;
 import com.meizu.cloud.pushsdk.platform.message.SubAliasStatus;
 import com.meizu.cloud.pushsdk.platform.message.SubTagsStatus;
 import com.meizu.cloud.pushsdk.platform.message.UnRegisterStatus;
+import com.meizu.cloud.pushsdk.pushtracer.QuickTracker;
+import com.meizu.cloud.pushsdk.pushtracer.event.PushEvent;
+import com.meizu.cloud.pushsdk.util.PushPreferencesUtils;
 import com.meizu.pushdemo.events.SendNotificationMessage;
 import com.meizu.pushdemo.events.ThroughMessageEvent;
 import org.greenrobot.eventbus.EventBus;
@@ -31,6 +43,7 @@ import java.io.IOException;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 public class MainActivity extends Activity implements View.OnClickListener{
     private TextView tvBasicInfo;
@@ -56,6 +69,10 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
     private Button btnEnableRemoteInvoke;
     private Button btnDisableRemoteInvoke;
+
+    private Button btnCancelByNotifyId;
+    private EditText edtNotifyId;
+    private Button btnCancelAll;
 
     /*public static  String APP_ID = "your PushDemo appId";
     public static  String APP_KEY = "your PushDemo appKey";*/
@@ -120,6 +137,12 @@ public class MainActivity extends Activity implements View.OnClickListener{
         btnDisableRemoteInvoke = (Button) findViewById(R.id.btn_disenable_remote_invoke);
         btnDisableRemoteInvoke.setOnClickListener(this);
 
+        btnCancelAll = (Button) findViewById(R.id.btn_cancel_all);
+        btnCancelByNotifyId = (Button) findViewById(R.id.btn_cancel_by_notify_id);
+        edtNotifyId = (EditText) findViewById(R.id.edit_notify_id);
+        btnCancelAll.setOnClickListener(this);
+        btnCancelByNotifyId.setOnClickListener(this);
+
         Intent intent = new Intent(this,ForegroundService.class);
         intent.setAction(ForegroundService.START_FOREGROUD_SERVICE);
         startService(intent);
@@ -182,9 +205,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         switch (view.getId()){
 
             case R.id.platform_register:
-                //PushManager.register(this/*, APP_ID, APP_KEY*/);
                 PushManager.register(this, APP_ID, APP_KEY);
-                //parseJson();
                 break;
 
             case R.id.platform_unregister:
@@ -235,6 +256,19 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 break;
             case R.id.btn_disenable_remote_invoke:
                 PushManager.enableCacheRequest(this,false);
+                break;
+            case R.id.btn_cancel_all:
+                PushManager.clearNotification(this);
+                break;
+            case R.id.btn_cancel_by_notify_id:
+                String notifyStr = edtNotifyId.getText().toString();
+                if(TextUtils.isEmpty(notifyStr)){
+                    Toast.makeText(this,"请填写notifyId",Toast.LENGTH_SHORT).show();
+                    break;
+                } else {
+                    int notifyId = Integer.parseInt(notifyStr);
+                    PushManager.clearNotification(this,notifyId);
+                }
                 break;
         }
     }
@@ -342,10 +376,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
         }
 
     }
-
-
-
-
 
 
 }
