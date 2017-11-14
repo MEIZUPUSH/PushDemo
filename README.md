@@ -5,7 +5,7 @@
 **NOTE:** ``` 重要通知如下```
 
 * PushSDK不再区分魅族内部版与外部版本,所有的应用统一接入,目前PushSDK统一发布在[Jcenter](https://bintray.com/meizupush/PushSDK/PushSDK-Internal-Meizu),
-  统一的配置修改为```compile 'com.meizu.flyme.internet:push-internal:3.4.2@aar'```, 先前的外部应用接入的artifactId```push-internal-publish```,还可以继续使用到版本```3.3.170329```,后期版本请尽快修改
+  统一的配置修改为```compile 'com.meizu.flyme.internet:push-internal:3.5.0@aar'```, 先前的外部应用接入的artifactId```push-internal-publish```,还可以继续使用到版本```3.3.170329```,后期版本请尽快修改
 
 * 魅族内部应用如果从[Artifactory PushSDK](http://artifactory.rnd.meizu.com/artifactory/)下载,如果此版本不存在,会自动从jcenter拉取,以后可能不再单独发布aar到魅族内部Artifactory,以Jcenter版本为主
 
@@ -21,6 +21,12 @@
 ### [CentOS AndroidSDK 编译环境配置以及PushDemo编译说明](CenOS_Android_build.md)
 
 # 更新日志
+
+## [2017-11-13]```重要变更```V3.5.0
+* 增加通知栏清除功能,通知栏消息聚合功能,[具体详见PushManager API](#push_manager_api)
+* MzPushMessageReceiver 接口重大变更,[具体详见MzPushMessageReceiver回调修改说明](#mz_pushreceiver_callback)
+* 优化数据上报逻辑,提升数据上报准确度
+* 一些已知问题的修改
 
 ## [2017-08-18]V3.4.2
 * 解决使用换机助手时,应用无法更新pushId
@@ -250,17 +256,17 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
         //别名回调
     }
     @Override
-    public void onNotificationArrived(Context context, String title, String content, String selfDefineContentString) {
+    public void onNotificationArrived(Context context, MzPushMessage mzPushMessage) {
        //通知栏消息到达回调，flyme6基于android6.0以上不再回调
     }
         
     @Override
-    public void onNotificationClicked(Context context, String title, String content, String selfDefineContentString) {
+    public void onNotificationClicked(Context context, MzPushMessage mzPushMessage) {
        //通知栏消息点击回调
     }
         
     @Override
-    public void onNotificationDeleted(Context context, String title, String content, String selfDefineContentString) {
+    public void onNotificationDeleted(Context context, MzPushMessage mzPushMessage) {
        //通知栏消息删除回调；flyme6基于android6.0以上不再回调
     }    
    
@@ -291,7 +297,7 @@ PushSDK加入了通知栏状态栏小图标自定义的功能，需要在配置�
 
 以下内容是pushSDK提供的api汇总,具体功能详见[PushManager API](#pushmanager_interface_describe)具体说明,请根据需求选用合适的功能
 
-#### **附表一:** PushManager接口说明汇总表:
+#### **附表一:** PushManager接口说明汇总表:<a name="push_manager_api"/>
 
 | 接口名称      | 接口说明| 使用建议|是否已经废弃|对应MzPushReceiver回调方法|
 | :--------: | :--------:| :--: |:--: |:--: |
@@ -309,26 +315,27 @@ PushSDK加入了通知栏状态栏小图标自定义的功能，需要在配置�
 |switchPush(Context context,String appId,String appKey,String pushId,boolean switcher)|通知栏和透传开关同时转换|如果需要同时关闭或打开通知栏和透传消息开关,可以调用此方法|否|onPushStatus(Context context,PushSwitchStatus pushSwitchStatus)|
 |switchPush(Context context,String appId,String appKey,String pushId,int pushType,boolean switcher)|通知栏和透传消息开关单独转换|无|否|onPushStatus(Context context,PushSwitchStatus pushSwitchStatus)|
 |checkPush(Context context,String appId,String appKey,String pushId)|检查当前开关状态|此方法在有无网络下都能成功返回|否|onPushStatus(Context context,PushSwitchStatus pushSwitchStatus)|
-|enableCacheRequest(Context context,boolean flag)|基于缓存重试机制的回调策略|此策略默认关闭|否|无|
+|clearNotification(Context context)|清除该应用弹出的所有应用的通知栏消息||否|无|
+|clearNotification(Context context, int notifyId)|清除该应用弹出的指定notifyId的通知栏消息|notifyId在MzPushMessageReceiver中onNotificationArrived中回调|否|无|
 
-#### **附表二:** MzPushReceiver抽象方法说明
+#### **附表二:** MzPushReceiver抽象方法说明<a name="mz_pushreceiver_callback"/>
 
-| 接口名称      | 接口说明| 使用建议|是否已经废弃|
-| :--------: | :--------:| :--: |:--: |
-|~~onRegister(Context context,String pushId)~~|旧版pushid回调接口|建议不再使用|是|
-|~~onUnRegister(Context context,boolean success)~~|旧版反订阅回调接口|建议不再使用|是|
-|onMessage(Context context,String message)|透传消息回调|请选择一个实现即可|否|
-|onMessage(Context context,String message,String platformExtra)| 透传消息回调|跟上面方法两者选其一实现,不要两个方法同时覆盖,否则一次透传消息会回调两次,此方法多一个平台参数,格式如下格式如下:```{"task_id":"1232"}```|否|                                                                                  
-|onMessage(Context context,Intent intent)|处理flyme3.0平台的推送消息|flyme3.0平台支持透传消息,只有本方法才能处理flyme3的透传消息,具体相见flyme3获取消息的方法|否|
-|onNotificationClicked(Context context, String title, String content, String selfDefineContentString)|通知栏点击回调|无|否|
-|onNotificationArrived(Context context, String title, String content, String selfDefineContentString)|通知栏展示回调|Flyme6基于android6.0不再回调|否|
-|onNotificationDeleted(Context context, String title, String content, String selfDefineContentString)|通知栏删除回调|Flyme6基于android6.0不再回调|否|
-|onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder)|通知栏图标设置|无|否|
-|onPushStatus(Context context,PushSwitchStatus pushSwitchStatus)|Push开关状态回调|无|否|
-|onRegisterStatus(Context context,RegisterStatus registerStatus)|订阅状态回调|无|否|
-|onUnRegisterStatus(Context context,UnRegisterStatus unRegisterStatus)|反订阅回调|无|否|
-|onSubTagsStatus(Context context,SubTagsStatus subTagsStatus)|标签状态回调|无|否|
-|onSubAliasStatus(Context context,SubAliasStatus subAliasStatus)|别名状态回调|无|否|
+| 接口名称      | 接口说明| 使用建议|是否已经废弃|新接口|
+| :--------: | :--------:| :--: |:--: |:--:|
+|~~onRegister(Context context,String pushId)~~|旧版pushid回调接口|建议不再使用|是||
+|~~onUnRegister(Context context,boolean success)~~|旧版反订阅回调接口|建议不再使用|是||
+|onMessage(Context context,String message)|透传消息回调|请选择一个实现即可|否||
+|onMessage(Context context,String message,String platformExtra)| 透传消息回调|跟上面方法两者选其一实现,不要两个方法同时覆盖,否则一次透传消息会回调两次,此方法多一个平台参数,格式如下格式如下:```{"task_id":"1232"}```|否||                                                                                  
+|onMessage(Context context,Intent intent)|处理flyme3.0平台的推送消息|flyme3.0平台支持透传消息,只有本方法才能处理flyme3的透传消息,具体相见flyme3获取消息的方法|否||
+|~~onNotificationClicked(Context context, String title, String content, String selfDefineContentString)~~|通知栏点击回调|无|否|onNotificationClicked(Context context, MzPushMessage mzPushMessage)|
+|~~onNotificationArrived(Context context, String title, String content, String selfDefineContentString)~~|通知栏展示回调|Flyme6|新版本恢复此功能,此方法只在应用进程存在时才可回调|onNotificationArrived(Context context, MzPushMessage mzPushMessage)|
+|~~onNotificationDeleted(Context context, String title, String content, String selfDefineContentString)~~|通知栏删除回调|Flyme6基于android6.0不再回调|否|onNotificationDeleted(Context context, MzPushMessage mzPushMessage)|
+|onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder)|通知栏图标设置|无|否||
+|onPushStatus(Context context,PushSwitchStatus pushSwitchStatus)|Push开关状态回调|无|否||
+|onRegisterStatus(Context context,RegisterStatus registerStatus)|订阅状态回调|无|否||
+|onUnRegisterStatus(Context context,UnRegisterStatus unRegisterStatus)|反订阅回调|无|否||
+|onSubTagsStatus(Context context,SubTagsStatus subTagsStatus)|标签状态回调|无|否||
+|onSubAliasStatus(Context context,SubAliasStatus subAliasStatus)|别名状态回调|无|否||
 
                  
 
