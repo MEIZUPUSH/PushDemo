@@ -1,12 +1,8 @@
 package com.meizu.pushdemo;
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AppOpsManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -18,31 +14,19 @@ import android.widget.Toast;
 
 import com.meizu.cloud.pushinternal.DebugLogger;
 import com.meizu.cloud.pushsdk.PushManager;
-import com.meizu.cloud.pushsdk.base.reflect.ReflectClass;
-import com.meizu.cloud.pushsdk.base.reflect.ReflectResult;
 import com.meizu.cloud.pushsdk.constants.PushConstants;
 import com.meizu.cloud.pushsdk.platform.message.PushSwitchStatus;
 import com.meizu.cloud.pushsdk.platform.message.RegisterStatus;
 import com.meizu.cloud.pushsdk.platform.message.SubAliasStatus;
 import com.meizu.cloud.pushsdk.platform.message.SubTagsStatus;
 import com.meizu.cloud.pushsdk.platform.message.UnRegisterStatus;
-import com.meizu.cloud.pushsdk.pushtracer.QuickTracker;
-import com.meizu.cloud.pushsdk.pushtracer.event.PushEvent;
-import com.meizu.cloud.pushsdk.util.PushPreferencesUtils;
 import com.meizu.pushdemo.events.SendNotificationMessage;
 import com.meizu.pushdemo.events.ThroughMessageEvent;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.security.DigestInputStream;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends Activity implements View.OnClickListener{
@@ -79,6 +63,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
 
     public String APP_ID /*= "100999"*/;
     public String APP_KEY /*= "80355073480594a99470dcacccd8cf2c"*/;
+
+    public static List<Integer> notifyIdList = new ArrayList<>();
 
 
     private static final String TAG = "MainActivity";
@@ -261,14 +247,29 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 PushManager.clearNotification(this);
                 break;
             case R.id.btn_cancel_by_notify_id:
-                String notifyStr = edtNotifyId.getText().toString();
-                if(TextUtils.isEmpty(notifyStr)){
-                    Toast.makeText(this,"请填写notifyId",Toast.LENGTH_SHORT).show();
+                String notifyEdtStr = edtNotifyId.getText().toString();
+                if(TextUtils.isEmpty(notifyEdtStr)){
+                    Toast.makeText(this,"请填写notifyId,多个以逗号隔开",Toast.LENGTH_SHORT).show();
                     break;
                 } else {
-                    int notifyId = Integer.parseInt(notifyStr);
-                    PushManager.clearNotification(this,notifyId);
+                    String[] notifyArray = notifyEdtStr.split(",");
+                    if(notifyArray != null && notifyArray.length > 0){
+                        int[] intArray = new int[notifyArray.length];
+                        for(int i=0; i<notifyArray.length; i++){
+                            try {
+                                int notifyId = Integer.parseInt(notifyArray[i]);
+                                DebugLogger.e(TAG,"clear notifyId "+notifyId);
+                                intArray[i] = notifyId;
+                            } catch (Exception e){
+                                DebugLogger.e(TAG,"请正确输入notifyId,仅限整数");
+                                Toast.makeText(this,"请正确输入notifyId,仅限整数",Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
+                        PushManager.clearNotification(this,intArray);
+                    }
                 }
+
                 break;
         }
     }
@@ -298,83 +299,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
             e.printStackTrace();
         }
         return String.valueOf(appId);
-    }
-
-
-    public String fileMD5(String inputFile) {
-        // 缓冲区大小（这个可以抽出一个参数）
-        int bufferSize = 256 * 1024;
-        FileInputStream fileInputStream = null;
-        DigestInputStream digestInputStream = null;
-        try {
-            // 拿到一个MD5转换器（同样，这里可以换成SHA1）
-            MessageDigest messageDigest =MessageDigest.getInstance("MD5");
-            // 使用DigestInputStream
-            fileInputStream = new FileInputStream(inputFile);
-            digestInputStream = new DigestInputStream(fileInputStream,messageDigest);
-            // read的过程中进行MD5处理，直到读完文件
-            byte[] buffer =new byte[bufferSize];
-            while (digestInputStream.read(buffer) > 0);
-            // 获取最终的MessageDigest
-            messageDigest= digestInputStream.getMessageDigest();
-            // 拿到结果，也是字节数组，包含16个元素
-            byte[] resultByteArray = messageDigest.digest();
-            // 同样，把字节数组转换成字符串
-            return byteArrayToHex(resultByteArray);
-        } catch (NoSuchAlgorithmException e) {
-            return null;
-        } catch (FileNotFoundException e){
-            return null;
-        } catch (IOException e){
-            return null;
-        }finally {
-            try {
-                digestInputStream.close();
-            } catch (Exception e) {
-            }
-            try {
-                fileInputStream.close();
-            } catch (Exception e) {
-            }
-        }
-    }
-
-    public static String byteArrayToHex(byte[] byteArray) {
-        String hs = "";
-        String stmp = "";
-        for (int n = 0; n < byteArray.length; n++) {
-            stmp = (Integer.toHexString(byteArray[n] & 0XFF));
-            if (stmp.length() == 1) {
-                hs = hs + "0" + stmp;
-            } else {
-                hs = hs + stmp;
-            }
-            if (n < byteArray.length - 1) {
-                hs = hs + "";
-            }
-        }
-        return hs;
-
-    }
-
-    private void parseJson(){
-        String jsonStr = "{\"type\":\"ONLINE_SHIPS\",\"message\":\"{\\\"currentTime\\\":1400077615368,\\\"direction\\\":0,\\\"id\\\":1,\\\"latitude\\\":29.5506,\\\"longitude\\\":106.6466}\"}";
-        DebugLogger.i(TAG,"json is "+ jsonStr);
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject(jsonStr);
-            //先通过字符串的方式得到,转义字符自然会被转化掉
-            String jsonstrtemp = jsonObject.getString("message");
-            DebugLogger.i(TAG,"message:"+jsonstrtemp);
-            jsonObject = new JSONObject(jsonstrtemp);
-            DebugLogger.i(TAG,"currentTime:"+jsonObject.get("currentTime"));
-            DebugLogger.i(TAG,"direction:"+jsonObject.get("direction"));
-            DebugLogger.i(TAG,"latitude:"+jsonObject.get("latitude"));
-            DebugLogger.i(TAG,"longitude:"+jsonObject.get("longitude"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
     }
 
 

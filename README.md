@@ -22,6 +22,9 @@
 
 # 更新日志
 
+## [2017-11-27]V3.5.1
+* 通知栏删除接口增加一次删除多个NotifyID的功能一次可传入多个notifyId
+
 ## [2017-11-13]```重要变更```V3.5.0
 * 增加通知栏清除功能,通知栏消息聚合功能,[具体详见PushManager API](#push_manager_api)
 * MzPushMessageReceiver 接口重大变更,[具体详见MzPushMessageReceiver回调修改说明](#mz_pushreceiver_callback)

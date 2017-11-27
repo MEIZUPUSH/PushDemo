@@ -210,8 +210,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:inputType="number"
-                    android:hint="请输入通知栏ID" />
+                    android:hint="请输入通知栏ID,多个以逗号隔开" />
 
                 <Button
                     android:id="@+id/btn_cancel_by_notify_id"

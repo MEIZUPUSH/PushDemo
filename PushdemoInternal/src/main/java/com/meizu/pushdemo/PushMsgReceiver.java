@@ -100,6 +100,8 @@ public class PushMsgReceiver extends MzPushMessageReceiver {
     public void onNotificationArrived(Context context, MzPushMessage mzPushMessage) {
         DebugLogger.i(TAG, "onNotificationArrived title " + mzPushMessage.getTitle() + "content "
                 + mzPushMessage.getContent() + " selfDefineContentString " + mzPushMessage.getSelfDefineContentString()+" notifyId "+mzPushMessage.getNotifyId());
+        MainActivity.notifyIdList.add(mzPushMessage.getNotifyId());
+        DebugLogger.e(TAG,"current notifyid "+MainActivity.notifyIdList);
     }
 
     @Override
