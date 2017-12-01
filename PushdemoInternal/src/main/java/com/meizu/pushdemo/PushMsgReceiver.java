@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.meizu.cloud.pushinternal.DebugLogger;
 import com.meizu.cloud.pushsdk.MzPushMessageReceiver;
+import com.meizu.cloud.pushsdk.PushManager;
 import com.meizu.cloud.pushsdk.handler.MzPushMessage;
 import com.meizu.cloud.pushsdk.notification.PushNotificationBuilder;
 import com.meizu.cloud.pushsdk.platform.message.PushSwitchStatus;
@@ -108,6 +109,13 @@ public class PushMsgReceiver extends MzPushMessageReceiver {
     public void onNotificationClicked(Context context, MzPushMessage mzPushMessage) {
         DebugLogger.i(TAG, "onNotificationClicked title "+ mzPushMessage.getTitle() + "content "
                 + mzPushMessage.getContent() + " selfDefineContentString " + mzPushMessage.getSelfDefineContentString()+" notifyId "+mzPushMessage.getNotifyId());
+        int[] intArray = new int[MainActivity.notifyIdList.size()];
+        for(int i=0; i<MainActivity.notifyIdList.size(); i++){
+            intArray[i] = MainActivity.notifyIdList.get(i);
+        }
+        DebugLogger.e(TAG,"clear notifyId "+intArray);
+        PushManager.clearNotification(context,intArray);
+        MainActivity.notifyIdList.clear();
     }
 
     @Override
