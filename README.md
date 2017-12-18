@@ -1,6 +1,8 @@
 
 # PushSDK3 说明文档
 
+[![Release][release-image]][releases]
+
 ## Android Studio AAR 发布说明
 **NOTE:** ``` 重要通知如下```
 
@@ -21,6 +23,10 @@
 ### [CentOS AndroidSDK 编译环境配置以及PushDemo编译说明](CenOS_Android_build.md)
 
 # 更新日志
+
+## [2017-12-4]V3.6.0
+* 启用代码proguard,减少包大小
+* 去除获取地址位置权限声明
 
 ## [2017-12-01]V3.5.2
 * 通知栏删除接口增加一次删除多个NotifyID的功能一次可传入多个notifyId
@@ -976,3 +982,7 @@ activity配置出错
   在熄屏状态下应用无法收到通知栏消息，亮屏时能收到通知栏消息,最新的flyme固件不会出现该问题
 * 原因
   系统问题，熄屏状态下发起服务调用，应用无响应,最新的flyme固件不会出现该问题
+  
+  
+ [release-image]: http://img.shields.io/badge/release-3.6.0-blue.svg?style=flat
+ [releases]: https://bintray.com/meizupush/PushSDK/PushSDK-Internal-Meizu  
