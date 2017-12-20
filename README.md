@@ -157,7 +157,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 
 ```
     dependencies {
-        compile 'com.meizu.flyme.internet:push-internal:3.3.+@aar'
+        compile 'com.meizu.flyme.internet:push-internal:3.6.+@aar'
     }
     
 ```
@@ -303,7 +303,7 @@ PushSDK加入了通知栏状态栏小图标自定义的功能，需要在配置�
 
 **Note:** 至此pushSDK 已经集成完毕，现在你需要在你的Application中调用新版的[register](#register)方法
 ```
-  魅族推送只适用于Flyme系统,因此可以先行判断是否为魅族机型，在进行订阅
+  魅族推送只适用于Flyme系统,因此可以先行判断是否为魅族机型，再进行订阅，避免在其他机型上出现兼容性问题
   if(MzSystemUtils.isBrandMeizu(this)){
      PushManager.register(this, APP_ID, APP_KEY);
   }
@@ -585,7 +585,7 @@ PushMessageReceiver覆盖onMessage(Context context,Intent intent)方法接收Fly
      *         push 平台申请的应用id
      * @param appKey
      *         push 平台申请的应用key
-     * 使用说明：可在应用启动时调用此方法，例如在Application.onCreate()调用即可,魅族推送只适用于Flyme系统,因此可以先行判断是否为魅族机型，在进行订阅
+     * 使用说明：可在应用启动时调用此方法，例如在Application.onCreate()调用即可,魅族推送只适用于Flyme系统,因此可以先行判断是否为魅族机型，再进行订阅，避免在其他机型上出现兼容性问题
      * if(MzSystemUtils.isBrandMeizu(this)){
           PushManager.register(this, APP_ID, APP_KEY);
        }
