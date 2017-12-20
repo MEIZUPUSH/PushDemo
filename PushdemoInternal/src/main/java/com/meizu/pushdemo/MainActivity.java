@@ -20,6 +20,7 @@ import com.meizu.cloud.pushsdk.platform.message.RegisterStatus;
 import com.meizu.cloud.pushsdk.platform.message.SubAliasStatus;
 import com.meizu.cloud.pushsdk.platform.message.SubTagsStatus;
 import com.meizu.cloud.pushsdk.platform.message.UnRegisterStatus;
+import com.meizu.cloud.pushsdk.util.MzSystemUtils;
 import com.meizu.pushdemo.events.SendNotificationMessage;
 import com.meizu.pushdemo.events.ThroughMessageEvent;
 import org.greenrobot.eventbus.EventBus;
@@ -191,7 +192,9 @@ public class MainActivity extends Activity implements View.OnClickListener{
         switch (view.getId()){
 
             case R.id.platform_register:
-                PushManager.register(this, APP_ID, APP_KEY);
+                if(MzSystemUtils.isBrandMeizu(this)){
+                    PushManager.register(this, APP_ID, APP_KEY);
+                }
                 break;
 
             case R.id.platform_unregister:

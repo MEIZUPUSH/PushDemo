@@ -301,8 +301,16 @@ PushSDK加入了通知栏状态栏小图标自定义的功能，需要在配置�
 **Note:** Flyme6新的通知栏中心需要按照名称来获取状态栏Icon,你需要在相应的drawable不同分辨率文件夹下放置一个名称为```mz_push_notification_small_icon```的状态栏图标文件,请确保名称正确，否则将无法正确显示你应用的状态栏图标 
 
 
-**Note:** 至此pushSDK 已经集成完毕，现在你需要在你的Application中调用新版的[register](#register)方法,并在你的Receiver中成功回调onRegisterStatus(RegisterStatus registerStatus)方法就可以了，
+**Note:** 至此pushSDK 已经集成完毕，现在你需要在你的Application中调用新版的[register](#register)方法
+```
+  魅族推送只适用于Flyme系统,因此可以先行判断是否为魅族机型，在进行订阅
+  if(MzSystemUtils.isBrandMeizu(this)){
+     PushManager.register(this, APP_ID, APP_KEY);
+  }
+```
+并在你的Receiver中成功回调onRegisterStatus(RegisterStatus registerStatus)方法就可以了，
 你现在可以到[新版Push平台](http://push.meizu.com) 找到你的应用推送消息就可以了.
+
 
 以下内容是pushSDK提供的api汇总,具体功能详见[PushManager API](#pushmanager_interface_describe)具体说明,请根据需求选用合适的功能
 
@@ -577,7 +585,10 @@ PushMessageReceiver覆盖onMessage(Context context,Intent intent)方法接收Fly
      *         push 平台申请的应用id
      * @param appKey
      *         push 平台申请的应用key
-     * 使用说明：可在应用启动时调用此方法，例如在Application.onCreate()调用即可
+     * 使用说明：可在应用启动时调用此方法，例如在Application.onCreate()调用即可,魅族推送只适用于Flyme系统,因此可以先行判断是否为魅族机型，在进行订阅
+     * if(MzSystemUtils.isBrandMeizu(this)){
+          PushManager.register(this, APP_ID, APP_KEY);
+       }
      * */
      public static void register(Context context,String appId,String appKey);
 ```

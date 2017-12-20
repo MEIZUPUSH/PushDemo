@@ -156,12 +156,16 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
 **Note:** 至此pushSDK 已经集成完毕，现在你需要在你的Application中调用新版的[register](#register)方法,
 
 ```
-   /**
+ /**
      * @param context
      * @param appId
      *         push 平台申请的应用id
      * @param appKey
      *         push 平台申请的应用key
+     * 使用说明：可在应用启动时调用此方法，例如在Application.onCreate()调用即可,魅族推送只适用于Flyme系统,因此可以先行判断是否为魅族机型，在进行订阅
+     * if(MzSystemUtils.isBrandMeizu(this)){
+          PushManager.register(this, APP_ID, APP_KEY);
+       }
      * */
      public static void register(Context context,String appId,String appKey);
 ```
