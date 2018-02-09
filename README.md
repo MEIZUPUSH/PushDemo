@@ -997,7 +997,11 @@ activity配置出错
 * 原因
   系统问题，熄屏状态下发起服务调用，应用无响应,最新的flyme固件不会出现该问题
   
-### 七 阿里APK加固可能会出现序列化问题  
+### 七 阿里APK加固可能会出现序列化问题 
+ 
+### 八 资源文件不能混淆的问题
+* andriod 5.0及以下flyme版本,apk混淆资源文件，导致通知栏不能正常弹出 
+ 
   
  [release-image]: http://img.shields.io/badge/release-3.6.3-blue.svg?style=flat
  [releases]: https://bintray.com/meizupush/PushSDK/PushSDK-Internal-Meizu  
