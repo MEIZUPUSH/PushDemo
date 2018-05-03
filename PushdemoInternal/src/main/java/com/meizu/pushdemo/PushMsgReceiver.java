@@ -11,6 +11,7 @@ import com.meizu.cloud.pushsdk.MzPushMessageReceiver;
 import com.meizu.cloud.pushsdk.PushManager;
 import com.meizu.cloud.pushsdk.handler.MzPushMessage;
 import com.meizu.cloud.pushsdk.notification.PushNotificationBuilder;
+import com.meizu.cloud.pushsdk.platform.PlatformMessageSender;
 import com.meizu.cloud.pushsdk.platform.message.PushSwitchStatus;
 import com.meizu.cloud.pushsdk.platform.message.RegisterStatus;
 import com.meizu.cloud.pushsdk.platform.message.SubAliasStatus;
@@ -19,6 +20,8 @@ import com.meizu.cloud.pushsdk.platform.message.UnRegisterStatus;
 import com.meizu.pushdemo.events.ThroughMessageEvent;
 
 import org.greenrobot.eventbus.EventBus;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by liaojinlong on 15-6-28.
@@ -52,6 +55,17 @@ public class PushMsgReceiver extends MzPushMessageReceiver {
         Log.i(TAG, "onMessage " + message +" platformExtra "+platformExtra);
         //print(context,context.getPackageName() + " receive message " + s);
         EventBus.getDefault().post(new ThroughMessageEvent(message+platformExtra));
+
+
+        // 测试直达服务
+//        try {
+//            JSONObject all = new JSONObject(message);
+//            String notificationMessage = all.getString("push");
+//            DebugLogger.e(TAG,"notificationMessage "+notificationMessage);
+//            PlatformMessageSender.showQuickNotification(context,notificationMessage,platformExtra);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -95,6 +109,7 @@ public class PushMsgReceiver extends MzPushMessageReceiver {
     public void onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder) {
         pushNotificationBuilder.setmLargIcon(R.drawable.flyme_status_ic_notification);
         pushNotificationBuilder.setmStatusbarIcon(R.drawable.mz_push_notification_small_icon);
+        DebugLogger.e(TAG,"current clickpacakge "+pushNotificationBuilder.getClickPackageName());
     }
 
     @Override
