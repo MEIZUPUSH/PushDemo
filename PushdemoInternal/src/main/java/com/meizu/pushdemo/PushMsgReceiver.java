@@ -3,6 +3,7 @@ package com.meizu.pushdemo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -131,6 +132,10 @@ public class PushMsgReceiver extends MzPushMessageReceiver {
         DebugLogger.e(TAG,"clear notifyId "+intArray);
         PushManager.clearNotification(context,intArray);
         MainActivity.notifyIdList.clear();
+
+        if(!TextUtils.isEmpty(mzPushMessage.getSelfDefineContentString())){
+            print(context," 点击自定义消息为："+mzPushMessage.getSelfDefineContentString());
+        }
     }
 
     @Override
