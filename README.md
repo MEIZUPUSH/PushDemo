@@ -23,7 +23,7 @@
 ### [CentOS AndroidSDK 编译环境配置以及PushDemo编译说明](CenOS_Android_build.md)
 
 # 更新日志
-## [2018-05-03]V3.7.0
+## [2018-06-03]V3.7.0
 * 修复部分第三方机型可能出现的兼容性报错问题
 
 ## [2018-05-03]V3.6.7
@@ -1006,7 +1006,10 @@ activity配置出错
  
 ### 八 资源文件不能混淆的问题
 * andriod 5.0及以下flyme版本,apk混淆资源文件，导致通知栏不能正常弹出 
+
+### 九 重复定义PushReceiver问题
+* 不要在你的应用中实现多个pushreceiver,这只会回调其中一个receiver,否则会给你接入造成困扰 
  
   
- [release-image]: http://img.shields.io/badge/release-3.6.3-blue.svg?style=flat
+ [release-image]: http://img.shields.io/badge/release-3.7.0-blue.svg?style=flat
  [releases]: https://bintray.com/meizupush/PushSDK/PushSDK-Internal-Meizu  
