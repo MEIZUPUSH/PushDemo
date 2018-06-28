@@ -23,6 +23,11 @@
 ### [CentOS AndroidSDK 编译环境配置以及PushDemo编译说明](CenOS_Android_build.md)
 
 # 更新日志
+
+## [2018-06-28]V3.7.1
+* 修复zip文件目录遍历的漏洞
+* [Android安全开发之ZIP文件目录遍历](https://jaq.alibaba.com/community/art/show?articleid=383)
+
 ## [2018-06-03]V3.7.0
 * 修复部分第三方机型可能出现的兼容性报错问题
 
@@ -1011,5 +1016,5 @@ activity配置出错
 * 不要在你的应用中实现多个pushreceiver,这只会回调其中一个receiver,否则会给你接入造成困扰 
  
   
- [release-image]: http://img.shields.io/badge/release-3.7.0-blue.svg?style=flat
+ [release-image]: http://img.shields.io/badge/release-3.7.1-blue.svg?style=flat
  [releases]: https://bintray.com/meizupush/PushSDK/PushSDK-Internal-Meizu  
