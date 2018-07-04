@@ -24,6 +24,9 @@
 
 # 更新日志
 
+## [2018-07-04]V3.7.2
+* 优化一些小细节
+
 ## [2018-06-28]V3.7.1
 * 修复zip文件目录遍历的漏洞
 * [Android安全开发之ZIP文件目录遍历](https://jaq.alibaba.com/community/art/show?articleid=383)
