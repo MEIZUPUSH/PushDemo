@@ -192,9 +192,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         switch (view.getId()){
 
             case R.id.platform_register:
-                if(MzSystemUtils.isBrandMeizu(this)){
-                    PushManager.register(this, APP_ID, APP_KEY);
-                }
+                PushManager.register(this, APP_ID, APP_KEY);
                 break;
 
             case R.id.platform_unregister:
