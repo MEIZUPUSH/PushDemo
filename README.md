@@ -20,7 +20,7 @@
 ```  
 
 
-### [CentOS AndroidSDK 编译环境配置以及PushDemo编译说明](CenOS_Android_build.md)
+### [CentOS AndroidSDK 编译环境配置以及PushDemo编译说明](CentOS_Android_build.md)
 
 # 更新日志
 
