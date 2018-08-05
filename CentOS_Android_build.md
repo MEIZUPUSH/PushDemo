@@ -1,4 +1,4 @@
-# CenOS 安装Android 编译环境
+# CentOS 安装Android 编译环境
 
 
 # 目录<a name="index"/>
