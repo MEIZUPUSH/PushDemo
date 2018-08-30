@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.meizu.cloud.pushinternal.DebugLogger;
 import com.meizu.cloud.pushsdk.PushManager;
 import com.meizu.cloud.pushsdk.constants.PushConstants;
@@ -20,7 +19,6 @@ import com.meizu.cloud.pushsdk.platform.message.RegisterStatus;
 import com.meizu.cloud.pushsdk.platform.message.SubAliasStatus;
 import com.meizu.cloud.pushsdk.platform.message.SubTagsStatus;
 import com.meizu.cloud.pushsdk.platform.message.UnRegisterStatus;
-import com.meizu.cloud.pushsdk.util.MzSystemUtils;
 import com.meizu.pushdemo.events.SendNotificationMessage;
 import com.meizu.pushdemo.events.ThroughMessageEvent;
 import org.greenrobot.eventbus.EventBus;
@@ -301,6 +299,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         }
         return String.valueOf(appId);
     }
+
 
 
 }

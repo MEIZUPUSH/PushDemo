@@ -2,6 +2,8 @@ package com.meizu.pushdemo;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
@@ -108,8 +110,12 @@ public class PushMsgReceiver extends MzPushMessageReceiver {
 
     @Override
     public void onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder) {
-        pushNotificationBuilder.setmLargIcon(R.drawable.flyme_status_ic_notification);
+        //pushNotificationBuilder.setmLargIcon(R.drawable.flyme_status_ic_notification);
         pushNotificationBuilder.setmStatusbarIcon(R.drawable.mz_push_notification_small_icon);
+//        pushNotificationBuilder.setAppLabel("测试标签");
+//        if(pushNotificationBuilder.getContext()!= null){
+//            pushNotificationBuilder.setAppLargeIcon(BitmapFactory.decodeResource(pushNotificationBuilder.getContext().getResources(),R.drawable.upspush));
+//        }
         DebugLogger.e(TAG,"current clickpacakge "+pushNotificationBuilder.getClickPackageName());
     }
 
