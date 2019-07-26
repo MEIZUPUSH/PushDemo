@@ -249,14 +249,14 @@ PushManager.register(this, APP_ID, APP_KEY);
 |clearNotification(Context context, int notifyId)|清除应用弹出的指定notifyId的通知栏消息|无|无|
 
 #### 参数说明
-**appId：**  [Push平台](http://push.meizu.com)申请的应用id。  
-**appKey：** [Push平台](http://push.meizu.com)申请的应用key。  
-**pushId：** 可以在订阅接口的回调方法 `onRegisterStatus` 中，通过： `registerStatus.getPushId();` 来获取。  
-**tags：** 标签名称，多个逗号隔离，每个标签不能超过 20 个字符，限100个。  
-**alias：** 别名名称，长度不能超过 20 个字符，每一个应用用户仅能设置一个别名。    
-**pushType：** 消息类型，0：通知栏消息 1：透传消息。  
-**switcher：** 开关状态  
-**notifyId：** 通知Id，由服务端生成，可以在通知展示的回调方法 `onNotificationArrived` 中，通过： `mzPushMessage.getNotifyId();` 来获取。  
+**appId：**  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Push平台](http://push.meizu.com)申请的应用id。  
+**appKey：** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Push平台](http://push.meizu.com)申请的应用key。  
+**pushId：** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以在订阅接口的回调方法 `onRegisterStatus` 中，通过： `registerStatus.getPushId();` 来获取。  
+**tags：** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;标签名称，多个逗号隔离，每个标签不能超过 20 个字符，限100个。  
+**alias：** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别名名称，长度不能超过 20 个字符，每一个应用用户仅能设置一个别名。    
+**pushType：** &nbsp;&nbsp;消息类型，0：通知栏消息 1：透传消息。  
+**switcher：** &nbsp;&nbsp;&nbsp;&nbsp;开关状态  
+**notifyId：** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通知Id，由服务端生成，可以在通知展示的回调方法 `onNotificationArrived` 中，通过： `mzPushMessage.getNotifyId();` 来获取。  
 
 ### 4.2 MzPushReceiver回调方法说明<a name="mzpushreceiver_description"/>
 
@@ -281,7 +281,7 @@ PushManager.register(this, APP_ID, APP_KEY);
 
 ### 5.2 通知的点击<a name="notification_click"/>
 通知栏消息支持四种点击动作，分别是：打开应用主页、打开应用内页面、打开URI页面 以及 应用客户端自定义，如图。  
-![image](download/notification-parameter.png)  
+![image](download/notification_click.png)  
 其中前三种打开方式都是通过构建 Intent 的方式，利用 startActivity 方法调起，代码如下：  
 ```java
         Intent privateIntent = buildIntent(context(), message);
