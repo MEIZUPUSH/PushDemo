@@ -230,8 +230,8 @@ PushManager.register(this, APP_ID, APP_KEY);
 并确保您自定义的消息接收 `Receiver` 类中能在 `onRegisterStatus(RegisterStatus registerStatus)` 方法中正确回调，这样接入就成功了。现在就可以到[Push平台](http://push.meizu.com) 找到您的应用进行消息推送了。
 
 ## 4 功能说明<a name="functional_description"/>
-### 4.1 PushManager接口说明<a name="pushmanager_description"/>
-| 接口名称      | 接口说明| 使用建议|对应MzPushReceiver回调方法|
+### 4.1 PushManager方法说明<a name="pushmanager_description"/>
+| 方法名称      | 方法说明| 使用建议|对应MzPushReceiver回调方法|
 | :--------: | :--------:| :--: |:--: |
 |register(Context context,String appId,String appKey)|订阅|建议在Application onCreate中调用|onRegisterStatus(Context context,RegisterStatus registerStatus)|
 |unRegister(Context context,String appId,String appKey)|反订阅|取消所有推送时使用，请慎用，若取消订阅,将有可能停止所有推送|onUnRegisterStatus(Context context,UnRegisterStatus unRegisterStatus)|
@@ -260,7 +260,7 @@ PushManager.register(this, APP_ID, APP_KEY);
 
 ### 4.2 MzPushReceiver回调方法说明<a name="mzpushreceiver_description"/>
 
-| 接口名称      | 接口说明| 使用建议|
+| 方法名称      | 方法说明| 使用建议|
 | :--------: | :--------:| :--------:|
 |~~onRegister(Context context,String pushId)~~|旧版订阅回调|已废弃|
 |~~onUnRegister(Context context,boolean success)~~|旧版反订阅回调|已废弃|
@@ -280,7 +280,9 @@ PushManager.register(this, APP_ID, APP_KEY);
 在您的应用正确接入PushSDK并在平台上进行消息推送后，所有这些推送消息都是通过Flyme系统应用“推送服务”进行处理和展示。“推送服务”会在云端与客户端之间建立一条稳定、可靠的长连接，从而实现客户端应用实时接收推送平台下发的消息，而且它还充当着通知栏消息创造角色，在您客户端应用进程不在的情况下也能为其创造出通知栏消息。使得能有效地帮助您应用拉动用户活跃度，改善产品体验。
 
 ### 5.2 通知的点击<a name="notification_click"/>
-通知栏消息支持四种点击动作，分别是：打开应用主页、打开应用内页面、打开URI页面 以及 应用客户端自定义。其中前三种打开方式都是通过构建 Intent 的方式，利用 startActivity 方法调起，代码如下：  
+通知栏消息支持四种点击动作，分别是：打开应用主页、打开应用内页面、打开URI页面 以及 应用客户端自定义，如图。  
+![image](download/notification-parameter.png)  
+其中前三种打开方式都是通过构建 Intent 的方式，利用 startActivity 方法调起，代码如下：  
 ```java
         Intent privateIntent = buildIntent(context(), message);
         if(privateIntent != null){
@@ -297,10 +299,7 @@ PushManager.register(this, APP_ID, APP_KEY);
 
 ##### 参数传递
 
-打开应用主页 和 打开应用内页面 都支持附加参数。上述代码中，buildIntent方法内部解析了平台传递的消息打开类型和参数列表，通过`intent.putString("key","value")`的方式在构建Intent时进行添加。   
-平台填写参数值如下图所示：
-
-![image](download/notification-parameter.png)
+打开应用主页 和 打开应用内页面 都支持附加参数。上述代码中，buildIntent方法内部解析了平台传递的消息打开类型和参数列表，通过`intent.putString("key","value")`的方式在构建Intent时进行添加。     
 
 ##### 参数获取
 
@@ -357,7 +356,7 @@ onUnRegisterStatus(Context context,UnRegisterStatus unRegisterStatus)
 
 ### 6.2 设置通知的状态栏小图标<a name="adpter_small_icon"/>
 在 `MzPushReceiver` 中存在 `onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder)`方法。在目前较新的Flyme系统已经不再需要专门进行状态栏图标的设置，此方法是作用于兼容旧版本Flyme系统中设置消息弹出后状态栏中的小图标。设置小图标代码如下：   
-```java
+```
 @Override
 public void onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder){
     pushNotificationBuilder.setmStatusbarIcon(R.drawable.mz_push_notification_small_icon);
@@ -435,13 +434,13 @@ onNotificationArrived(Context context, MzPushMessage mzPushMessage)
 ![image](download/question_3.1.png)  
 2. 在[Flyme推送平台后台](http://push.meizu.com/)  【配置管理】-【问题排查】中按从上往下步骤进行相应的状态查询，如下图。  
 ![image](download/question_3.2.png)  
-2.1. 【设备对应关系查询】输入手机的IMEI点击“查询”按钮获得相应的PushId，若提示“PushId未注册”，请执行`PushSDK中PushManager. register(Context context,String appId,String appKey)`进行推送订阅；  
-2.2【设备是否在线查询】输入刚才获得的PushId，点击“查询”按钮查询状态，若手机处理离线状态，解决方法请见[“问题4”](#question_4)；  
-2.3【设备是否订阅查询】输入刚才获得的PushId，点击“查询”按钮查询订阅信息：  
-&nbsp;&nbsp;&nbsp;&nbsp;“是否已经订阅”，若未订阅请执行`PushSDK中PushManager. register(Context context,String appId,String appKey)`方法进行推送订阅；  
-&nbsp;&nbsp;&nbsp;&nbsp;“通知栏开关”，若为关，请执行`PushSDK中PushManager.switchPush(Context context,String appId,String appKey,String pushId,int pushType,boolean switcher)`方法进行打开；  
-&nbsp;&nbsp;&nbsp;&nbsp;“系统通知栏开关”，若为关，解决方法请见[“问题5”](#question_5)；  
-2.4【推送测试】中输入刚才获得的PushId，并点击“推送”按钮，下方显示“已推送 msgId：xxx”代表已经成功发送测试通知。  
+&nbsp;&nbsp;a) 【设备对应关系查询】输入手机的IMEI点击“查询”按钮获得相应的PushId，若提示“PushId未注册”，请执行`PushSDK中PushManager. register(Context context,String appId,String appKey)`进行推送订阅；  
+&nbsp;&nbsp;b) 【设备是否在线查询】输入刚才获得的PushId，点击“查询”按钮查询状态，若手机处理离线状态，解决方法请见[“问题4”](#question_4)；  
+&nbsp;&nbsp;c) 【设备是否订阅查询】输入刚才获得的PushId，点击“查询”按钮查询订阅信息：  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;“是否已经订阅”，若未订阅请执行`PushSDK中PushManager. register(Context context,String appId,String appKey)`方法进行推送订阅；  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;“通知栏开关”，若为关，请执行`PushSDK中PushManager.switchPush(Context context,String appId,String appKey,String pushId,int pushType,boolean switcher)`方法进行打开；  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;“系统通知栏开关”，若为关，解决方法请见[“问题5”](#question_5)；  
+&nbsp;&nbsp;d) 【推送测试】中输入刚才获得的PushId，并点击“推送”按钮，下方显示“已推送 msgId：xxx”代表已经成功发送测试通知。  
 3. 弹出消息时是否存在<font color=#ff0000>Invalid notification (no valid small icon)</font> 异常日志输出？这是设置通知栏图标异常，如果开启了像Andresguard之类的资源路径混淆，尝试在whiteList中添加：R.drawable.stat_sys_third_app_notify。  
 4. 在较老的Flyme系统也出现<font color=#ff0000>Invalid notification (no valid small icon)</font> 异常的话，还可以在drawable不同分辨率文件夹下放置一张名为mz_push_notification_small_icon的图片，并在onUpdateNotificationBuilder回调方法中按文档说明进行设置通知栏小  
 
