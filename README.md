@@ -120,7 +120,7 @@
 PushSDK 3.0 以后的版本使用了aar包方式，因此对于一些通用的权限配置，工程混淆，App接入时不需要再进行配置了，只需要按以下步骤简单接入即可。
 
 ### 3.1 配置依赖<a name="config_dependencies"/>
-我们已经将PushSDK发布到jcenter，您只需要在工程gradle文件中进行如下依赖配置即可：  
+我们已经将PushSDK发布到jcenter，您只需要在工程gradle文件中进行如下依赖配置：  
 ```
     dependencies {
         compile 'com.meizu.flyme.internet:push-internal:3.8.3'
@@ -233,7 +233,7 @@ PushManager.register(this, APP_ID, APP_KEY);
 ### 4.1 PushManager接口说明<a name="pushmanager_description"/>
 | 接口名称      | 接口说明| 使用建议|对应MzPushReceiver回调方法|
 | :--------: | :--------:| :--: |:--: |
-|register(Context context,String appId,String appKey)|订阅|建议Application onCreate调用|onRegisterStatus(Context context,RegisterStatus registerStatus)|
+|register(Context context,String appId,String appKey)|订阅|建议在Application onCreate中调用|onRegisterStatus(Context context,RegisterStatus registerStatus)|
 |unRegister(Context context,String appId,String appKey)|反订阅|取消所有推送时使用，请慎用，若取消订阅,将有可能停止所有推送|onUnRegisterStatus(Context context,UnRegisterStatus unRegisterStatus)|
 |subScribeTags(Context context,String appId,String appKey,String pushId,String tags)|标签订阅|无|onSubTagsStatus(Context context,SubTagsStatus subTagsStatus)|
 |unSubScribeTags(Context context, String appId, String appKey, String pushId,String tags)|取消标签订阅|无|onSubTagsStatus(Context context,SubTagsStatus subTagsStatus)|
@@ -333,16 +333,45 @@ String value = getIntent().getStringExtra("key")
 魅族推送服务经历几次大的变更，从之前的C2DM，到现在可以完全脱离Flyme平台作为一种完全开放给第三方应用的SDK，在这个阶段出现多种接入方式，给以后的应用接入带来极大的困扰，魅族PushSDK极力在减少Flyme版本迭代给应用接入带来的麻烦，但应用还是需要做细小的更改才能做到与低版本Flyme的兼容。
 
 ### 6.1 订阅和反订阅接口变更<a name="adpter_register"/>
-过去版本中，订阅和反订阅接口是使用 `PushManager` 的 `register(Context context)` 和 `unRegister(Context context)`，它们对应的回调方法是 `MzPushReceiver` 的 `onRegister(Context context,String pushId)` 和 `onUnRegister(Context context,boolean success)`。   
-而目前版本中，订阅和反订阅接口已经换成了 `PushManager` 的 `register(Context context,String appId,String appKey)` 和 `unRegister(Context context,String appId,String appKey)`，它们对应的回调方法是 `MzPushReceiver` 的 `onRegisterStatus(Context context,RegisterStatus registerStatus)` 和 `onUnRegisterStatus(Context context,UnRegisterStatus unRegisterStatus)`。   
+过去版本中，订阅和反订阅接口是使用了 `PushManager` 的以下方法：  
+```java
+register(Context context);
+unRegister(Context context);
+```  
+对应的回调方法是 `MzPushReceiver` 的以下方法：  
+```java
+onRegister(Context context,String pushId)
+onUnRegister(Context context,boolean success)
+```  
+而目前版本中，订阅和反订阅接口已经换成了 `PushManager` 的以下方法：  
+```java
+register(Context context,String appId,String appKey)
+unRegister(Context context,String appId,String appKey)
+```  
+对应的回调方法是 `MzPushReceiver` 的以下方法：  
+```java
+onRegisterStatus(Context context,RegisterStatus registerStatus)
+onUnRegisterStatus(Context context,UnRegisterStatus unRegisterStatus)
+```   
 **注意：** 旧接口代码依然保留在SDK中，但已经不再建议使用，如果您还使用着旧接口，建议尽快进行更新。
 
 ### 6.2 设置通知的状态栏小图标<a name="adpter_small_icon"/>
-在 `MzPushReceiver` 中存在 `onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder)`方法。在目前较新的Flyme系统已经不再需要专门进行状态栏图标的设置，此方法是作用于兼容旧版本Flyme系统中设置消息弹出后状态栏中的小图标。   
-**注意：** 请按“接入步骤”中提示，在相应的drawable不同分辨率文件夹下放置一张名称务必为mz_push_notification_small_icon的图片，并调用 `pushNotificationBuilder.setmStatusbarIcon(R.drawable.mz_push_notification_small_icon)`;
+在 `MzPushReceiver` 中存在 `onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder)`方法。在目前较新的Flyme系统已经不再需要专门进行状态栏图标的设置，此方法是作用于兼容旧版本Flyme系统中设置消息弹出后状态栏中的小图标。设置小图标代码如下：   
+```java
+@Override
+public void onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder){
+    pushNotificationBuilder.setmStatusbarIcon(R.drawable.mz_push_notification_small_icon);
+}
+```  
+**注意：** 请在相应的drawable不同分辨率文件夹下放置一张名称**务必**为mz_push_notification_small_icon的图片。
 
 ### 6.3 透传功能回调<a name="adpter_transparent_callback"/>
-在 `MzPushReceiver` 中存在三个透传功能的回调方法： `onMessage(Context context,Intent intent)` 、 `onMessage(Context context,String message)` 以及 `onMessage(Context context,String message,String platformExtra)` 。   
+在 `MzPushReceiver` 中存在三个透传功能的回调方法：
+```java
+onMessage(Context context,Intent intent)
+onMessage(Context context,String message)
+onMessage(Context context,String message,String platformExtra)
+```     
 第一个带 Intent 参数的方法，是在Flyme3系统中处理透传消息使用。  
 第二个带一个 String 方法 和 第三个带两个 String 方法会同时回调透传消息，带三个参数的方法中额外增加一个平台参数，格式如：`{"task_id":"1232"}`  
 **注意：** 目前如果要处理透传消息的回调，只使用`onMessage(Context context,String message,String platformExtra)`方法即可。
@@ -357,12 +386,24 @@ String value = getIntent().getStringExtra("key")
 “接入步骤”的“注册消息接收的广播”中可见，广播注册中兼容 Flyme3 的两个action声明，按提示接入即可。
 
 ### 6.7 通知栏消息点击回调方法<a name="adpter_notification_clicked_callback"/>
-过去版本中，`MzPushReceiver` 的 `onNotificationClicked` 方法是：`onNotificationClicked(Context context, String title, String content, String selfDefineContentString)`  
-而目前版本中，方法是：`onNotificationClicked(Context context, MzPushMessage mzPushMessage)`
+过去版本中，`MzPushReceiver` 的 `onNotificationClicked` 方法是：  
+```java
+onNotificationClicked(Context context, String title, String content, String selfDefineContentString)
+```  
+而目前版本中，方法是：  
+```java
+onNotificationClicked(Context context, MzPushMessage mzPushMessage)
+```
 
 ### 6.8 通知栏消息展示回调方法<a name="adpter_notification_arrived_callback"/>
-过去版本中，`MzPushReceiver` 的 `onNotificationArrived` 方法是：`onNotificationArrived(Context context, String title, String content, String selfDefineContentString)`  
-而目前版本中，方法是：`onNotificationArrived(Context context, MzPushMessage mzPushMessage)`
+过去版本中，`MzPushReceiver` 的 `onNotificationArrived` 方法是：  
+```java
+onNotificationArrived(Context context, String title, String content, String selfDefineContentString)
+```    
+而目前版本中，方法是：  
+```java
+onNotificationArrived(Context context, MzPushMessage mzPushMessage)
+```
 
 ## 7 常见问题<a name= "faq"/>
 
@@ -383,7 +424,7 @@ String value = getIntent().getStringExtra("key")
 ### 问题2：为什么执行了订阅后一直没有收到广播回调？<a name="question_2"/>
 1. 请检查您手机网络是否稳定畅通，尝试切换网络后重试。  
 2. MzPushMessageReceiver广播中的回调方法里onRegister方法已经废除，正常情况下会在onRegisterStatus方法中回调，请检查是否使用错误。  
-3. 请检查接入PushSDK的过程是否存在错误（接入过程可参考文档），包括：AndroidManifest.xml中权限的声明、广播的定义，广播必须继承MzPushMessageReceiver，如下图。  
+3. 请检查接入PushSDK的过程是否存在错误（可参考文档中“接入步骤”），包括：AndroidManifest.xml中权限的声明、广播的定义，广播必须继承MzPushMessageReceiver，如下图。  
 ![image](download/question_2.3.png)  
 4. 不要在您的App中去实现多个MzPushMessageReceiver，因为只会回调其中一个。  
 5. 手机【系统设置】-【应用管理】-【所有应用】点击右上角【显示系统服务应用】找到【推送服务】和【您自己的App】，如下图，分别进行“清除数据”，然后重启手机，待手机启动后再次执行一次订阅操作。<a name="question_2_5"/>  
