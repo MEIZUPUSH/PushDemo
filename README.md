@@ -441,7 +441,7 @@ onNotificationArrived(Context context, MzPushMessage mzPushMessage)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;“通知栏开关”，若为关，请执行`PushSDK中PushManager.switchPush(Context context,String appId,String appKey,String pushId,int pushType,boolean switcher)`方法进行打开；  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;“系统通知栏开关”，若为关，解决方法请见[“问题5”](#question_5)；  
 &nbsp;&nbsp;d) 【推送测试】中输入刚才获得的PushId，并点击“推送”按钮，下方显示“已推送 msgId：xxx”代表已经成功发送测试通知。  
-3. 弹出消息时是否存在<font color=#ff0000>Invalid notification (no valid small icon)</font> 异常日志输出？这是设置通知栏图标异常，如果开启了像Andresguard之类的资源路径混淆，尝试在whiteList中添加：R.drawable.stat_sys_third_app_notify。  
+3. 弹出消息时是否存在<font color=#ff0000>Invalid notification (no valid small icon)</font> 异常日志输出？这是设置通知栏图标异常，如果开启了像AndResGuard之类的资源路径混淆，尝试在whiteList中添加：R.drawable.stat_sys_third_app_notify。  
 4. 在较老的Flyme系统也出现<font color=#ff0000>Invalid notification (no valid small icon)</font> 异常的话，还可以在drawable不同分辨率文件夹下放置一张名为mz_push_notification_small_icon的图片，并在onUpdateNotificationBuilder回调方法中按文档说明进行设置通知栏小  
 
 ### 问题4：为什么手机一直连着网络，但还是显示处于离线状态？<a name="question_4"/>  
@@ -468,7 +468,7 @@ onNotificationArrived(Context context, MzPushMessage mzPushMessage)
 手机卸载了App或者App不活跃一个月。  
 
 ### 问题10：收到的推送消息可以对其进行删除吗？<a name="question_10"/>  
-不支持使用常规通知栏方法NotificationManager.ancel()删除，但可以使用 `PushManager.clearNotification(Context context, int notifyId)` 进行删除。  
+不支持使用常规通知栏方法NotificationManager.cancel()删除，但可以使用 `PushManager.clearNotification(Context context, int notifyId)` 进行删除。  
 
 ### 问题11：通知到达后，会收到回调吗？<a name="question_11"/>  
 不一定，当通知到达后且App进程存在的情况下才会收到 `MzPushMessageReceiver` 的 `onNotificationArrived` 回调。  
