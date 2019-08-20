@@ -21,8 +21,8 @@ android {
         applicationId /*"com.meizu.pushdemo"*/ appPackageName
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 383
-        versionName "3.8.3"
+        versionCode 384
+        versionName "3.8.4"
 
         manifestPlaceholders = [APP_ID: appId, APP_KEY: appKey, PACKAGE_NAME: appPackageName]
     }
@@ -41,6 +41,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'org.greenrobot:eventbus:3.0.0'
 
-    compile(group: 'com.meizu.flyme.internet', name: 'push-internal', version: '3.8.3', ext: 'aar')
+    compile(group: 'com.meizu.flyme.internet', name: 'push-internal', version: '3.8.4', ext: 'aar')
 //    compile project(':push-internal-publish')
 }

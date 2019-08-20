@@ -18,7 +18,7 @@
         * [5.2.2 打开URI](#open_uri)
         * [5.2.3 客户端自定义](#self_sefine_contentString)
 * [6 历史变更和兼容](#adpter_flyme)
-    * [6.1 订阅和反订阅接口变更](#adpter_register)
+    * [6.1 订阅和取消订阅接口变更](#adpter_register)
     * [6.2 设置通知的状态栏小图标](#adpter_small_icon)
     * [6.3 透传功能回调](#adpter_transparent_callback)
     * [6.4 透传功能停用](#transparent_stoped)
@@ -33,6 +33,10 @@
 [jcenter获取][bintray-releases] &nbsp;&nbsp;&nbsp;&nbsp; [官网下载AAR][official-releases]
 
 ## 2 更新日志<a name="update_logs"/>
+### [2019-08-21]V3.8.4
+* 移除敏感无用的权限声明
+* 移除旧版订阅和取消订阅回调方法的声明
+
 ### [2019-07-01]V3.8.3
 * 修复一些安全漏洞和若干BUG
 * 优化内部推送逻辑
@@ -66,8 +70,8 @@
 * 通知栏删除接口增加一次删除多个NotifyID的功能一次可传入多个notifyId
 
 ### [2017-11-13]```重要变更```V3.5.0
-* 增加通知栏清除功能,通知栏消息聚合功能,[具体详见PushManager API](#push_manager_api)
-* MzPushMessageReceiver 接口重大变更,[具体详见MzPushMessageReceiver回调修改说明](#mz_pushreceiver_callback)
+* 增加通知栏清除功能,通知栏消息聚合功能
+* MzPushMessageReceiver 接口重大变更
 * 优化数据上报逻辑,提升数据上报准确度
 * 一些已知问题的修改
 
@@ -123,7 +127,7 @@ PushSDK 3.0 以后的版本使用了aar包方式，因此对于一些通用的�
 我们已经将PushSDK发布到jcenter，您只需要在工程gradle文件中进行如下依赖配置：  
 ```
     dependencies {
-        compile 'com.meizu.flyme.internet:push-internal:3.8.3'
+        compile 'com.meizu.flyme.internet:push-internal:3.8.4'
     }
 ```  
 **注意：** 如果由于各种原因不能使用jcenter依赖，还可以直接下载AAR包进行手动集成：[点击下载][official-releases]。
@@ -168,58 +172,89 @@ PushSDK 3.0 以后的版本使用了aar包方式，因此对于一些通用的�
 ```java
 public class MyPushMsgReceiver extends MzPushMessageReceiver {
 
-    @Override
-    @Deprecated
-    public void onRegister(Context context, String s) {
-        // 调用旧版的订阅 PushManager.register(context) 方法后，会在此回调订阅状态（已废弃）
-    }
-
-    @Override
-    @Deprecated
-    public void onUnRegister(Context context, boolean b) {
-        // 调用旧版的反订阅 PushManager.unRegister(context) 方法后，会在此回调反订阅状态（已废弃）
-    }
-
+    /**
+     * 调用订阅方法后，会在此方法回调结果
+     * 订阅方法：PushManager.register(context, appId, appKey)
+     * @param context
+     * @param registerStatus
+     */
     @Override
     public void onRegisterStatus(Context context, RegisterStatus registerStatus) {
-        // 调用新版的订阅 PushManager.register(context,appId,appKey) 方法后，会在此回调订阅状态
     }
 
+    /**
+     * 调用取消订阅方法后，会在此方法回调结果
+     * 取消订阅方法：PushManager.unRegister(context, appId, appKey)
+     * @param context
+     * @param unRegisterStatus
+     */
     @Override
     public void onUnRegisterStatus(Context context, UnRegisterStatus unRegisterStatus) {
-        // 调用新版的反订阅 PushManager.unRegister(context,appId,appKey) 方法后，会在此回调订阅状态
     }
-    
+
+    /**
+     * 调用开关转换或检查开关状态方法后，会在此方法回调开关状态
+     * 通知栏开关转换方法：PushManager.switchPush(context, appId, appKey, pushId, pushType, switcher)
+     * 检查开关状态方法：PushManager.checkPush(context, appId, appKey, pushId)
+     * @param context
+     * @param pushSwitchStatus
+     */
     @Override
     public void onPushStatus(Context context, PushSwitchStatus pushSwitchStatus) {
-        // 调用 PushManager.switchPush/checkPush 方法后，会在此回调通知栏和透传消息的开关状态
     }
 
+    /**
+     * 调用标签订阅、取消标签订阅、取消所有标签订阅和获取标签列表方法后，会在此方法回调标签相关信息
+     * 标签订阅方法：PushManager.subScribeTags(context, appId, appKey, pushId, tags)
+     * 取消标签订阅方法：PushManager.unSubScribeTags(context, appId, appKey, pushId,tags)
+     * 取消所有标签订阅方法：PushManager.unSubScribeAllTags(context, appId, appKey, pushId)
+     * 获取标签列表方法：PushManager.checkSubScribeTags(context, appId, appKey, pushId)
+     * @param context
+     * @param subTagsStatus
+     */
     @Override
     public void onSubTagsStatus(Context context, SubTagsStatus subTagsStatus) {
-        // 调用 PushManager.subScribeTags/unSubScribeTags/unSubScribeAllTags/checkSubScribeTags 方法后，会在此回调标签相关信息
     }
 
+    /**
+     * 调用别名订阅、取消别名订阅和获取别名方法后，会在此方法回调别名相关信息
+     * 别名订阅方法：PushManager.subScribeAlias(context, appId, appKey, pushId, alias)
+     * 取消别名订阅方法：PushManager.unSubScribeAlias(context, appId, appKey, pushId, alias)
+     * 获取别名方法：PushManager.checkSubScribeAlias(context, appId, appKey, pushId)
+     * @param context
+     * @param subAliasStatus
+     */
     @Override
     public void onSubAliasStatus(Context context, SubAliasStatus subAliasStatus) {
-        // 调用 PushManager.subScribeAlias/unSubScribeAlias/checkSubScribeAlias/checkSubScribeTags 方法后，会在此回调别名相关信息
     }
-        
+
+    /**
+     * 兼容旧版本Flyme系统中设置消息弹出后状态栏中的小图标
+     * 同时请在相应的drawable不同分辨率文件夹下放置一张名称务必
+     * 为mz_push_notification_small_icon的图片
+     * @param pushNotificationBuilder
+     */
     @Override
     public void onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder){
-        // 兼容旧版本Flyme系统中设置消息弹出后状态栏中的小图标
-        // 同时请在相应的drawable不同分辨率文件夹下放置一张名称务必为mz_push_notification_small_icon的图片
         pushNotificationBuilder.setmStatusbarIcon(R.drawable.mz_push_notification_small_icon);
     }
 
+    /**
+     * 当用户点击通知栏消息后会在此方法回调
+     * @param context
+     * @param mzPushMessage
+     */
     @Override
     public void onNotificationClicked(Context context, MzPushMessage mzPushMessage) {
-        // 当用户点击通知栏消息后会在此方法回调
     }
 
+    /**
+     * 当推送的通知栏消息展示后且应用进程存在时会在此方法回调
+     * @param context
+     * @param mzPushMessage
+     */
     @Override
     public void onNotificationArrived(Context context, MzPushMessage mzPushMessage) {
-        // 当推送的通知栏消息展示后且应用进程存在时会在此方法回调
     }
 }
 ```
@@ -234,7 +269,7 @@ PushManager.register(this, APP_ID, APP_KEY);
 | 方法名称      | 方法说明| 使用建议|对应MzPushReceiver回调方法|
 | :--------: | :--------:| :--: |:--: |
 |register(Context context,String appId,String appKey)|订阅|建议在Application onCreate中调用|onRegisterStatus(Context context,RegisterStatus registerStatus)|
-|unRegister(Context context,String appId,String appKey)|反订阅|取消所有推送时使用，请慎用，若取消订阅,将有可能停止所有推送|onUnRegisterStatus(Context context,UnRegisterStatus unRegisterStatus)|
+|unRegister(Context context,String appId,String appKey)|取消订阅|取消所有推送时使用，请慎用，若取消订阅,将有可能停止所有推送|onUnRegisterStatus(Context context,UnRegisterStatus unRegisterStatus)|
 |subScribeTags(Context context,String appId,String appKey,String pushId,String tags)|标签订阅|无|onSubTagsStatus(Context context,SubTagsStatus subTagsStatus)|
 |unSubScribeTags(Context context, String appId, String appKey, String pushId,String tags)|取消标签订阅|无|onSubTagsStatus(Context context,SubTagsStatus subTagsStatus)|
 |unSubScribeAllTags(Context context, String appId, String appKey, String pushId)|取消所有标签订阅|无|onSubTagsStatus(Context context,SubTagsStatus subTagsStatus)|
@@ -262,10 +297,8 @@ PushManager.register(this, APP_ID, APP_KEY);
 
 | 方法名称      | 方法说明| 使用建议|
 | :--------: | :--------:| :--------:|
-|~~onRegister(Context context,String pushId)~~|旧版订阅回调|已废弃|
-|~~onUnRegister(Context context,boolean success)~~|旧版反订阅回调|已废弃|
 |onRegisterStatus(Context context,RegisterStatus registerStatus)|订阅回调|无|
-|onUnRegisterStatus(Context context,UnRegisterStatus unRegisterStatus)|反订阅回调|无|
+|onUnRegisterStatus(Context context,UnRegisterStatus unRegisterStatus)|取消订阅回调|无|
 |onPushStatus(Context context,PushSwitchStatus pushSwitchStatus)|通知栏和透传消息开关状态回调|无|
 |onSubTagsStatus(Context context,SubTagsStatus subTagsStatus)|标签状态回调|无|
 |onSubAliasStatus(Context context,SubAliasStatus subAliasStatus)|别名状态回调|无|
@@ -331,8 +364,8 @@ String value = getIntent().getStringExtra("key")
 ## 6 历史变更和兼容<a name="adpter_flyme"/>
 魅族推送服务经历几次大的变更，从之前的C2DM，到现在可以完全脱离Flyme平台作为一种完全开放给第三方应用的SDK，在这个阶段出现多种接入方式，给以后的应用接入带来极大的困扰，魅族PushSDK极力在减少Flyme版本迭代给应用接入带来的麻烦，但应用还是需要做细小的更改才能做到与低版本Flyme的兼容。
 
-### 6.1 订阅和反订阅接口变更<a name="adpter_register"/>
-过去版本中，订阅和反订阅接口是使用了 `PushManager` 的以下方法：  
+### 6.1 订阅和取消订阅接口变更<a name="adpter_register"/>
+过去版本中，订阅和取消订阅接口是使用了 `PushManager` 的以下方法：  
 ```java
 register(Context context);
 unRegister(Context context);
@@ -342,7 +375,7 @@ unRegister(Context context);
 onRegister(Context context,String pushId)
 onUnRegister(Context context,boolean success)
 ```  
-而目前版本中，订阅和反订阅接口已经换成了 `PushManager` 的以下方法：  
+而目前版本中，订阅和取消订阅接口已经换成了 `PushManager` 的以下方法：  
 ```java
 register(Context context,String appId,String appKey)
 unRegister(Context context,String appId,String appKey)
@@ -411,7 +444,7 @@ onNotificationArrived(Context context, MzPushMessage mzPushMessage)
 **Flyme推送：**  
 * 后台：[http://push.meizu.com/](http://push.meizu.com/)  
 * SDK：[http://open-wiki.flyme.cn/doc-wiki/index#id?74](http://open-wiki.flyme.cn/doc-wiki/index#id?74)  
-* 文档：[http://open-wiki.flyme.cn/doc-wiki/index#id?73](http://open-wiki.flyme.cn/doc-wiki/index#id?73)  
+* 文档：[http://open-wiki.flyme.cn/doc-wiki/index#id?129](http://open-wiki.flyme.cn/doc-wiki/index#id?129)  
 * Demo：[https://github.com/MEIZUPUSH/PushDemo](https://github.com/MEIZUPUSH/PushDemo)  
 	  
 **集成推送**<font color=#565656>（集成了：魅族、华为、小米、OPPO等多平台推送）</font>：  
@@ -445,12 +478,12 @@ onNotificationArrived(Context context, MzPushMessage mzPushMessage)
 4. 在较老的Flyme系统也出现<font color=#ff0000>Invalid notification (no valid small icon)</font> 异常的话，还可以在drawable不同分辨率文件夹下放置一张名为mz_push_notification_small_icon的图片，并在onUpdateNotificationBuilder回调方法中按文档说明进行设置通知栏小  
 
 ### 问题4：为什么手机一直连着网络，但还是显示处于离线状态？<a name="question_4"/>  
-手机离线状态并不是指没连网络，而是推送服务的客户端跟推送服务器无法建立长连接，常见于网络不稳动或者开发过程中，可按以下每个步骤进行修复。  
-1.	尝试断开网络再进行重连或者移动网络和Wi-Fi网络互相切换一下，再重试。  
-2.	再次执行一次订阅操作，再重试。  
-3.	重启手机，再重试。  
-4.	手机【系统设置】-【应用管理】-【所有应用】点击右上角【显示系统服务应用】找到【推送服务】和【您自己的App】<font color=#565656>（操作如[“问题2”](#question_2_5)中第5点插图）</font>，分别进行“清除数据”，然后重启手机，待手机启动后再次执行一次订阅操作，再重试。  
-5.	查看您手机Flyme版本，对于Flyme5或以下较老的系统若进行以上操作后还是处于离线状态，那么等待几分钟后再重试，同时建议对手机系统进行升级。  
+手机离线状态并不是指没连网络，而是手机上推送服务<font color=#565656>(系统进程)</font>跟推送服务器无法建立长连接，常见于网络不稳动或者开发过程中，可按以下每个步骤进行修复。 
+1. 尝试断开网络再进行重连或者移动网络和Wi-Fi网络互相切换一下，再重试。  
+2. 再次执行一次订阅操作，再重试。  
+3. 重启手机，再重试。  
+4. 手机【系统设置】-【应用管理】-【所有应用】点击右上角【显示系统服务应用】找到【推送服务】和【您自己的App】<font color=#565656>（操作如[“问题2”](#question_2_5)中第5点插图）</font>，分别进行“清除数据”，然后重启手机，待手机启动后再次执行一次订阅操作，再重试。  
+5. 查看您手机Flyme版本，对于Flyme5或以下较老的系统若进行以上操作后还是处于离线状态，那么等待几分钟后再重试，同时建议对手机系统进行升级。  
 
 ### 问题5：问题排查中，“系统通知栏开关”是关闭状态，该如何打开？<a name="question_5"/>  
 打开您手机中【手机管家】-【权限管理】-【通知管理】，找到您的App，把“通知消息”勾上，然后在手机【系统设置】-【应用管理】-【所有应用】点击右上角【显示系统服务应用】找到【推送服务】和【您自己的App】<font color=#565656>（操作如[“问题2”](#question_2_5)中第5点插图）</font>，进行“清除数据”，然后重启手机，待手机启动后再次执行一次订阅操作，这样便会触发系统通知栏开关状态的上传，完成操作后再到问题排查中查看状态是否发生变化。  
@@ -459,7 +492,8 @@ onNotificationArrived(Context context, MzPushMessage mzPushMessage)
 先查看输出日志中是否存在：<font color=#ff0000>Click message StartActivity error</font>或者<font color=#ff0000>android.content.ActivityNotFoundException</font>异常。Flyme推送支持打开内部非对外的Activity，只要在平台上配置好完整的名称即可，同时请确保名称拼写正确以及名称前后不能含有空格等特殊字符。  
 
 ### 问题7：Debug版本正常但在Release版本中报异常是什么原因？<a name="question_7"/>
-常见于数据反序列化过程中异常，请检查Release中是否对APK进行了加固或者字符串的混淆之类的操作，如果是请对com.meizu.cloud进行过滤。  
+1. 常见于数据反序列化过程中异常，请检查Release中是否对APK进行了加固或者字符串的混淆之类的操作，如果是请对com.meizu.cloud进行过滤。  
+2. 如果您正在使用Android Studio 3.4或以上版本出现该问题，那是因为Android Studio默认开启了R8混淆导致的。解决方法：请在gradle.properties中添加 android.enableR8 = false 进行解决。
 
 ### 问题8：接入PushSDK后编译不过什么原因？/ PushSDK有离线包吗？<a name="question_8"/>  
 如果由于各种原因不能使用jcenter依赖，还可以直接下载AAR包进行手动集成：[点击下载][official-releases]。   
