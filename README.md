@@ -454,7 +454,7 @@ onNotificationArrived(Context context, MzPushMessage mzPushMessage)
 * Demo：[https://github.com/comsince/ups_meizu_pushsdk](https://github.com/comsince/ups_meizu_pushsdk)  
 
 ### 问题2：为什么执行了订阅后一直没有收到广播回调？<a name="question_2"/>
-1. 请检查您手机网络是否稳定畅通，尝试切换网络后重试。  
+1. 请检查您手机网络是否设置了代理、是否稳定畅通，尝试切换网络后重试。  
 2. MzPushMessageReceiver广播中的回调方法里onRegister方法已经废除，正常情况下会在onRegisterStatus方法中回调，请检查是否使用错误。  
 3. 请检查接入PushSDK的过程是否存在错误（可参考文档中“接入步骤”），包括：AndroidManifest.xml中权限的声明、广播的定义，广播必须继承MzPushMessageReceiver，如下图。  
 ![image](download/question_2.3.png)  
@@ -475,7 +475,8 @@ onNotificationArrived(Context context, MzPushMessage mzPushMessage)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;“系统通知栏开关”，若为关，解决方法请见[“问题5”](#question_5)；  
 &nbsp;&nbsp;d) 【推送测试】中输入刚才获得的PushId，并点击“推送”按钮，下方显示“已推送 msgId：xxx”代表已经成功发送测试通知。  
 3. 弹出消息时是否存在<font color=#ff0000>Invalid notification (no valid small icon)</font> 异常日志输出？这是设置通知栏图标异常，如果开启了像AndResGuard之类的资源路径混淆，尝试在whiteList中添加：R.drawable.stat_sys_third_app_notify。  
-4. 在较老的Flyme系统也出现<font color=#ff0000>Invalid notification (no valid small icon)</font> 异常的话，还可以在drawable不同分辨率文件夹下放置一张名为mz_push_notification_small_icon的图片，并在onUpdateNotificationBuilder回调方法中按文档说明进行设置通知栏小  
+4. 在较老的Flyme系统也出现<font color=#ff0000>Invalid notification (no valid small icon)</font> 异常的话，还可以在drawable不同分辨率文件夹下放置一张名为mz_push_notification_small_icon的图片，并在onUpdateNotificationBuilder回调方法中按文档说明进行设置通知栏小图标。  
+5. 请检查手机日期和时间是否正确。 
 
 ### 问题4：为什么手机一直连着网络，但还是显示处于离线状态？<a name="question_4"/>  
 手机离线状态并不是指没连网络，而是手机上推送服务<font color=#565656>(系统进程)</font>跟推送服务器无法建立长连接，常见于网络不稳动或者开发过程中，可按以下每个步骤进行修复。 
