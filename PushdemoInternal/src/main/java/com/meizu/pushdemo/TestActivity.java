@@ -17,7 +17,7 @@ public class TestActivity extends Activity {
         super.onCreate(savedInstanceState);
         String extra = getIntent().getStringExtra("start_fragment");
         Intent intent = getIntent();
-        String platformExtra = intent.getStringExtra(PushConstants.MZ_PUSH_PLATFROM_EXTRA);
+        String platformExtra = intent.getStringExtra(PushConstants.MZ_PUSH_PLATFORM_EXTRA);
         DebugLogger.i("TestActivity", "MzPushMessageReceiver " + extra+" "+platformExtra);
     }
 }

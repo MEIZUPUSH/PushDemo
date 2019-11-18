@@ -228,7 +228,7 @@ PushSDK3.0以后的版本使用了最新的魅族插件发布aar包，因此大�
           <!-- 兼容低版本Flyme3推送服务配置 -->
           <action android:name="com.meizu.c2dm.intent.REGISTRATION" />
           <action android:name="com.meizu.c2dm.intent.RECEIVE" />
-          <category android:name="包名"></category>
+          <category android:name="包名"/>
       </intent-filter>
   </receiver>
 ```

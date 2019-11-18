@@ -4,5 +4,6 @@
     <string name="app_name">Flyme推送</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="local_service_started">PushService Running</string>
+    <string name="notification_content">PushService Running</string>
+    <string name="notification_title">PushService foreground</string>
 </resources>

@@ -3,13 +3,14 @@
     package="com.meizu.pushdemo" >
 
 
-    <uses-permission android:name="com.meizu.flyme.push.permission.RECEIVE"></uses-permission>
+    <uses-permission android:name="com.meizu.flyme.push.permission.RECEIVE" />
     <permission android:name="${PACKAGE_NAME}.push.permission.MESSAGE" android:protectionLevel="signature"/>
-    <uses-permission android:name="${PACKAGE_NAME}.push.permission.MESSAGE"></uses-permission>
+
+    <uses-permission android:name="${PACKAGE_NAME}.push.permission.MESSAGE" />
 
     <uses-permission android:name="com.meizu.c2dm.permission.RECEIVE" />
-    <permission android:name="${PACKAGE_NAME}.permission.C2D_MESSAGE"
-                android:protectionLevel="signature"></permission>
+
+    <permission android:name="${PACKAGE_NAME}.permission.C2D_MESSAGE" android:protectionLevel="signature" />
     <uses-permission android:name="${PACKAGE_NAME}.permission.C2D_MESSAGE"/>
 
     <!--地理位置信息权限，仅作测试之用 -->
@@ -53,7 +54,7 @@
                 <action android:name="com.meizu.c2dm.intent.REGISTRATION" />
                 <action android:name="com.meizu.c2dm.intent.RECEIVE" />
 
-                <category android:name="${PACKAGE_NAME}"></category>
+                <category android:name="${PACKAGE_NAME}" />
             </intent-filter>
 
 

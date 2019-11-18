@@ -2,8 +2,6 @@ package com.meizu.pushdemo;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,7 +12,6 @@ import com.meizu.cloud.pushsdk.MzPushMessageReceiver;
 import com.meizu.cloud.pushsdk.PushManager;
 import com.meizu.cloud.pushsdk.handler.MzPushMessage;
 import com.meizu.cloud.pushsdk.notification.PushNotificationBuilder;
-import com.meizu.cloud.pushsdk.platform.PlatformMessageSender;
 import com.meizu.cloud.pushsdk.platform.message.PushSwitchStatus;
 import com.meizu.cloud.pushsdk.platform.message.RegisterStatus;
 import com.meizu.cloud.pushsdk.platform.message.SubAliasStatus;
@@ -23,8 +20,6 @@ import com.meizu.cloud.pushsdk.platform.message.UnRegisterStatus;
 import com.meizu.pushdemo.events.ThroughMessageEvent;
 
 import org.greenrobot.eventbus.EventBus;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by liaojinlong on 15-6-28.
@@ -33,16 +28,8 @@ public class PushMsgReceiver extends MzPushMessageReceiver {
     private static final String TAG = "MzPushMessageReceiver";
 
     @Override
-    @Deprecated
-    public void onRegister(Context context, String s) {
-        DebugLogger.i(TAG, "onRegister pushID " + s);
-        print(context, "receive pushID " + s);
-    }
-
-    @Override
     public void onMessage(Context context, String s) {
         DebugLogger.i(TAG, "onMessage " + s);
-        //print(context,context.getPackageName() + " receive message " + s);
         EventBus.getDefault().post(new ThroughMessageEvent(s));
     }
 
@@ -56,26 +43,7 @@ public class PushMsgReceiver extends MzPushMessageReceiver {
     @Override
     public void onMessage(Context context, String message, String platformExtra) {
         Log.i(TAG, "onMessage " + message +" platformExtra "+platformExtra);
-        //print(context,context.getPackageName() + " receive message " + s);
         EventBus.getDefault().post(new ThroughMessageEvent(message+platformExtra));
-
-
-        // 测试直达服务
-//        try {
-//            JSONObject all = new JSONObject(message);
-//            String notificationMessage = all.getString("push");
-//            DebugLogger.e(TAG,"notificationMessage "+notificationMessage);
-//            PlatformMessageSender.showQuickNotification(context,notificationMessage,platformExtra);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-    }
-
-    @Override
-    @Deprecated
-    public void onUnRegister(Context context, boolean b) {
-        DebugLogger.i(TAG, "onUnRegister " + b);
-        print(context,context.getPackageName() + " onUnRegister " + b);
     }
 
     @Override
@@ -110,13 +78,8 @@ public class PushMsgReceiver extends MzPushMessageReceiver {
 
     @Override
     public void onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder) {
-        //pushNotificationBuilder.setmLargIcon(R.drawable.flyme_status_ic_notification);
-        pushNotificationBuilder.setmStatusbarIcon(R.drawable.mz_push_notification_small_icon);
-//        pushNotificationBuilder.setAppLabel("测试标签");
-//        if(pushNotificationBuilder.getContext()!= null){
-//            pushNotificationBuilder.setAppLargeIcon(BitmapFactory.decodeResource(pushNotificationBuilder.getContext().getResources(),R.drawable.upspush));
-//        }
-        DebugLogger.e(TAG,"current clickpacakge "+pushNotificationBuilder.getClickPackageName());
+        pushNotificationBuilder.setStatusBarIcon(R.drawable.mz_push_notification_small_icon);
+        DebugLogger.e(TAG,"current click package "+pushNotificationBuilder.getClickPackageName());
     }
 
     @Override
@@ -124,7 +87,7 @@ public class PushMsgReceiver extends MzPushMessageReceiver {
         DebugLogger.i(TAG, "onNotificationArrived title " + mzPushMessage.getTitle() + "content "
                 + mzPushMessage.getContent() + " selfDefineContentString " + mzPushMessage.getSelfDefineContentString()+" notifyId "+mzPushMessage.getNotifyId());
         MainActivity.notifyIdList.add(mzPushMessage.getNotifyId());
-        DebugLogger.e(TAG,"current notifyid "+MainActivity.notifyIdList);
+        DebugLogger.e(TAG,"current notification id "+MainActivity.notifyIdList);
     }
 
     @Override

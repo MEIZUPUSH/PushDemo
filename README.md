@@ -1,4 +1,4 @@
-# 魅族推送 PushSDK3 说明文档
+﻿# 魅族推送 PushSDK3 说明文档
 
 ## 目录<a name="index"/>
 * [1 获取](#download)
@@ -9,23 +9,23 @@
     * [3.3 注册消息接收的广播](#register_broadcast)
     * [3.4 实现消息接收的广播](#realize_broadcast)
 * [4 功能说明](#functional_description) 
-    * [4.1 PushManager接口说明](#pushmanager_description)
-    * [4.2 MzPushReceiver回调方法说明](#mzpushreceiver_description)
+    * [4.1 PushManager接口说明](#push_manager_description)
+    * [4.2 MzPushReceiver回调方法说明](#mz_push_receiver_description)
 * [5 通知栏消息推送原理](#notification_description)
     * [5.1 通知的生成](#notification_create)
     * [5.2 通知的点击](#notification_click)
         * [5.2.1 打开应用主页 和 打开应用内页面](#open_page)
         * [5.2.2 打开URI](#open_uri)
-        * [5.2.3 客户端自定义](#self_sefine_contentString)
-* [6 历史变更和兼容](#adpter_flyme)
-    * [6.1 订阅和取消订阅接口变更](#adpter_register)
-    * [6.2 设置通知的状态栏小图标](#adpter_small_icon)
-    * [6.3 透传功能回调](#adpter_transparent_callback)
-    * [6.4 透传功能停用](#transparent_stoped)
-    * [6.5 声明权限](#adpter_declare_permissions)
-    * [6.6 MzPushMessageReceiver action 声明](#adpter_receiver_action)
-    * [6.7 通知栏消息点击回调方法](#adpter_notification_clicked_callback)
-    * [6.8 通知栏消息展示回调方法](#adpter_notification_arrived_callback)
+        * [5.2.3 客户端自定义](#self_definition_contentString)
+* [6 历史变更和兼容](#adaptation_flyme)
+    * [6.1 订阅和取消订阅接口变更](#adaptation_register)
+    * [6.2 设置通知的状态栏小图标](#adaptation_small_icon)
+    * [6.3 透传功能回调](#adaptation_transparent_callback)
+    * [6.4 透传功能停用](#transparent_stop_using)
+    * [6.5 声明权限](#adaptation_declare_permissions)
+    * [6.6 MzPushMessageReceiver action 声明](#adaptation_receiver_action)
+    * [6.7 通知栏消息点击回调方法](#adaptation_notification_clicked_callback)
+    * [6.8 通知栏消息展示回调方法](#adaptation_notification_arrived_callback)
 * [7 常见问题](#faq)
 * [8 反馈与建议](#feed_back)    
 
@@ -33,6 +33,10 @@
 [jcenter获取][bintray-releases] &nbsp;&nbsp;&nbsp;&nbsp; [官网下载AAR][official-releases]
 
 ## 2 更新日志<a name="update_logs"/>
+### [2019-11-18]V3.8.6
+* 修复若干BUG
+* 移除敏感无用的代码
+
 ### [2019-08-21]V3.8.4
 * 移除敏感无用的权限声明
 * 移除旧版订阅和取消订阅回调方法的声明
@@ -83,7 +87,7 @@
 *  增加应用拉活功能
 
 ### [2017-05-18]V3.3.170518
-*  增加内存缓存数据上报策略,解决Sqlite数据库无法读取的错误
+*  增加内存缓存数据上报策略,解决SQLite数据库无法读取的错误
 
 ### [2017-04-26]V3.3.170505
 *  优化PushManager逻辑
@@ -94,7 +98,7 @@
 ### [2017-03-29]V3.3.170329
 *  外部应用设置状态栏图标也能正确显示
 *  优化log输出逻辑,日志按天输出
-*  修复intent.parseuri的安全漏洞,但是打开应用某个界面必须填写Activity的全路径
+*  修复intent.parseUri的安全漏洞,但是打开应用某个界面必须填写Activity的全路径
 *  增加统一修改通知栏和透传消息开关的接口
 *  增加取消所有标签接口
 *  优化一些性能问题
@@ -124,17 +128,17 @@
 PushSDK 3.0 以后的版本使用了aar包方式，因此对于一些通用的权限配置，工程混淆，App接入时不需要再进行配置了，只需要按以下步骤简单接入即可。
 
 ### 3.1 配置依赖<a name="config_dependencies"/>
-我们已经将PushSDK发布到jcenter，您只需要在工程gradle文件中进行如下依赖配置：  
+我们已经将PushSDK发布到JCenter，您只需要在工程gradle文件中进行如下依赖配置：  
 ```
     dependencies {
-        compile 'com.meizu.flyme.internet:push-internal:3.8.4'
+        compile 'com.meizu.flyme.internet:push-internal:3.8.6'
     }
 ```  
-**注意：** 如果由于各种原因不能使用jcenter依赖，还可以直接下载AAR包进行手动集成：[点击下载][official-releases]。
+**注意：** 如果由于各种原因不能使用JCenter依赖，还可以直接下载AAR包进行手动集成：[点击下载][official-releases]。
   
 ### 3.2 声明权限<a name="declare_permissions"/>
 在您工程AndroidManifest.xml中进行以下权限的声明：  
-```xml
+```
   <!-- 兼容Flyme5以下版本，魅族内部接入PushSDK必填，不然无法收到消息-->
   <uses-permission android:name="com.meizu.flyme.push.permission.RECEIVE" />
   <permission android:name="【替换您的包名】.push.permission.MESSAGE" android:protectionLevel="signature"/>
@@ -150,7 +154,7 @@ PushSDK 3.0 以后的版本使用了aar包方式，因此对于一些通用的�
 在您工程AndroidManifest.xml中进行消息接收广播的声明：  
 ```xml
   <!-- push应用定义消息receiver声明 -->
-  <receiver android:name="【替换您的包名】.MyPushMsgReceiver">
+  <receiver android:name="【替换您的类完整路径】.MyPushMsgReceiver">
       <intent-filter>
           <!-- 接收push消息 -->
           <action android:name="com.meizu.flyme.push.intent.MESSAGE" />
@@ -165,7 +169,7 @@ PushSDK 3.0 以后的版本使用了aar包方式，因此对于一些通用的�
       </intent-filter>
   </receiver>
 ```  
-**注意：** 请将以上【替换您的包名】替换成您自己App的包名。
+**注意：** 请将以上【替换您的类完整路径】和【替换您的包名】替换成您自己工程相对应的值。
 
 ### 3.4 实现消息接收的广播<a name="realize_broadcast"/>
 创建消息接收的广播类，名称如：MyPushMsgReceiver，实现如下：  
@@ -230,13 +234,13 @@ public class MyPushMsgReceiver extends MzPushMessageReceiver {
 
     /**
      * 兼容旧版本Flyme系统中设置消息弹出后状态栏中的小图标
-     * 同时请在相应的drawable不同分辨率文件夹下放置一张名称务必
-     * 为mz_push_notification_small_icon的图片
+     * 同时请在相应分辨率drawable的文件夹内放置一张名称务必为mz_push_notification_small_icon的图片
      * @param pushNotificationBuilder
      */
     @Override
     public void onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder){
-        pushNotificationBuilder.setmStatusbarIcon(R.drawable.mz_push_notification_small_icon);
+        // 旧版本中方法名可能是setmStatusbarIcon
+        pushNotificationBuilder.setStatusBarIcon(R.drawable.mz_push_notification_small_icon);
     }
 
     /**
@@ -265,7 +269,7 @@ PushManager.register(this, APP_ID, APP_KEY);
 并确保您自定义的消息接收 `Receiver` 类中能在 `onRegisterStatus(RegisterStatus registerStatus)` 方法中正确回调，这样接入就成功了。现在就可以到[Push平台](http://push.meizu.com) 找到您的应用进行消息推送了。
 
 ## 4 功能说明<a name="functional_description"/>
-### 4.1 PushManager方法说明<a name="pushmanager_description"/>
+### 4.1 PushManager方法说明<a name="push_manager_description"/>
 | 方法名称      | 方法说明| 使用建议|对应MzPushReceiver回调方法|
 | :--------: | :--------:| :--: |:--: |
 |register(Context context,String appId,String appKey)|订阅|建议在Application onCreate中调用|onRegisterStatus(Context context,RegisterStatus registerStatus)|
@@ -282,6 +286,7 @@ PushManager.register(this, APP_ID, APP_KEY);
 |checkPush(Context context,String appId,String appKey,String pushId)|检查通知栏和透传开关状态|透传功能已停用，此方法在有无网络下都能成功返回|onPushStatus(Context context,PushSwitchStatus pushSwitchStatus)|
 |clearNotification(Context context)|清除应用弹出的所有通知栏消息|无|无|
 |clearNotification(Context context, int notifyId)|清除应用弹出的指定notifyId的通知栏消息|无|无|
+|getPushId(Context context)|获得已订阅后的PushId|无|无|
 
 #### 参数说明
 **appId：**  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Push平台](http://push.meizu.com)申请的应用id。  
@@ -293,7 +298,7 @@ PushManager.register(this, APP_ID, APP_KEY);
 **switcher：** &nbsp;&nbsp;&nbsp;&nbsp;开关状态  
 **notifyId：** &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;通知Id，由服务端生成，可以在通知展示的回调方法 `onNotificationArrived` 中，通过： `mzPushMessage.getNotifyId();` 来获取。  
 
-### 4.2 MzPushReceiver回调方法说明<a name="mzpushreceiver_description"/>
+### 4.2 MzPushReceiver回调方法说明<a name="mz_push_receiver_description"/>
 
 | 方法名称      | 方法说明| 使用建议|
 | :--------: | :--------:| :--------:|
@@ -316,16 +321,16 @@ PushManager.register(this, APP_ID, APP_KEY);
 通知栏消息支持四种点击动作，分别是：打开应用主页、打开应用内页面、打开URI页面 以及 应用客户端自定义，如图。  
 ![image](download/notification_click.png)  
 其中前三种打开方式都是通过构建 Intent 的方式，利用 startActivity 方法调起，代码如下：  
-```java
-        Intent privateIntent = buildIntent(context(), message);
-        if(privateIntent != null){
-            privateIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            try {
-                context().startActivity(privateIntent);
-            } catch (Exception e){
-                DebugLogger.e(TAG,"Click message StartActivity error "+e.getMessage());
-            }
-        }
+```
+Intent privateIntent = buildIntent(context(), message);
+if(privateIntent != null){
+    privateIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    try {
+        context().startActivity(privateIntent);
+    } catch (Exception e){
+        DebugLogger.e(TAG,"Click message StartActivity error "+e.getMessage());
+    }
+}
 ```
 #### 5.2.1 打开应用主页 和 打开应用内页面<a name="open_page"/>
 上述代码会在您接入的 PushSDK 内部，所以它还支持打开 exported 为 false 的内部 Activity，只要在平台上正确配置完整的 Activity 名称即可，比如：com.meizu.pushdemo.TestActivity。
@@ -340,9 +345,9 @@ PushManager.register(this, APP_ID, APP_KEY);
 ```
 String value = getIntent().getStringExtra("key")
 ```  
-**注意：** 点击通知栏的时候，除了获取用户自定义的参数，还可以获取平台 taskid 等参数，此参数为 SDK 传递的默认参数，不需在平台配置，如果需要 taskId 相关参数可以通过如下方式获取:  
+**注意：** 点击通知栏的时候，除了获取用户自定义的参数，还可以获取平台 taskId 等参数，此参数为 SDK 传递的默认参数，不需在平台配置，如果需要 taskId 相关参数可以通过如下方式获取:  
  ```
- String platfromExtra = getIntent().getStringExtra("platform_extra");  
+ String platformExtra = getIntent().getStringExtra("platform_extra");  
  ```  
 该参数的格式如:    
 ```
@@ -352,7 +357,7 @@ String value = getIntent().getStringExtra("key")
 #### 5.2.2 打开URI<a name="open_uri"/>
 打开URI可支持配置https/http的网页地址，也可支持您应用内部自定义的URI。使用时要特别注意您应用是否全版本支持该 URI，以免造成在旧版本中点击通知栏无效的情况。
 
-#### 5.2.3 客户端自定义<a name="self_sefine_contentString"/>
+#### 5.2.3 客户端自定义<a name="self_definition_contentString"/>
 该方式不会触发 `startActivity` 的逻辑，而是会在`MzPushReceiver`的`onNotificationClicked`回调方法的MzPushMessage参数中附带平台上配置的自定义内容，代码如下：  
 ```
     @Override
@@ -361,45 +366,46 @@ String value = getIntent().getStringExtra("key")
     }
 ```
 
-## 6 历史变更和兼容<a name="adpter_flyme"/>
+## 6 历史变更和兼容<a name="adaptation_flyme"/>
 魅族推送服务经历几次大的变更，从之前的C2DM，到现在可以完全脱离Flyme平台作为一种完全开放给第三方应用的SDK，在这个阶段出现多种接入方式，给以后的应用接入带来极大的困扰，魅族PushSDK极力在减少Flyme版本迭代给应用接入带来的麻烦，但应用还是需要做细小的更改才能做到与低版本Flyme的兼容。
 
-### 6.1 订阅和取消订阅接口变更<a name="adpter_register"/>
+### 6.1 订阅和取消订阅接口变更<a name="adaptation_register"/>
 过去版本中，订阅和取消订阅接口是使用了 `PushManager` 的以下方法：  
-```java
+```
 register(Context context);
 unRegister(Context context);
 ```  
 对应的回调方法是 `MzPushReceiver` 的以下方法：  
-```java
+```
 onRegister(Context context,String pushId)
 onUnRegister(Context context,boolean success)
 ```  
 而目前版本中，订阅和取消订阅接口已经换成了 `PushManager` 的以下方法：  
-```java
+```
 register(Context context,String appId,String appKey)
 unRegister(Context context,String appId,String appKey)
 ```  
 对应的回调方法是 `MzPushReceiver` 的以下方法：  
-```java
+```
 onRegisterStatus(Context context,RegisterStatus registerStatus)
 onUnRegisterStatus(Context context,UnRegisterStatus unRegisterStatus)
 ```   
 **注意：** 旧接口代码依然保留在SDK中，但已经不再建议使用，如果您还使用着旧接口，建议尽快进行更新。
 
-### 6.2 设置通知的状态栏小图标<a name="adpter_small_icon"/>
+### 6.2 设置通知的状态栏小图标<a name="adaptation_small_icon"/>
 在 `MzPushReceiver` 中存在 `onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder)`方法。在目前较新的Flyme系统已经不再需要专门进行状态栏图标的设置，此方法是作用于兼容旧版本Flyme系统中设置消息弹出后状态栏中的小图标。设置小图标代码如下：   
 ```
 @Override
 public void onUpdateNotificationBuilder(PushNotificationBuilder pushNotificationBuilder){
-    pushNotificationBuilder.setmStatusbarIcon(R.drawable.mz_push_notification_small_icon);
+    // 旧版本中方法名可能是setmStatusbarIcon
+    pushNotificationBuilder.setStatusBarIcon(R.drawable.mz_push_notification_small_icon);
 }
 ```  
 **注意：** 请在相应的drawable不同分辨率文件夹下放置一张名称**务必**为mz_push_notification_small_icon的图片。
 
-### 6.3 透传功能回调<a name="adpter_transparent_callback"/>
+### 6.3 透传功能回调<a name="adaptation_transparent_callback"/>
 在 `MzPushReceiver` 中存在三个透传功能的回调方法：
-```java
+```
 onMessage(Context context,Intent intent)
 onMessage(Context context,String message)
 onMessage(Context context,String message,String platformExtra)
@@ -408,32 +414,32 @@ onMessage(Context context,String message,String platformExtra)
 第二个带一个 String 方法 和 第三个带两个 String 方法会同时回调透传消息，带三个参数的方法中额外增加一个平台参数，格式如：`{"task_id":"1232"}`  
 **注意：** 目前如果要处理透传消息的回调，只使用`onMessage(Context context,String message,String platformExtra)`方法即可。
 
-### 6.4 透传功能停用<a name="transparent_stoped"/>
+### 6.4 透传功能停用<a name="transparent_stop_using"/>
 透传功能已经停止使用，文档中所有关于接入和介绍透传功能的地方，开发者接入时可以直接忽略。
 
-### 6.5 声明权限<a name="adpter_declare_permissions"/>
+### 6.5 声明权限<a name="adaptation_declare_permissions"/>
 “接入步骤”的“声明权限”中可见，权限声明分 Flyme3 和 Flyme5 两个部分，按提示接入即可。
 
-### 6.6 MzPushMessageReceiver action 声明<a name="adpter_receiver_action"/>
+### 6.6 MzPushMessageReceiver action 声明<a name="adaptation_receiver_action"/>
 “接入步骤”的“注册消息接收的广播”中可见，广播注册中兼容 Flyme3 的两个action声明，按提示接入即可。
 
-### 6.7 通知栏消息点击回调方法<a name="adpter_notification_clicked_callback"/>
+### 6.7 通知栏消息点击回调方法<a name="adaptation_notification_clicked_callback"/>
 过去版本中，`MzPushReceiver` 的 `onNotificationClicked` 方法是：  
-```java
+```
 onNotificationClicked(Context context, String title, String content, String selfDefineContentString)
 ```  
 而目前版本中，方法是：  
-```java
+```
 onNotificationClicked(Context context, MzPushMessage mzPushMessage)
 ```
 
-### 6.8 通知栏消息展示回调方法<a name="adpter_notification_arrived_callback"/>
+### 6.8 通知栏消息展示回调方法<a name="adaptation_notification_arrived_callback"/>
 过去版本中，`MzPushReceiver` 的 `onNotificationArrived` 方法是：  
-```java
+```
 onNotificationArrived(Context context, String title, String content, String selfDefineContentString)
 ```    
 而目前版本中，方法是：  
-```java
+```
 onNotificationArrived(Context context, MzPushMessage mzPushMessage)
 ```
 
@@ -465,7 +471,9 @@ onNotificationArrived(Context context, MzPushMessage mzPushMessage)
 ### 问题3：为什么一直无法收到消息，该如何定位？<a name="question_3"/>
 1. 先检查消息是否被放进了通知栏右上角收纳盒子里，如下图红圈位置。一般地当App多次消息到达到都没有对其进行点击，消息就会自动收进收纳盒里。若要恢复，可在收纳盒里长按消息选择“不再收纳”即可。  
 ![image](download/question_3.1.png)  
-2. 在[Flyme推送平台后台](http://push.meizu.com/)  【配置管理】-【问题排查】中按从上往下步骤进行相应的状态查询，如下图。  
+2. 请检查应用的“通知消息”权限是否关闭了，步骤如：【手机管理】-【权限管理】-【通知管理】，在应用列表中找到您自己的App，勾上“通知消息”选项。
+3. 请检查手机日期和时间是否正确，错误的时间会影响消息的展示逻辑。
+4. 在[Flyme推送平台后台](http://push.meizu.com/)  【配置管理】-【问题排查】中按从上往下步骤进行相应的状态查询，如下图。  
 ![image](download/question_3.2.png)  
 &nbsp;&nbsp;a) 【设备对应关系查询】输入手机的IMEI点击“查询”按钮获得相应的PushId，若提示“PushId未注册”，请执行`PushSDK中PushManager. register(Context context,String appId,String appKey)`进行推送订阅；  
 &nbsp;&nbsp;b) 【设备是否在线查询】输入刚才获得的PushId，点击“查询”按钮查询状态，若手机处理离线状态，解决方法请见[“问题4”](#question_4)；  
@@ -474,9 +482,8 @@ onNotificationArrived(Context context, MzPushMessage mzPushMessage)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;“通知栏开关”，若为关，请执行`PushSDK中PushManager.switchPush(Context context,String appId,String appKey,String pushId,int pushType,boolean switcher)`方法进行打开；  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;“系统通知栏开关”，若为关，解决方法请见[“问题5”](#question_5)；  
 &nbsp;&nbsp;d) 【推送测试】中输入刚才获得的PushId，并点击“推送”按钮，下方显示“已推送 msgId：xxx”代表已经成功发送测试通知。  
-3. 弹出消息时是否存在<font color=#ff0000>Invalid notification (no valid small icon)</font> 异常日志输出？这是设置通知栏图标异常，如果开启了像AndResGuard之类的资源路径混淆，尝试在whiteList中添加：R.drawable.stat_sys_third_app_notify。  
-4. 在较老的Flyme系统也出现<font color=#ff0000>Invalid notification (no valid small icon)</font> 异常的话，还可以在drawable不同分辨率文件夹下放置一张名为mz_push_notification_small_icon的图片，并在onUpdateNotificationBuilder回调方法中按文档说明进行设置通知栏小图标。  
-5. 请检查手机日期和时间是否正确。 
+5. 弹出消息时是否存在<font color=#ff0000>Invalid notification (no valid small icon)</font> 异常日志输出？这是设置通知栏图标异常，如果开启了像AndResGuard之类的资源路径混淆，尝试在whiteList中添加：R.drawable.stat_sys_third_app_notify。  
+6. 在较老的Flyme系统也出现<font color=#ff0000>Invalid notification (no valid small icon)</font> 异常的话，还可以在drawable不同分辨率文件夹下放置一张名为mz_push_notification_small_icon的图片，并在onUpdateNotificationBuilder回调方法中按文档说明进行设置通知栏小图标。   
 
 ### 问题4：为什么手机一直连着网络，但还是显示处于离线状态？<a name="question_4"/>  
 手机离线状态并不是指没连网络，而是手机上推送服务<font color=#565656>(系统进程)</font>跟推送服务器无法建立长连接，常见于网络不稳动或者开发过程中，可按以下每个步骤进行修复。 

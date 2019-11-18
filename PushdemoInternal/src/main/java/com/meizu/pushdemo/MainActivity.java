@@ -71,41 +71,41 @@ public class MainActivity extends Activity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent platformIntent = getIntent();
-        DebugLogger.e(TAG,"platform_extra "+platformIntent.getStringExtra(PushConstants.MZ_PUSH_PLATFROM_EXTRA));
+        DebugLogger.e(TAG,"platform_extra "+platformIntent.getStringExtra(PushConstants.MZ_PUSH_PLATFORM_EXTRA));
         String extra = getIntent().getStringExtra("start_fragment");
         Log.i("MainActivity", "MzPushMessageReceiver " + extra);
         APP_ID = getAppId("APP_ID");
         APP_KEY = getAppKey("APP_KEY");
         setContentView(R.layout.activity_main);
-        tvBasicInfo = (TextView) findViewById(R.id.tv_basic_info);
+        tvBasicInfo = findViewById(R.id.tv_basic_info);
         tvBasicInfo.setText("APP_ID = " + APP_ID + "\n" + "APP_KEY= " + APP_KEY + " \n");
-        tvLogArea = (TextView) findViewById(R.id.tv_log_area);
+        tvLogArea = findViewById(R.id.tv_log_area);
 
-        btnPlatformRegister = (Button) findViewById(R.id.platform_register);
-        btnPlatformUnRegister = (Button) findViewById(R.id.platform_unregister);
-        btnSwitchNotificationOn = (Button) findViewById(R.id.btn_switch_notification_on);
-        btnSwitchNotificationOff = (Button) findViewById(R.id.btn_switch_notification_off);
-        btnSwitchThroughOn = (Button) findViewById(R.id.btn_switch_through_on);
-        btnSwitchThroughOff = (Button) findViewById(R.id.btn_switch_through_off);
+        btnPlatformRegister = findViewById(R.id.platform_register);
+        btnPlatformUnRegister = findViewById(R.id.platform_unregister);
+        btnSwitchNotificationOn = findViewById(R.id.btn_switch_notification_on);
+        btnSwitchNotificationOff = findViewById(R.id.btn_switch_notification_off);
+        btnSwitchThroughOn = findViewById(R.id.btn_switch_through_on);
+        btnSwitchThroughOff = findViewById(R.id.btn_switch_through_off);
 
-        btnCheckSwitchStatus = (Button) findViewById(R.id.btn_check_push_switch);
+        btnCheckSwitchStatus = findViewById(R.id.btn_check_push_switch);
         btnCheckSwitchStatus.setOnClickListener(this);
 
-        btnSwitchAll = (Button) findViewById(R.id.btn_switch_all);
+        btnSwitchAll = findViewById(R.id.btn_switch_all);
         btnSwitchAll.setOnClickListener(this);
 
-        btnSubScribeTags = (Button) findViewById(R.id.btn_subscribe_tags);
-        btnUnSubScribeTags = (Button) findViewById(R.id.btn_unsubscribe_tags);
-        btnCheckSubScribeTags = (Button) findViewById(R.id.btn_check_subscribe_tags);
-        btnUnSubScribeAllTags = (Button) findViewById(R.id.btn_unsubscribe_all_tags);
+        btnSubScribeTags = findViewById(R.id.btn_subscribe_tags);
+        btnUnSubScribeTags = findViewById(R.id.btn_unsubscribe_tags);
+        btnCheckSubScribeTags = findViewById(R.id.btn_check_subscribe_tags);
+        btnUnSubScribeAllTags = findViewById(R.id.btn_unsubscribe_all_tags);
         btnSubScribeTags.setOnClickListener(this);
         btnUnSubScribeTags.setOnClickListener(this);
         btnCheckSubScribeTags.setOnClickListener(this);
         btnUnSubScribeAllTags.setOnClickListener(this);
 
-        btnSubScribeAlias = (Button) findViewById(R.id.btn_subscribe_alias);
-        btnUnSubScribeAlias = (Button) findViewById(R.id.btn_unsubscribe_alias);
-        btnCheckSubScribeAlias = (Button) findViewById(R.id.btn_check_subscribe_alias);
+        btnSubScribeAlias = findViewById(R.id.btn_subscribe_alias);
+        btnUnSubScribeAlias = findViewById(R.id.btn_unsubscribe_alias);
+        btnCheckSubScribeAlias = findViewById(R.id.btn_check_subscribe_alias);
         btnSubScribeAlias.setOnClickListener(this);
         btnUnSubScribeAlias.setOnClickListener(this);
         btnCheckSubScribeAlias.setOnClickListener(this);
@@ -117,19 +117,19 @@ public class MainActivity extends Activity implements View.OnClickListener{
         btnSwitchThroughOn.setOnClickListener(this);
         btnSwitchThroughOff.setOnClickListener(this);
 
-        btnEnableRemoteInvoke = (Button) findViewById(R.id.btn_enable_remote_invoke);
+        btnEnableRemoteInvoke = findViewById(R.id.btn_enable_remote_invoke);
         btnEnableRemoteInvoke.setOnClickListener(this);
-        btnDisableRemoteInvoke = (Button) findViewById(R.id.btn_disenable_remote_invoke);
+        btnDisableRemoteInvoke = findViewById(R.id.btn_disenable_remote_invoke);
         btnDisableRemoteInvoke.setOnClickListener(this);
 
-        btnCancelAll = (Button) findViewById(R.id.btn_cancel_all);
-        btnCancelByNotifyId = (Button) findViewById(R.id.btn_cancel_by_notify_id);
-        edtNotifyId = (EditText) findViewById(R.id.edit_notify_id);
+        btnCancelAll = findViewById(R.id.btn_cancel_all);
+        btnCancelByNotifyId = findViewById(R.id.btn_cancel_by_notify_id);
+        edtNotifyId = findViewById(R.id.edit_notify_id);
         btnCancelAll.setOnClickListener(this);
         btnCancelByNotifyId.setOnClickListener(this);
 
         Intent intent = new Intent(this,ForegroundService.class);
-        intent.setAction(ForegroundService.START_FOREGROUD_SERVICE);
+        intent.setAction(ForegroundService.START_FOREGROUND_SERVICE);
         startService(intent);
     }
 
