@@ -33,6 +33,9 @@
 [jcenter获取][bintray-releases] &nbsp;&nbsp;&nbsp;&nbsp; [官网下载AAR][official-releases]
 
 ## 2 更新日志<a name="update_logs"/>
+### [2019-11-27]V3.8.7
+* 移除 READ_PHONE_STATE  权限的声明
+
 ### [2019-11-18]V3.8.6
 * 修复若干BUG
 * 移除敏感无用的代码
@@ -131,7 +134,7 @@ PushSDK 3.0 以后的版本使用了aar包方式，因此对于一些通用的�
 我们已经将PushSDK发布到JCenter，您只需要在工程gradle文件中进行如下依赖配置：  
 ```
     dependencies {
-        compile 'com.meizu.flyme.internet:push-internal:3.8.6'
+        compile 'com.meizu.flyme.internet:push-internal:3.8.7'
     }
 ```  
 **注意：** 如果由于各种原因不能使用JCenter依赖，还可以直接下载AAR包进行手动集成：[点击下载][official-releases]。
