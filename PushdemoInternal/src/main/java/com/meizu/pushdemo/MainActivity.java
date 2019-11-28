@@ -1,6 +1,9 @@
 package com.meizu.pushdemo;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -14,21 +17,15 @@ import android.widget.Toast;
 import com.meizu.cloud.pushinternal.DebugLogger;
 import com.meizu.cloud.pushsdk.PushManager;
 import com.meizu.cloud.pushsdk.constants.PushConstants;
-import com.meizu.cloud.pushsdk.platform.message.PushSwitchStatus;
-import com.meizu.cloud.pushsdk.platform.message.RegisterStatus;
-import com.meizu.cloud.pushsdk.platform.message.SubAliasStatus;
-import com.meizu.cloud.pushsdk.platform.message.SubTagsStatus;
-import com.meizu.cloud.pushsdk.platform.message.UnRegisterStatus;
-import com.meizu.pushdemo.events.SendNotificationMessage;
-import com.meizu.pushdemo.events.ThroughMessageEvent;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends Activity implements View.OnClickListener{
+    private static final String TAG = "MainActivity";
+    public final static String MESSAGE_PARAM = "message_param";
+    public final static String MESSAGE_ACTION = "message_action";
+
+    private String APP_ID;
+    private String APP_KEY;
+
     private TextView tvBasicInfo;
     private TextView tvLogArea;
 
@@ -57,26 +54,30 @@ public class MainActivity extends Activity implements View.OnClickListener{
     private EditText edtNotifyId;
     private Button btnCancelAll;
 
-    /*public static  String APP_ID = "your PushDemo appId";
-    public static  String APP_KEY = "your PushDemo appKey";*/
+    private IntentFilter mIntentFilter;
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (MESSAGE_ACTION.equalsIgnoreCase(intent.getAction())) {
+                String message = intent.getStringExtra(MESSAGE_PARAM);
+                tvLogArea.setText(message);
+            }
+        }
+    };
 
-    public String APP_ID /*= "100999"*/;
-    public String APP_KEY /*= "80355073480594a99470dcacccd8cf2c"*/;
-
-    public static List<Integer> notifyIdList = new ArrayList<>();
-
-
-    private static final String TAG = "MainActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
         Intent platformIntent = getIntent();
         DebugLogger.e(TAG,"platform_extra "+platformIntent.getStringExtra(PushConstants.MZ_PUSH_PLATFORM_EXTRA));
         String extra = getIntent().getStringExtra("start_fragment");
         Log.i("MainActivity", "MzPushMessageReceiver " + extra);
+
         APP_ID = getAppId("APP_ID");
         APP_KEY = getAppKey("APP_KEY");
-        setContentView(R.layout.activity_main);
+
         tvBasicInfo = findViewById(R.id.tv_basic_info);
         tvBasicInfo.setText("APP_ID = " + APP_ID + "\n" + "APP_KEY= " + APP_KEY + " \n");
         tvLogArea = findViewById(R.id.tv_log_area);
@@ -127,72 +128,32 @@ public class MainActivity extends Activity implements View.OnClickListener{
         edtNotifyId = findViewById(R.id.edit_notify_id);
         btnCancelAll.setOnClickListener(this);
         btnCancelByNotifyId.setOnClickListener(this);
-
-        Intent intent = new Intent(this,ForegroundService.class);
-        intent.setAction(ForegroundService.START_FOREGROUND_SERVICE);
-        startService(intent);
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
+    protected void onResume() {
+        super.onResume();
+
+        if (mIntentFilter == null) {
+            mIntentFilter = new IntentFilter();
+            mIntentFilter.addAction(MESSAGE_ACTION);
+        }
+        registerReceiver(mBroadcastReceiver, mIntentFilter);
     }
 
     @Override
-    protected void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
+
+        unregisterReceiver(mBroadcastReceiver);
     }
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(RegisterStatus event){
-        //Toast.makeText(this, event.toString(), Toast.LENGTH_SHORT).show();
-        tvLogArea.setText(event.toString());
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(UnRegisterStatus event){
-        tvLogArea.setText(event.toString());
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(PushSwitchStatus event){
-        tvLogArea.setText(event.toString());
-    }
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(SubTagsStatus event){
-        tvLogArea.setText(event.toString());
-    }
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(SubAliasStatus event){
-        tvLogArea.setText(event.toString());
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(SendNotificationMessage event){
-        tvLogArea.setText(event.message);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(ThroughMessageEvent event){
-        tvLogArea.setText(event.message);
-    }
-
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
-
+        switch (view.getId()) {
             case R.id.platform_register:
                 PushManager.register(this, APP_ID, APP_KEY);
                 break;
-
             case R.id.platform_unregister:
                 PushManager.unRegister(this, APP_ID, APP_KEY);
                 break;
@@ -228,7 +189,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 break;
             case R.id.btn_check_push_switch:
                 PushManager.checkPush(this, APP_ID, APP_KEY, PushManager.getPushId(this));
-                //UxIPUtils.onLogEvent(this, "com.meizu.pushdemo", "867247020006101","123","154515","notification_service_message",String.valueOf(System.currentTimeMillis()/1000));
                 break;
             case R.id.btn_switch_all:
                 PushManager.switchPush(this,APP_ID,APP_KEY,PushManager.getPushId(this),false);
@@ -247,33 +207,26 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 break;
             case R.id.btn_cancel_by_notify_id:
                 String notifyEdtStr = edtNotifyId.getText().toString();
-                if(TextUtils.isEmpty(notifyEdtStr)){
+                if (TextUtils.isEmpty(notifyEdtStr) || notifyEdtStr.split(",") == null) {
                     Toast.makeText(this,"请填写notifyId,多个以逗号隔开",Toast.LENGTH_SHORT).show();
                     break;
-                } else {
-                    String[] notifyArray = notifyEdtStr.split(",");
-                    if(notifyArray != null && notifyArray.length > 0){
-                        int[] intArray = new int[notifyArray.length];
-                        for(int i=0; i<notifyArray.length; i++){
-                            try {
-                                int notifyId = Integer.parseInt(notifyArray[i]);
-                                DebugLogger.e(TAG,"clear notifyId "+notifyId);
-                                intArray[i] = notifyId;
-                            } catch (Exception e){
-                                DebugLogger.e(TAG,"请正确输入notifyId,仅限整数");
-                                Toast.makeText(this,"请正确输入notifyId,仅限整数",Toast.LENGTH_SHORT).show();
-                            }
-
-                        }
-                        PushManager.clearNotification(this,intArray);
+                }
+                String[] notifyArray = notifyEdtStr.split(",");
+                int[] intArray = new int[notifyArray.length];
+                for(int i=0; i<notifyArray.length; i++){
+                    try {
+                        int notifyId = Integer.parseInt(notifyArray[i]);
+                        DebugLogger.e(TAG,"clear notifyId "+notifyId);
+                        intArray[i] = notifyId;
+                    } catch (Exception e){
+                        DebugLogger.e(TAG,"请正确输入notifyId,仅限整数");
+                        Toast.makeText(this,"请正确输入notifyId,仅限整数",Toast.LENGTH_SHORT).show();
                     }
                 }
-
+                PushManager.clearNotification(this,intArray);
                 break;
         }
     }
-
-
 
     private String getAppKey(String tag) {
         String appKey = null;
@@ -287,7 +240,6 @@ public class MainActivity extends Activity implements View.OnClickListener{
         return appKey;
     }
 
-
     private String getAppId(String tag){
         int appId = 0;
         try {
@@ -299,7 +251,4 @@ public class MainActivity extends Activity implements View.OnClickListener{
         }
         return String.valueOf(appId);
     }
-
-
-
 }
