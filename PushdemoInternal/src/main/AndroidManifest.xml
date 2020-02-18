@@ -25,6 +25,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name="com.meizu.pushdemo.TestActivity"/>
+
         <receiver android:name=".PushMsgReceiver">
             <intent-filter>
                 <action android:name="com.meizu.flyme.push.intent.MESSAGE" />

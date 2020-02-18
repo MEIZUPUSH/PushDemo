@@ -7,7 +7,7 @@
         android:id="@+id/tv_basic_info"
         android:layout_margin="8dip"
         android:layout_width="match_parent"
-        android:layout_height="40dip"/>
+        android:layout_height="50dip"/>
     <TextView
         android:id="@+id/tv_log_area"
         android:layout_margin="8dip"

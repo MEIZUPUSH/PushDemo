@@ -79,7 +79,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         APP_KEY = getAppKey("APP_KEY");
 
         tvBasicInfo = findViewById(R.id.tv_basic_info);
-        tvBasicInfo.setText("APP_ID = " + APP_ID + "\n" + "APP_KEY= " + APP_KEY + " \n");
+        tvBasicInfo.setText("APP_VER = " + BuildConfig.VERSION_NAME  + "\nAPP_ID = " + APP_ID + "\nAPP_KEY= " + APP_KEY + " \n");
         tvLogArea = findViewById(R.id.tv_log_area);
 
         btnPlatformRegister = findViewById(R.id.platform_register);
