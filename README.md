@@ -33,6 +33,11 @@
 [jcenter获取][bintray-releases] &nbsp;&nbsp;&nbsp;&nbsp; [官网下载AAR][official-releases]
 
 ## 2 更新日志<a name="update_logs"/>
+### [2020-03-09]V3.9.0
+* 优化点击通知消息逻辑
+* 修复若干BUG
+* 全面适配Android Q
+
 ### [2019-11-27]V3.8.7
 * 移除 READ_PHONE_STATE  权限的声明
 
