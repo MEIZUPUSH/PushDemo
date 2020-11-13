@@ -33,6 +33,11 @@
 [jcenter获取][bintray-releases] &nbsp;&nbsp;&nbsp;&nbsp; [官网下载AAR][official-releases]
 
 ## 2 更新日志<a name="update_logs"/>
+### [2020-11-13]V4.0.2
+* 全面适配Android11
+* 修复一些安全漏洞和若干BUG
+* 优化一些性能问题
+
 ### [2020-06-16]V3.9.7
 * 优化推送逻辑
 * 修复若干BUG
@@ -40,7 +45,7 @@
 ### [2020-03-09]V3.9.0
 * 优化点击通知消息逻辑
 * 修复若干BUG
-* 全面适配Android Q
+* 全面适配Android 10
 
 ### [2019-11-27]V3.8.7
 * 移除 READ_PHONE_STATE  权限的声明
@@ -143,7 +148,7 @@ PushSDK 3.0 以后的版本使用了aar包方式，因此对于一些通用的�
 我们已经将PushSDK发布到JCenter，您只需要在工程gradle文件中进行如下依赖配置：  
 ```
     dependencies {
-        implementation 'com.meizu.flyme.internet:push-internal:3.9.7'
+        implementation 'com.meizu.flyme.internet:push-internal:4.0.2'
     }
 ```  
 **注意：** 如果由于网络原因不能使用JCenter依赖，还可以直接下载AAR包进行手动集成：[点击下载][official-releases]。
@@ -151,11 +156,14 @@ PushSDK 3.0 以后的版本使用了aar包方式，因此对于一些通用的�
 ### 3.2 声明权限<a name="declare_permissions"/>
 在您工程AndroidManifest.xml中进行以下权限的声明：  
 ```
-  <!-- 兼容Flyme5以下版本，魅族内部接入PushSDK必填，不然无法收到消息-->
+  <!-- 可选，用于兼容Flyme5且推送服务是旧版本的情况-->
+  <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+  
+  <!-- 兼容Flyme5的权限配置-->
   <uses-permission android:name="com.meizu.flyme.push.permission.RECEIVE" />
   <permission android:name="【替换您的包名】.push.permission.MESSAGE" android:protectionLevel="signature"/>
   <uses-permission android:name="【替换您的包名】.push.permission.MESSAGE" />
-  <!--  兼容Flyme3配置权限-->
+  <!-- 兼容Flyme3的权限配置-->
   <uses-permission android:name="com.meizu.c2dm.permission.RECEIVE" />
   <permission android:name="【替换您的包名】.permission.C2D_MESSAGE" android:protectionLevel="signature" />
   <uses-permission android:name="【替换您的包名】.permission.C2D_MESSAGE"/>
