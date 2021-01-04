@@ -33,6 +33,9 @@
 [jcenter获取][bintray-releases] &nbsp;&nbsp;&nbsp;&nbsp; [官网下载AAR][official-releases]
 
 ## 2 更新日志<a name="update_logs"/>
+### [2021-01-04]V4.0.4
+* 适配新设备
+
 ### [2020-11-13]V4.0.2
 * 全面适配Android11
 * 修复一些安全漏洞和若干BUG
@@ -148,7 +151,7 @@ PushSDK 3.0 以后的版本使用了aar包方式，因此对于一些通用的�
 我们已经将PushSDK发布到JCenter，您只需要在工程gradle文件中进行如下依赖配置：  
 ```
     dependencies {
-        implementation 'com.meizu.flyme.internet:push-internal:4.0.2'
+        implementation 'com.meizu.flyme.internet:push-internal:4.0.4'
     }
 ```  
 **注意：** 如果由于网络原因不能使用JCenter依赖，还可以直接下载AAR包进行手动集成：[点击下载][official-releases]。

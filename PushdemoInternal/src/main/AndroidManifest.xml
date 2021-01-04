@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.meizu.pushdemo" >
 
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="com.meizu.flyme.push.permission.RECEIVE" />
     <permission android:name="${PACKAGE_NAME}.push.permission.MESSAGE" android:protectionLevel="signature"/>
     <uses-permission android:name="${PACKAGE_NAME}.push.permission.MESSAGE" />
