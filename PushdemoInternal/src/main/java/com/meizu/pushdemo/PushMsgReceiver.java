@@ -120,6 +120,8 @@ public class PushMsgReceiver extends MzPushMessageReceiver {
     public void onNotificationArrived(Context context, MzPushMessage mzPushMessage) {
         DebugLogger.i(TAG, "onNotificationArrived title " + mzPushMessage.getTitle() + "content "
                 + mzPushMessage.getContent() + " selfDefineContentString " + mzPushMessage.getSelfDefineContentString()+" notifyId "+mzPushMessage.getNotifyId());
+
+        sendMessage(context, mzPushMessage.toString());
     }
 
     /**

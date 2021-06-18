@@ -30,9 +30,14 @@
 * [8 反馈与建议](#feed_back)    
 
 ## 1 获取<a name="download"/>
-[jcenter获取][bintray-releases] &nbsp;&nbsp;&nbsp;&nbsp; [官网下载AAR][official-releases]
+[官网下载AAR][official-releases]
 
 ## 2 更新日志<a name="update_logs"/>
+### [2021-06-18]V4.1.0
+* 解决 R8 兼容问题
+* 修复某情况下通知栏消息不振动的 BUG
+* 移除不必要的异常打印
+
 ### [2021-01-04]V4.0.4
 * 适配新设备
 
@@ -148,13 +153,24 @@
 PushSDK 3.0 以后的版本使用了aar包方式，因此对于一些通用的权限配置，工程混淆，App接入时不需要再进行配置了，只需要按以下步骤简单接入即可。
 
 ### 3.1 配置依赖<a name="config_dependencies"/>
-我们已经将PushSDK发布到JCenter，您只需要在工程gradle文件中进行如下依赖配置：  
+从 PushSDK4.1.0 开始，我们已经将其发布至 mavenCentral，您只需要在项目根目录的 build.gradle 文件的
+allprojects.repositories 块中添加 mavenCentral()，如下所示：
+```
+allprojects {
+    repositories {
+        ……
+        mavenCentral()
+    }
+}
+
+```
+然后再在 app/build.gradle 文件的 dependencies 块中添加 PushSDK 的依赖，如下所示：
 ```
     dependencies {
-        implementation 'com.meizu.flyme.internet:push-internal:4.0.4'
+        implementation 'com.meizu.flyme.internet:push-internal:4.1.0'
     }
 ```  
-**注意：** 如果由于网络原因不能使用JCenter依赖，还可以直接下载AAR包进行手动集成：[点击下载][official-releases]。
+**注意：** 如果由于网络原因不能使用mavenCentral依赖，还可以直接下载AAR包进行手动集成：[点击下载][official-releases]。
   
 ### 3.2 声明权限<a name="declare_permissions"/>
 在您工程AndroidManifest.xml中进行以下权限的声明：  

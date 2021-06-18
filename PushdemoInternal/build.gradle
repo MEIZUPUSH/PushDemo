@@ -21,8 +21,8 @@ android {
         applicationId appPackageName
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 404
-        versionName "4.0.4"
+        versionCode 410
+        versionName "4.1.0"
         manifestPlaceholders = [APP_ID: appId, APP_KEY: appKey, PACKAGE_NAME: appPackageName]
     }
     buildTypes {
@@ -37,6 +37,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation(group: 'com.meizu.flyme.internet', name: 'push-internal', version: '4.0.4', ext: 'aar')
+    implementation(group: 'com.meizu.flyme.internet', name: 'push-internal', version: '4.1.0', ext: 'aar')
 //    implementation project(':push-internal-publish')
 }

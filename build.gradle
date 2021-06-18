@@ -7,19 +7,13 @@ buildscript {
         flatDir {
             dirs 'libs' //this way we can find the .aar file in libs folder
         }
-
-        maven{
-            url 'https://oss.jfrog.org/artifactory/oss-snapshot-local'
-        }
-
         maven {
             url 'http://artifactory.rnd.meizu.com/artifactory/libs-debug-local'
         }
-
         maven {
             url 'http://artifactory.rnd.meizu.com/artifactory/all'
         }
-        jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.0'
@@ -32,18 +26,15 @@ allprojects {
         flatDir {
             dirs 'libs' //this way we can find the .aar file in libs folder
         }
-
         maven{
-            url 'https://oss.jfrog.org/artifactory/oss-snapshot-local'
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
         }
-
         maven {
             url 'http://artifactory.rnd.meizu.com/artifactory/libs-debug-local'
         }
-
         maven {
             url 'http://artifactory.rnd.meizu.com/artifactory/all'
         }
-        jcenter()
+        mavenCentral()
     }
 }
