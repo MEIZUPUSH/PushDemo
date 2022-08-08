@@ -1,4 +1,6 @@
 package com.meizu.pushdemo;
+
+import android.Manifest;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,11 +17,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.meizu.cloud.pushinternal.DebugLogger;
 import com.meizu.cloud.pushsdk.PushManager;
 import com.meizu.cloud.pushsdk.constants.PushConstants;
 
-public class MainActivity extends Activity implements View.OnClickListener{
+public class MainActivity extends Activity implements View.OnClickListener {
     private static final String TAG = "MainActivity";
     public final static String MESSAGE_PARAM = "message_param";
     public final static String MESSAGE_ACTION = "message_action";
@@ -64,14 +68,17 @@ public class MainActivity extends Activity implements View.OnClickListener{
             }
         }
     };
+    private int PERMISSION_REQUEST_CODE = 0x001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        checkPermission();
+
         Intent platformIntent = getIntent();
-        DebugLogger.e(TAG,"platform_extra "+platformIntent.getStringExtra(PushConstants.MZ_PUSH_PLATFORM_EXTRA));
+        DebugLogger.e(TAG, "platform_extra " + platformIntent.getStringExtra(PushConstants.MZ_PUSH_PLATFORM_EXTRA));
         String extra = getIntent().getStringExtra("start_fragment");
         Log.i("MainActivity", "MzPushMessageReceiver " + extra);
 
@@ -79,7 +86,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         APP_KEY = getAppKey("APP_KEY");
 
         tvBasicInfo = findViewById(R.id.tv_basic_info);
-        tvBasicInfo.setText("APP_VER = " + BuildConfig.VERSION_NAME  + "\nAPP_ID = " + APP_ID + "\nAPP_KEY= " + APP_KEY + " \n");
+        tvBasicInfo.setText("APP_VER = " + BuildConfig.VERSION_NAME + "\nAPP_ID = " + APP_ID + "\nAPP_KEY= " + APP_KEY + " \n");
         tvLogArea = findViewById(R.id.tv_log_area);
 
         btnPlatformRegister = findViewById(R.id.platform_register);
@@ -128,6 +135,27 @@ public class MainActivity extends Activity implements View.OnClickListener{
         edtNotifyId = findViewById(R.id.edit_notify_id);
         btnCancelAll.setOnClickListener(this);
         btnCancelByNotifyId.setOnClickListener(this);
+    }
+
+    private void checkPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            return;
+        }
+        int chkPermission = checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS);
+        if (PackageManager.PERMISSION_GRANTED != chkPermission) {
+            requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE && grantResults.length > 0 ) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "权限开启成功", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "权限开启失败", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override
@@ -191,16 +219,16 @@ public class MainActivity extends Activity implements View.OnClickListener{
                 PushManager.checkPush(this, APP_ID, APP_KEY, PushManager.getPushId(this));
                 break;
             case R.id.btn_switch_all:
-                PushManager.switchPush(this,APP_ID,APP_KEY,PushManager.getPushId(this),false);
+                PushManager.switchPush(this, APP_ID, APP_KEY, PushManager.getPushId(this), false);
                 break;
             case R.id.btn_unsubscribe_all_tags:
-                PushManager.unSubScribeAllTags(this,APP_ID,APP_KEY,PushManager.getPushId(this));
+                PushManager.unSubScribeAllTags(this, APP_ID, APP_KEY, PushManager.getPushId(this));
                 break;
             case R.id.btn_enable_remote_invoke:
-                PushManager.enableCacheRequest(this,true);
+                PushManager.enableCacheRequest(this, true);
                 break;
             case R.id.btn_disenable_remote_invoke:
-                PushManager.enableCacheRequest(this,false);
+                PushManager.enableCacheRequest(this, false);
                 break;
             case R.id.btn_cancel_all:
                 PushManager.clearNotification(this);
@@ -208,22 +236,22 @@ public class MainActivity extends Activity implements View.OnClickListener{
             case R.id.btn_cancel_by_notify_id:
                 String notifyEdtStr = edtNotifyId.getText().toString();
                 if (TextUtils.isEmpty(notifyEdtStr) || notifyEdtStr.split(",") == null) {
-                    Toast.makeText(this,"请填写notifyId,多个以逗号隔开",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "请填写notifyId,多个以逗号隔开", Toast.LENGTH_SHORT).show();
                     break;
                 }
                 String[] notifyArray = notifyEdtStr.split(",");
                 int[] intArray = new int[notifyArray.length];
-                for(int i=0; i<notifyArray.length; i++){
+                for (int i = 0; i < notifyArray.length; i++) {
                     try {
                         int notifyId = Integer.parseInt(notifyArray[i]);
-                        DebugLogger.e(TAG,"clear notifyId "+notifyId);
+                        DebugLogger.e(TAG, "clear notifyId " + notifyId);
                         intArray[i] = notifyId;
-                    } catch (Exception e){
-                        DebugLogger.e(TAG,"请正确输入notifyId,仅限整数");
-                        Toast.makeText(this,"请正确输入notifyId,仅限整数",Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        DebugLogger.e(TAG, "请正确输入notifyId,仅限整数");
+                        Toast.makeText(this, "请正确输入notifyId,仅限整数", Toast.LENGTH_SHORT).show();
                     }
                 }
-                PushManager.clearNotification(this,intArray);
+                PushManager.clearNotification(this, intArray);
                 break;
         }
     }
@@ -240,7 +268,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         return appKey;
     }
 
-    private String getAppId(String tag){
+    private String getAppId(String tag) {
         int appId = 0;
         try {
             ApplicationInfo appInfo = this.getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);

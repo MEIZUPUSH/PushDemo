@@ -8,15 +8,19 @@
         android:layout_margin="8dip"
         android:layout_width="match_parent"
         android:layout_height="50dip"/>
+
     <TextView
         android:id="@+id/tv_log_area"
-        android:layout_margin="8dip"
-        android:padding="3dip"
-        android:layout_below="@id/tv_basic_info"
         android:layout_width="match_parent"
-        android:textColor="@android:color/white"
-        android:background="@color/background_material_dark"
-        android:layout_height="100dip"/>
+        android:layout_height="100dip"
+        android:layout_below="@id/tv_basic_info"
+        android:layout_marginStart="8dip"
+        android:layout_marginTop="8dip"
+        android:layout_marginEnd="8dip"
+        android:layout_marginBottom="8dip"
+        android:background="@android:color/black"
+        android:padding="3dip"
+        android:textColor="@android:color/white" />
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,7 +38,6 @@
                 android:id="@+id/platform_layout_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/abc_action_bar_content_inset_material"
                 android:orientation="horizontal">
 
                 <Button
@@ -58,9 +61,7 @@
                 android:id="@+id/layout_notification_through"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/abc_action_bar_content_inset_material"
                 android:orientation="horizontal"
-                android:divider="@color/ripple_material_dark"
                 android:layout_below="@+id/platform_layout_register">
                 <Button
                     android:id="@+id/btn_switch_notification_on"
@@ -93,7 +94,6 @@
                 android:id="@+id/upload_notification_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/abc_action_bar_content_inset_material"
                 android:orientation="horizontal"
                 android:layout_below="@+id/layout_notification_through">
 
@@ -118,7 +118,6 @@
                 android:id="@+id/layout_tag_subscribe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/abc_action_bar_content_inset_material"
                 android:orientation="horizontal"
                 android:layout_below="@+id/upload_notification_data">
                 <Button
@@ -152,7 +151,6 @@
                 android:id="@+id/layout_alias_subscribe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/abc_action_bar_content_inset_material"
                 android:orientation="horizontal"
                 android:layout_below="@+id/layout_tag_subscribe">
                 <Button
@@ -179,7 +177,6 @@
                 android:id="@+id/layout_other"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/abc_action_bar_content_inset_material"
                 android:orientation="horizontal"
                 android:layout_below="@+id/layout_alias_subscribe">
                 <Button
@@ -202,7 +199,6 @@
                 android:id="@+id/layout_notification_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/abc_action_bar_content_inset_material"
                 android:orientation="vertical"
                 android:layout_below="@+id/layout_other">
                 <EditText
@@ -224,7 +220,6 @@
                 android:id="@+id/layout_cancel_notification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/abc_action_bar_content_inset_material"
                 android:orientation="horizontal"
                 android:layout_below="@+id/layout_notification_id">
                 <Button

@@ -12,13 +12,13 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/flyme_status_ic_notification"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:label="@string/app_name">
         <activity
             android:name="com.meizu.pushdemo.MainActivity"
             android:configChanges="keyboardHidden"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,11 +26,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.meizu.pushdemo.TestActivity"/>
+        <activity android:name="com.meizu.pushdemo.TestActivity" android:exported="false"/>
 
         <activity android:name="com.meizu.pushdemo.TestActivity2" android:exported="true" />
 
-        <receiver android:name=".PushMsgReceiver">
+        <receiver android:name=".PushMsgReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="com.meizu.flyme.push.intent.MESSAGE" />
                 <action android:name="com.meizu.flyme.push.intent.REGISTER.FEEDBACK" />

@@ -15,14 +15,13 @@ android {
             storePassword '123456'
         }
     }
-    compileSdkVersion 30
-    buildToolsVersion '30.0.2'
+    compileSdkVersion 33
     defaultConfig {
         applicationId appPackageName
         minSdkVersion 19
-        targetSdkVersion 30
-        versionCode 414
-        versionName "4.1.4"
+        targetSdkVersion 33
+        versionCode 423
+        versionName "4.2.3"
         manifestPlaceholders = [APP_ID: appId, APP_KEY: appKey, PACKAGE_NAME: appPackageName]
     }
     buildTypes {
@@ -36,7 +35,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation(group: 'com.meizu.flyme.internet', name: 'push-internal', version: '4.1.4', ext: 'aar')
+    implementation(group: 'com.meizu.flyme.internet', name: 'push-internal', version: '4.2.3-SNAPSHOT', ext: 'aar')
 //    implementation project(':push-internal-publish')
 }
