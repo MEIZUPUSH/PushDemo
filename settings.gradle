@@ -1,3 +1,25 @@
+pluginManagement {
+    repositories {
+        maven { url 'https://artifactory.rnd.meizu.com/artifactory/all' }
+        maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        maven{
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        }
+        maven { url 'https://artifactory.rnd.meizu.com/artifactory/all' }
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        google()
+        mavenCentral()
+    }
+}
+
 include ':PushdemoInternal'
 
 //include(':push-internal-publish')

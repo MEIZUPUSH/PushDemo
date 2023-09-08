@@ -20,8 +20,8 @@ android {
         applicationId appPackageName
         minSdkVersion 19
         targetSdkVersion 33
-        versionCode 423
-        versionName "4.2.3"
+        versionCode 426
+        versionName "4.2.6"
         manifestPlaceholders = [APP_ID: appId, APP_KEY: appKey, PACKAGE_NAME: appPackageName]
     }
     buildTypes {
@@ -35,6 +35,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation(group: 'com.meizu.flyme.internet', name: 'push-internal', version: '4.2.3-SNAPSHOT', ext: 'aar')
+    implementation 'com.meizu.flyme.internet:push-internal:4.2.6'
 //    implementation project(':push-internal-publish')
 }
